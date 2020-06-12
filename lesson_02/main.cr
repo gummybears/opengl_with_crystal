@@ -4,20 +4,32 @@ require "./shaderprogram.cr"
 
 include CrystGLFW
 
-def triangle() : Array(Float32)
 
-  vertex_arr = [
-    -0.5, -0.5, 0.0,
-     0.5, -0.5, 0.0,
-     0.0,  0.5, 0.0,
-  ]
+def twotriangles() : {Array(Float32), Array(Int32)}
 
-  vertices = [] of Float32
-  vertex_arr.each do |v|
-    vertices << v.to_f32
+  vertices = [
+               0.5,  0.5,  0.0,
+               0.5, -0.5,  0.0,
+              -0.5, -0.5,  0.0,
+              -0.5,  0.5,  0.0
+            ]
+
+  indices = [
+              0,1,3, # first triangle
+              1,2,3  # second triangle
+            ]
+
+  vertex_arr = [] of Float32
+  vertices.each do |v|
+    vertex_arr << v.to_f32
   end
 
-  return vertices
+  index_arr = [] of Int32
+  indices.each do |v|
+    index_arr << v.to_i32
+  end
+
+  return vertex_arr, index_arr
 end
 
 # => {major: 3, minor: 2, rev: 1}
@@ -26,7 +38,7 @@ def crystal_glfw_version()
   puts "#{version[:major]}.#{version[:minor]}.#{version[:rev]}"
 end
 
-def lesson_01(title : String = "OpenGL lesson 1, simple triangle", width : Int32 = 800, height : Int32 = 600)
+def lesson_02(title : String = "OpenGL lesson 2, using indices ", width : Int32 = 800, height : Int32 = 600)
 
   crystal_glfw_version()
 
@@ -47,9 +59,18 @@ def lesson_01(title : String = "OpenGL lesson 1, simple triangle", width : Int32
   window_opacity = 1.0
 
   # data
-  vertices = triangle()
+  vertices, indices  = twotriangles()
 
   nr_vertices = (vertices.size/3).to_i
+  nr_indices  = indices.size
+  puts "nr vertices #{nr_vertices}"
+  puts "nr indices  #{nr_indices}"
+
+  puts "sizeof(Float32) #{sizeof(Float32)}"
+  puts "sizeof(Int32)   #{sizeof(Int32)}"
+
+  puts "vertices.size * sizeof(Float32) #{vertices.size * sizeof(Float32)}"
+  puts "indices.size  * sizeof(Int32)   #{indices.size * sizeof(Int32)}"
 
   CrystGLFW.run do
 
@@ -60,7 +81,6 @@ def lesson_01(title : String = "OpenGL lesson 1, simple triangle", width : Int32
     # Make the window the current OpenGL context
     #
     window.make_context_current
-    # link errors, window.maximize
 
     #
     # compile shaders
@@ -69,11 +89,15 @@ def lesson_01(title : String = "OpenGL lesson 1, simple triangle", width : Int32
     shaderprogram = ShaderProgram.new("shader.vs","shader.fs")
 
     #
-    # vbo buffer
+    # vbo and ebo buffer (element array buffer)
     #
     LibGL.gen_buffers(1, out vbo_id)
     LibGL.bind_buffer(LibGL::ARRAY_BUFFER, vbo_id)
     LibGL.buffer_data(LibGL::ARRAY_BUFFER, vertices.size * sizeof(Float32), vertices, LibGL::STATIC_DRAW)
+
+    LibGL.gen_buffers(1, out ebo_id)
+    LibGL.bind_buffer(LibGL::ELEMENT_ARRAY_BUFFER, ebo_id)
+    LibGL.buffer_data(LibGL::ELEMENT_ARRAY_BUFFER, indices.size * sizeof(Int32), indices, LibGL::STATIC_DRAW)
 
     #
     # vao buffer
@@ -81,7 +105,7 @@ def lesson_01(title : String = "OpenGL lesson 1, simple triangle", width : Int32
     LibGL.gen_vertex_arrays(1, out vao_id)
     LibGL.bind_vertex_array(vao_id)
 
-    LibGL.vertex_attrib_pointer(0, nr_vertices, LibGL::FLOAT, LibGL::FALSE, nr_vertices * sizeof(Float32), Pointer(Void).new(0) )
+    LibGL.vertex_attrib_pointer(0, 3, LibGL::FLOAT, LibGL::FALSE, 3 * sizeof(Float32), Pointer(Void).new(0) )
     LibGL.enable_vertex_attrib_array(0)
 
 
@@ -107,8 +131,17 @@ def lesson_01(title : String = "OpenGL lesson 1, simple triangle", width : Int32
 
       # bind vao
       LibGL.bind_vertex_array(vao_id)
-      # draw triangle
-      LibGL.draw_arrays(LibGL::TRIANGLES, 0, 3)
+
+      #
+      # important to bind the EBO buffer before draw_elements
+      #
+      LibGL.bind_buffer(LibGL::ELEMENT_ARRAY_BUFFER, ebo_id)
+      #
+      # draw 2 triangles
+      #
+      # Note: the 6 is the number of indices
+      LibGL.draw_elements(LibGL::TRIANGLES, 6, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
+
 
       shaderprogram.stop()
 
@@ -119,4 +152,4 @@ def lesson_01(title : String = "OpenGL lesson 1, simple triangle", width : Int32
   end # run loop
 end
 
-lesson_01()
+lesson_02()
