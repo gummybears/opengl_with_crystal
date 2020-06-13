@@ -3,6 +3,7 @@ require "crystglfw"
 include CrystGLFW
 
 require "./display.cr"
+require "./model.cr"
 
 def twotriangles() : {Array(Float32), Array(Int32)}
 
@@ -31,18 +32,16 @@ def twotriangles() : {Array(Float32), Array(Int32)}
   return vertex_arr, index_arr
 end
 
-def lesson_03(title : String = "OpenGL lesson 3, introduce class Display and struct Color", width : Int32 = 800, height : Int32 = 600)
+def lesson_04(title : String = "OpenGL lesson 4, introduce class Model", width : Int32 = 800, height : Int32 = 600)
+
+  vertices, indices = twotriangles()
+  bg = Color.new(0.2,0.3,0.3,1.0)
 
   CrystGLFW.run do
-
-    bg = Color.new(0.2,0.3,0.3,1.0)
     display = Display.new(title, width, height, bg)
-
-    # data
-    vertices, indices = twotriangles()
-    display.render(vertices,indices)
+    model   = Model.load(vertices,indices)
+    display.render(model)
   end
-
 end
 
-lesson_03()
+lesson_04()

@@ -24,8 +24,8 @@ class Display
     hints = {
       Window::HintLabel::ContextVersionMajor => 3,
       Window::HintLabel::ContextVersionMinor => 3,
-      Window::HintLabel::ClientAPI => ClientAPI::OpenGL,
-      Window::HintLabel::OpenGLProfile => OpenGLProfile::Core
+      Window::HintLabel::ClientAPI           => ClientAPI::OpenGL,
+      Window::HintLabel::OpenGLProfile       => OpenGLProfile::Core
     }
 
     # create a new window
@@ -88,22 +88,23 @@ class Display
 
         shaderprogram.start()
 
+        #
         # bind vao
+        #
         LibGL.bind_vertex_array(vao_id)
 
         #
         # important to bind the EBO buffer before draw_elements
         #
         LibGL.bind_buffer(LibGL::ELEMENT_ARRAY_BUFFER, ebo_id)
+
         #
         # draw 2 triangles
         #
         # Note: the 6 is the number of indices
         LibGL.draw_elements(LibGL::TRIANGLES, 6, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
 
-
         shaderprogram.stop()
-
         @window.swap_buffers
       end
 
