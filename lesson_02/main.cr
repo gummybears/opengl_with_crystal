@@ -4,7 +4,6 @@ require "./shaderprogram.cr"
 
 include CrystGLFW
 
-
 def twotriangles() : {Array(Float32), Array(Int32)}
 
   vertices = [
@@ -63,14 +62,6 @@ def lesson_02(title : String = "OpenGL lesson 2, using indices ", width : Int32 
 
   nr_vertices = (vertices.size/3).to_i
   nr_indices  = indices.size
-  puts "nr vertices #{nr_vertices}"
-  puts "nr indices  #{nr_indices}"
-
-  puts "sizeof(Float32) #{sizeof(Float32)}"
-  puts "sizeof(Int32)   #{sizeof(Int32)}"
-
-  puts "vertices.size * sizeof(Float32) #{vertices.size * sizeof(Float32)}"
-  puts "indices.size  * sizeof(Int32)   #{indices.size * sizeof(Int32)}"
 
   CrystGLFW.run do
 

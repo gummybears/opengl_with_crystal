@@ -1,0 +1,15 @@
+name: main
+version: 0.1.0
+
+dependencies:
+ lib_gl:
+    github: calebuharrison/LibGL
+    branch: master
+
+ lib_glfw:
+    github: calebuharrison/LibGLFW
+    branch: master
+
+ crystglfw:
+    github: calebuharrison/CrystGLFW
+    branch: master
