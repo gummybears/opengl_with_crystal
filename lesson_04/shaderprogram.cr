@@ -3,13 +3,8 @@ class ShaderProgram
   property programId : LibGL::UInt
   property vertexShaderId : LibGL::UInt
   property fragmentShaderId : LibGL::UInt
-  #property vertexfile : String
-  #property fragmentfile : String
 
   def initialize(vertexfile : String, fragmentfile : String)
-
-    #@vertexfile = vertexfile
-    #@fragmentfile = fragmentfile
 
     lines = File.read_lines(vertexfile)
     @vertexShaderId = load_shader(lines.join("\n"), LibGL::VERTEX_SHADER)

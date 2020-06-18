@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.28.0">
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../";
+</script>
+
+  <meta id="repository-name" content="github.com/stumpycr/stumpy_png">
+  <title>StumpyPNG::Scanline - github.com/stumpycr/stumpy_png</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/stumpycr/stumpy_png/CrcIO" data-name="crcio">
+      <a href="../CrcIO.html">CrcIO</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/stumpycr/stumpy_png/StumpyPNG" data-name="stumpypng">
+      <a href="../StumpyPNG.html">StumpyPNG</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/stumpycr/stumpy_png/StumpyPNG/Chunk" data-name="stumpypng::chunk">
+      <a href="../StumpyPNG/Chunk.html">Chunk</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/stumpycr/stumpy_png/StumpyPNG/Datastream" data-name="stumpypng::datastream">
+      <a href="../StumpyPNG/Datastream.html">Datastream</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/stumpycr/stumpy_png/StumpyPNG/Filter" data-name="stumpypng::filter">
+      <a href="../StumpyPNG/Filter.html">Filter</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/stumpycr/stumpy_png/StumpyPNG/PNG" data-name="stumpypng::png">
+      <a href="../StumpyPNG/PNG.html">PNG</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/stumpycr/stumpy_png/StumpyPNG/Scanline" data-name="stumpypng::scanline">
+      <a href="../StumpyPNG/Scanline.html">Scanline</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/stumpycr/stumpy_png/StumpyPNG/Utils" data-name="stumpypng::utils">
+      <a href="../StumpyPNG/Utils.html">Utils</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> StumpyPNG::Scanline
+
+</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L2" target="_blank">
+        stumpy_png/scanline.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+  <h2>Class Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method" class="signature"><strong>.decode_grayscale</strong>(scanline, canvas, y, bit_depth)</a>
+        
+          <div class="summary"><p>We don't need to care about invalid bit depths here, because they are validated before</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_1%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_grayscale_1</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_16%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_grayscale_16</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_2%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_grayscale_2</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_4%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_grayscale_4</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_8%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_grayscale_8</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_alpha%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method" class="signature"><strong>.decode_grayscale_alpha</strong>(scanline, canvas, y, bit_depth)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_alpha_16%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_grayscale_alpha_16</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_grayscale_alpha_8%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_grayscale_alpha_8</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_palette%28scanline%2Ccanvas%2Cy%2Cpalette%2Cbit_depth%29-class-method" class="signature"><strong>.decode_palette</strong>(scanline, canvas, y, palette, bit_depth)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_palette_1%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method" class="signature"><strong>.decode_palette_1</strong>(scanline, canvas, y, palette)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_palette_2%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method" class="signature"><strong>.decode_palette_2</strong>(scanline, canvas, y, palette)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_palette_4%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method" class="signature"><strong>.decode_palette_4</strong>(scanline, canvas, y, palette)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_palette_8%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method" class="signature"><strong>.decode_palette_8</strong>(scanline, canvas, y, palette)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_rgb%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method" class="signature"><strong>.decode_rgb</strong>(scanline, canvas, y, bit_depth)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_rgb_16%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_rgb_16</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_rgb_8%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_rgb_8</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_rgb_alpha%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method" class="signature"><strong>.decode_rgb_alpha</strong>(scanline, canvas, y, bit_depth)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_rgb_alpha_16%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_rgb_alpha_16</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_rgb_alpha_8%28scanline%2Ccanvas%2Cy%29-class-method" class="signature"><strong>.decode_rgb_alpha_8</strong>(scanline, canvas, y)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+  <h2>Class Method Detail</h2>
+  
+    <div class="entry-detail" id="decode_grayscale(scanline,canvas,y,bit_depth)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale</strong>(scanline, canvas, y, bit_depth)
+
+        <a class="method-permalink" href="#decode_grayscale%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>We don't need to care about invalid bit depths here,
+because they are validated before</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_1(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_1</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_grayscale_1%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L48" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_16(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_16</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_grayscale_16%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L104" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_2(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_2</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_grayscale_2%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L63" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_4(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_4</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_grayscale_4%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L80" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_8(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_8</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_grayscale_8%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L96" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_alpha(scanline,canvas,y,bit_depth)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_alpha</strong>(scanline, canvas, y, bit_depth)
+
+        <a class="method-permalink" href="#decode_grayscale_alpha%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L15" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_alpha_16(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_alpha_16</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_grayscale_alpha_16%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L124" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_grayscale_alpha_8(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_grayscale_alpha_8</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_grayscale_alpha_8%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L111" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_palette(scanline,canvas,y,palette,bit_depth)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_palette</strong>(scanline, canvas, y, palette, bit_depth)
+
+        <a class="method-permalink" href="#decode_palette%28scanline%2Ccanvas%2Cy%2Cpalette%2Cbit_depth%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L39" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_palette_1(scanline,canvas,y,palette)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_palette_1</strong>(scanline, canvas, y, palette)
+
+        <a class="method-permalink" href="#decode_palette_1%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L182" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_palette_2(scanline,canvas,y,palette)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_palette_2</strong>(scanline, canvas, y, palette)
+
+        <a class="method-permalink" href="#decode_palette_2%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L194" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_palette_4(scanline,canvas,y,palette)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_palette_4</strong>(scanline, canvas, y, palette)
+
+        <a class="method-permalink" href="#decode_palette_4%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L206" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_palette_8(scanline,canvas,y,palette)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_palette_8</strong>(scanline, canvas, y, palette)
+
+        <a class="method-permalink" href="#decode_palette_8%28scanline%2Ccanvas%2Cy%2Cpalette%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L218" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_rgb(scanline,canvas,y,bit_depth)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_rgb</strong>(scanline, canvas, y, bit_depth)
+
+        <a class="method-permalink" href="#decode_rgb%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L23" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_rgb_16(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_rgb_16</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_rgb_16%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L147" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_rgb_8(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_rgb_8</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_rgb_8%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L133" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_rgb_alpha(scanline,canvas,y,bit_depth)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_rgb_alpha</strong>(scanline, canvas, y, bit_depth)
+
+        <a class="method-permalink" href="#decode_rgb_alpha%28scanline%2Ccanvas%2Cy%2Cbit_depth%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L31" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_rgb_alpha_16(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_rgb_alpha_16</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_rgb_alpha_16%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L170" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_rgb_alpha_8(scanline,canvas,y)-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_rgb_alpha_8</strong>(scanline, canvas, y)
+
+        <a class="method-permalink" href="#decode_rgb_alpha_8%28scanline%2Ccanvas%2Cy%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/stumpycr/stumpy_png/blob/7f99ea3e01fab4c4527c9cc49a1d434b70da6df1/src/stumpy_png/scanline.cr#L158" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+
+</div>
+
+</body>
+</html>
