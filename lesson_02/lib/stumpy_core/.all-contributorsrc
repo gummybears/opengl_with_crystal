@@ -1,0 +1,47 @@
+{
+  "projectName": "stumpy_core",
+  "projectOwner": "l3kn",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "l3kn",
+      "name": "Leon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2060269?v=3",
+      "profile": "https://github.com/l3kn",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "redcodefinal",
+      "name": "Ian Rash",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1298501?v=3",
+      "profile": "http://broken-kami.tumblr.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Demonstrandum",
+      "name": "Sam",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/26842759?v=3",
+      "profile": "https://github.com/Demonstrandum",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "reiswindy",
+      "name": "reiswindy",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/11876110?v=4",
+      "profile": "https://github.com/reiswindy",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ]
+}
