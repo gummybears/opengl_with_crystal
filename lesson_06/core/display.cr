@@ -15,21 +15,18 @@ class Display
   property near         : Float32
   property far          : Float32
   property aspect_ratio : Float32
-  #property projection_matrix : ASY::Matrix
 
   property window : CrystGLFW::Window
 
   def initialize(title : String, width : Float32, height : Float32, fov : Float32, near : Float32, far : Float32, bg : Color)
-    @title  = title
-    @width  = width
-    @height = height
-    @bg     = bg
-    @fov    = fov
-    @near   = near
-    @far    = far
-
-    @aspect_ratio      = (@width/height).to_f32
-    #@projection_matrix = projection_matrix()
+    @title        = title
+    @width        = width
+    @height       = height
+    @bg           = bg
+    @fov          = fov
+    @near         = near
+    @far          = far
+    @aspect_ratio = (@width/height).to_f32
 
     #
     # Request a specific version of OpenGL in core profile mode with forward compatibility.
@@ -67,9 +64,6 @@ class Display
     projection = GLM.perspective(@fov,@aspect_ratio,@near, @far)
     shaderprogram.set_uniform_matrix_4f("projection", projection)
 
-    angle = 0.0f32
-
-
     until @window.should_close?
       CrystGLFW.poll_events
 
@@ -81,44 +75,33 @@ class Display
       end
 
       clear()
-      shaderprogram.start()
 
+      shaderprogram.use() do
 
-      #model = GLM.rotate(angle, GLM.vec3(0.5, 1.0, 0.0))
-      #model = GLM::Mat4.identity()
-      #shaderprogram.set_uniform_matrix_4f("model", model)
+        view  = GLM.translate(camera.position)
+        shaderprogram.set_uniform_matrix_4f("view", view)
 
-      view  = GLM.translate(GLM.vec3(0.0, 0.0, -2.0))
-      shaderprogram.set_uniform_matrix_4f("view", view)
+        if @window.key_pressed?(Key::W)
+          camera.move_w()
+        end
 
+        if @window.key_pressed?(Key::A)
+          camera.move_a()
+        end
 
-      #angle = angle + 0.001
+        if @window.key_pressed?(Key::D)
+          camera.move_d()
+        end
 
-      # if @window.key_pressed?(Key::W)
-      #   camera.move_w()
-      # end
-      #
-      # if @window.key_pressed?(Key::A)
-      #   camera.move_a()
-      # end
-      #
-      # if @window.key_pressed?(Key::D)
-      #   camera.move_d()
-      # end
-      #
-      # if @window.key_pressed?(Key::U)
-      #   camera.move_u()
-      # end
+        if @window.key_pressed?(Key::X)
+          camera.move_x()
+        end
 
-      #
-      # draw entity
-      #
+        entity.increaseRotation(0.002,GLM.vec3(0,0,1))
+        entity.increasePosition(0.0,0,-0.002)
+        entity.draw(shaderprogram)
+      end
 
-      #entity.increasePosition(0.00025,0,0)
-      entity.increaseRotation(0.002,GLM.vec3(0,0,1))
-      entity.increasePosition(0.0,0,-0.002)
-      entity.draw(shaderprogram)
-      shaderprogram.stop()
       @window.swap_buffers
     end
 
@@ -127,8 +110,4 @@ class Display
     shaderprogram.cleanup()
   end # render
 
-  #def projection_matrix() : ASY::Matrix
-  #  r = ASY::Matrix.perspective(@fov,@aspect_ratio,@z_near,@z_far)
-  #  return r
-  #end
 end

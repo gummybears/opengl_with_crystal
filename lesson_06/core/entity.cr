@@ -1,4 +1,4 @@
-require "./math/**"
+require "../math/**"
 
 class Entity
 
@@ -10,14 +10,14 @@ class Entity
   property scale    : GLM::Vec3
   property angle    : Float32
 
-  def initialize(model : Model, position : GLM::Vec3, rotation : GLM::Vec3, scale : GLM::Vec3)
+  def initialize(model : Model, position : GLM::Vec3, rotation : GLM::Vec3, scale : GLM::Vec3, angle : Float32 = 0.0f32)
     @model    = model
     @position = position
     @scale    = scale
     @rotX     = rotation.x
     @rotY     = rotation.y
     @rotZ     = rotation.z
-    @angle    = 0.0
+    @angle    = angle
   end
 
   def increasePosition(dx : Float32, dy : Float32, dz : Float32)
@@ -27,20 +27,17 @@ class Entity
   end
 
   def increaseRotation(dangle : Float32, axis : GLM::Vec3)
-    @rotX = axis.x
-    @rotY = axis.y
-    @rotZ = axis.z
+    @rotX  = axis.x
+    @rotY  = axis.y
+    @rotZ  = axis.z
     @angle = @angle + dangle
   end
 
   def draw(shaderprogram : ShaderProgram)
-    #rotation = GLM::Vec3.new(@rotX,@rotY,@rotZ)
-    #matrix   = GLM.model_matrix(@position, rotation, @scale)
-    #shaderprogram.load_model_matrix(matrix)
 
     model  = GLM.translate(GLM.vec3(@position.x,@position.y,@position.z))
     rotate = GLM.rotate(@angle, GLM.vec3(@rotX,@rotY,@rotZ))
-    model = rotate * model
+    model  = rotate * model
     shaderprogram.set_uniform_matrix_4f("model", model)
 
     @model.draw()

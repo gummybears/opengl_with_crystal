@@ -1,14 +1,10 @@
-require "./math/**"
+require "../math/**"
 
 class ShaderProgram
 
   property program_id : LibGL::UInt
   property vs_id      : LibGL::UInt
   property fs_id      : LibGL::UInt
-
-  property model_matrix_id      : Int32 = 0
-  property projection_matrix_id : Int32 = 0
-  property view_matrix_id       : Int32 = 0
 
   def initialize(vertexfile : String, fragmentfile : String)
 
@@ -37,13 +33,6 @@ class ShaderProgram
     LibGL.link_program(@program_id)
     LibGL.validate_program(@program_id)
 
-    # if @program_id == 0
-    #   puts "failed to compiled shaders"
-    #   exit
-    # end
-
-    #get_all_uniform_locations()
-
     LibGL.delete_shader(@vs_id)
     LibGL.delete_shader(@fs_id)
   end
@@ -70,10 +59,10 @@ class ShaderProgram
     LibGL.delete_program(@program_id)
   end
 
-  def bind_attributes()
-    bind_attribute(0,"position")
-    bind_attribute(1,"pass_textureCoords")
-  end
+  # old code def bind_attributes()
+  # old code   bind_attribute(0,"position")
+  # old code   bind_attribute(1,"pass_textureCoords")
+  # old code end
 
   def bind_attribute(attribute : Int32, variable_name : String)
     LibGL.bind_attrib_location(@program_id, attribute, variable_name)
@@ -84,7 +73,7 @@ class ShaderProgram
     shader_id = LibGL.create_shader(type)
     if shader_id == 0
       shader_error_code = LibGL.get_error
-      raise "Error #{shader_error_code}: Shader creation failed. Could not find valid memory location when adding shader"
+      raise "error #{shader_error_code}: shader creation failed. Could not find valid memory location when adding shader"
     end
 
     ptr    = text.to_unsafe
@@ -101,7 +90,7 @@ class ShaderProgram
       compile_log_str    = String.new(pointerof(compile_log))
       compile_error_code = LibGL.get_error
 
-      raise "rrror #{compile_error_code}: failed compiling shader.\n'#{text}': #{compile_log_str}"
+      raise "error #{compile_error_code}: failed compiling shader.\n'#{text}': #{compile_log_str}"
     end
 
     return shader_id
@@ -126,44 +115,12 @@ class ShaderProgram
   end
 
   #
-  # load a transformation matrix
+  # set uniform matrix
   #
-  def load_matrix(location : Int32, value : GLM::Mat4) #GLM::Mat4)
-    LibGL.uniform_matrix_4fv(location, 1, LibGL::FALSE, value.buffer)
-    #LibGL.program_uniform_matrix_4fv(@program_id,location,1,LibGL::FALSE,value)
-  end
-
-  ##
-  ## load a matrix into our uniform variable 'm_model'
-  ##
-  #def load_model_matrix(matrix : GLM::Mat4)
-  #  load_matrix(@model_matrix_id,matrix)
-  #end
-  #
-  #def load_projection_matrix(matrix : GLM::Mat4)
-  #  load_matrix(@projection_matrix_id,matrix)
-  #end
-  #
-  #def load_view_matrix(camera : Camera)
-  #  matrix = GLM.view_matrix( camera.position,camera.pitch,camera.yaw)
-  #  load_matrix(@view_matrix_id,matrix)
-  #end
-
-  def get_uniform_location(uniform_name : String) : Int32
-    return LibGL.get_uniform_location(@program_id,uniform_name)
-  end
-
-  #def get_all_uniform_locations()
-  #  @model_matrix_id      = get_uniform_location("m_model")
-  #  @projection_matrix_id = get_uniform_location("m_projection")
-  #  @view_matrix_id       = get_uniform_location("m_view")
-  #end
-
   def set_uniform_matrix_4f(name, value)
     use do
       location = LibGL.get_uniform_location(@program_id, name)
       LibGL.uniform_matrix_4fv(location, 1, LibGL::FALSE, value.buffer)
-      # LibGL.uniform_matrix4fv(uniform, 1, false, value.buffer)
     end
   end
 

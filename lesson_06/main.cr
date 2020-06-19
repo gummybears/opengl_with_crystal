@@ -2,16 +2,10 @@ require "lib_gl"
 require "crystglfw"
 include CrystGLFW
 
-require "./display.cr"
-require "./model.cr"
-require "./texture.cr"
-require "./texture_model.cr"
-require "./entity.cr"
-require "./camera.cr"
+require "./core/**"
+require "./models/twotriangles.cr"
 
-require "./twotriangles.cr"
-
-def lesson_06(title : String = "OpenGL lesson 6, Uniforms", width : Float32 = 800f32, height : Float32 = 600f32)
+def lesson_06(title : String = "OpenGL lesson 6, Uniforms", width : Float32 = 1080f32, height : Float32 = 810f32)
 
   vertexshader   = "shaders/test_transform.vs"
   fragmentshader = "shaders/test_transform.fs"
@@ -28,8 +22,7 @@ def lesson_06(title : String = "OpenGL lesson 6, Uniforms", width : Float32 = 80
   z_near       = 0.1f32
   z_far        = 100.0f32
   aspect_ratio = (width/height).to_f32
-
-  camera = Camera.new()
+  camerapos    = GLM::Vec3.new(0.0f32,0.0f32,-2.0f32)
 
   CrystGLFW.run do
 
@@ -40,16 +33,8 @@ def lesson_06(title : String = "OpenGL lesson 6, Uniforms", width : Float32 = 80
     # with a texture
     static_model = TextureModel.new(model,texture_file)
 
-    #
-    # and with a transformation matrix
-    # combined into an entity
-    #
-    entity = Entity.new(static_model,position,rotation,scale)
-    camera = Camera.new()
-    #
-    # Order of creation is important
-    # need to create shader program after we have a window context
-    #
+    entity        = Entity.new(static_model,position,rotation,scale)
+    camera        = Camera.new(camerapos)
     shaderprogram = ShaderProgram.new(vertexshader,fragmentshader)
     display.render(entity,shaderprogram,camera)
   end
