@@ -3,7 +3,7 @@ require "./texture.cr"
 
 class TextureModel < Model
 
-  property id    : UInt32
+  property id : UInt32
 
   def initialize(model : Model, texture_file : String)
 

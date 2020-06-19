@@ -1,14 +1,17 @@
-require "./vector3f.cr"
+require "./vector.cr"
 
 struct Quaternion
-  getter x, y, z, w
 
-  @x : Float64
-  @y : Float64
-  @z : Float64
-  @w : Float64
+  property x : Float64
+  property y : Float64
+  property z : Float64
+  property w : Float64
 
-  def initialize(@x, @y, @z, @w : Float64)
+  def initialize(x : Float64, y : Float64, z : Float64, w : Float64)
+    @x = x
+    @y = y
+    @z = z
+    @w = w
   end
 
   # def initialize(rot : Matrix4f)

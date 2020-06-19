@@ -1,8 +1,10 @@
 class Vector2f
-  getter x, y : Float32
-  setter x, y : Float32
+  property x : Float32
+  property y : Float32
 
-  def initialize(@x : Float32, @y : Float32)
+  def initialize(x : Float32, y : Float32)
+    @x = x
+    @y = y
   end
 
   # Returns the length the vector (pythagorean theorem)

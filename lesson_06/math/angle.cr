@@ -1,27 +1,16 @@
-# Represents an angle value in the engine.
-struct Angle
-  @angle : Float32
+#
+# angle.cr
+#
+#
+require "./aliastype.cr"
 
-  def initialize(@angle)
-  end
-
-  # Returns the angle in radians
-  def radians
-    @angle
-  end
-
-  # Create an angle from *degrees*
-  #
-  def self.from_degrees(degrees) : Angle
-    Angle.new(degrees / 180f32 * Math::PI)
-  end
-
-  # Creates an angle from *radians*
-  def self.from_radians(radians) : Angle
-    Angle.new(radians.to_f32)
-  end
-
-  def to_degrees
-    @angle * 180f32 / Math::PI
-  end
+def radians(theta : Float32) : Float32
+  r = theta * Math::PI/180.0
+  return r.to_f32
 end
+
+def degrees(theta : Float32) : Float32
+  r = theta * 180.0/Math::PI
+  return r.to_f32
+end
+

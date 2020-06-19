@@ -12,10 +12,6 @@ shards:
     github: calebuharrison/LibGLFW
     commit: 4cf7c3774f278d7e044bb30a35b104f5b12fdc53
 
-  matrix:
-    github: Exilor/matrix
-    commit: 4adb7c929f90c53eda224b1ca23cee4f1ee94395
-
   stumpy_core:
     git: https://github.com/stumpycr/stumpy_core.git
     version: 1.9.1

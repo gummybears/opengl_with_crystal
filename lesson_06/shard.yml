@@ -18,8 +18,4 @@ dependencies:
     github: gummybears/CrystGLFW
     branch: master
 
- matrix:
-   github: Exilor/matrix
-   branch: master
-
 license: MIT

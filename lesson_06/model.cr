@@ -16,7 +16,6 @@ class Model
   # enable attributes
   #
   def bind()
-
     LibGL.bind_vertex_array(@vao_id)
     0.upto(@nr_attrib_arrays - 1) do |i|
       LibGL.enable_vertex_attrib_array(i)
@@ -42,16 +41,6 @@ class Model
     LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
     unbind()
   end
-
-  # old code #
-  # old code # draw a model with 1 texture
-  # old code #
-  # old code def draw(texture_id : UInt32)
-  # old code   bind()
-  # old code   LibGL.bind_texture(LibGL::TEXTURE_2D, texture_id)
-  # old code   LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
-  # old code   unbind()
-  # old code end
 
   #
   # creates a new vertex array object so we can store all of our buffered data
@@ -93,7 +82,7 @@ class Model
   #
   # Loads some raw data into open gl and returns a model object that can be used for drawing.
   #
-  def self.load(vertices : Array(Float32), indices : Array(Int32), texture_coords : Array(Float32), ) : Model
+  def self.load(vertices : Array(Float32), indices : Array(Int32), texture_coords : Array(Float32) ) : Model
 
     vao_id = create_vao
 
@@ -147,4 +136,5 @@ class Model
     LibGL.bind_buffer(LibGL::ARRAY_BUFFER, 0)
     return vbo_id
   end
+
 end

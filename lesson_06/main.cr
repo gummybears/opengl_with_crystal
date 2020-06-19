@@ -6,69 +6,53 @@ require "./display.cr"
 require "./model.cr"
 require "./texture.cr"
 require "./texture_model.cr"
+require "./entity.cr"
+require "./camera.cr"
 
-def twotriangles() : {Array(Float32), Array(Int32), Array(Float32)}
+require "./twotriangles.cr"
 
-  vertices = [
-               0.5,  0.5,  0.0,
-               0.5, -0.5,  0.0,
-              -0.5, -0.5,  0.0,
-              -0.5,  0.5,  0.0
-            ]
+def lesson_06(title : String = "OpenGL lesson 6, Uniforms", width : Float32 = 800f32, height : Float32 = 600f32)
 
-  indices = [
-              0,1,3, # first triangle
-              1,2,3  # second triangle
-            ]
-
-
-  texture_coords = [
-            1.0, 1.0, # top right
-            1.0, 0.0, # bottom right
-            0.0, 0.0, # bottom let
-            0.0, 1.0  # top let
-          ]
-
-  vertex_arr = [] of Float32
-  vertices.each do |v|
-    vertex_arr << v.to_f32
-  end
-
-  index_arr = [] of Int32
-  indices.each do |v|
-    index_arr << v.to_i32
-  end
-
-  texture_arr = [] of Float32
-  texture_coords.each do |v|
-    texture_arr << v.to_f32
-  end
-
-  return vertex_arr, index_arr, texture_arr
-end
-
-def lesson_05(title : String = "OpenGL lesson 5, Textures", width : Int32 = 800, height : Int32 = 600)
-
-  vertexshader   = "shaders/texture_shader.vs"
-  fragmentshader = "shaders/texture_shader.fs"
+  vertexshader   = "shaders/test_transform.vs"
+  fragmentshader = "shaders/test_transform.fs"
   texture_file   = "res/bricks.png"
 
   vertices, indices, textures = twotriangles()
   bg = Color.new(0.2,0.3,0.3,1.0)
 
+  position = GLM::Vec3.new(0.0f32, 0.0f32, 0.0f32)
+  rotation = GLM::Vec3.new(0.0f32, 0.0f32, 0.0f32)
+  scale    = GLM::Vec3.new(0.0f32, 0.0f32, 0.0f32)
+
+  fov          = 45.0f32
+  z_near       = 0.1f32
+  z_far        = 100.0f32
+  aspect_ratio = (width/height).to_f32
+
+  camera = Camera.new()
+
   CrystGLFW.run do
 
-    display    = Display.new(title, width, height, bg)
-    model      = Model.load(vertices,indices,textures)
+    display = Display.new(title, width, height, fov, z_near, z_far, bg)
 
+    # plain model
+    model = Model.load(vertices,indices,textures)
+    # with a texture
     static_model = TextureModel.new(model,texture_file)
+
+    #
+    # and with a transformation matrix
+    # combined into an entity
+    #
+    entity = Entity.new(static_model,position,rotation,scale)
+    camera = Camera.new()
     #
     # Order of creation is important
     # need to create shader program after we have a window context
     #
     shaderprogram = ShaderProgram.new(vertexshader,fragmentshader)
-    display.render(static_model,shaderprogram)
+    display.render(entity,shaderprogram,camera)
   end
 end
 
-lesson_05()
+lesson_06()

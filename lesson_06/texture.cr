@@ -7,18 +7,6 @@ class Texture
     @id = id
   end
 
-  # code not yet used #
-  # code not yet used # Binds the texture to a sampler slot
-  # code not yet used # Valid slots range from 0 to 31.
-  # code not yet used #
-  # code not yet used def bind(sampler_slot : LibGL::Int)
-  # code not yet used   if sampler_slot < 0 || sampler_slot > 31
-  # code not yet used     puts "Error: Sampler slot #{sampler_slot} is out of bounds"
-  # code not yet used   end
-  # code not yet used   LibGL.active_texture(LibGL::TEXTURE0 + sampler_slot)
-  # code not yet used   LibGL.bind_texture(LibGL::TEXTURE_2D, @id)
-  # code not yet used end
-
   #
   # load a texture
   #
