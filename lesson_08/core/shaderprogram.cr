@@ -26,8 +26,6 @@ class ShaderProgram
 
     @program_id = LibGL.create_program()
 
-    #bind_attributes()
-
     LibGL.attach_shader(@program_id, @vs_id)
     LibGL.attach_shader(@program_id, @fs_id)
     LibGL.link_program(@program_id)
@@ -59,11 +57,6 @@ class ShaderProgram
     LibGL.delete_program(@program_id)
   end
 
-  # old code def bind_attributes()
-  # old code   bind_attribute(0,"position")
-  # old code   bind_attribute(1,"pass_textureCoords")
-  # old code end
-
   def bind_attribute(attribute : Int32, variable_name : String)
     LibGL.bind_attrib_location(@program_id, attribute, variable_name)
   end
@@ -94,24 +87,6 @@ class ShaderProgram
     end
 
     return shader_id
-  end
-
-  def load_float(location : Int32, value : Float32)
-    LibGL.uniform1f(location,value)
-  end
-
-  def load_vector(location : Int33, value : Vector3f)
-    LibGL.uniform3f(location,value.x,vector,y,vector,z)
-  end
-
-  def load_boolean(location : Int32, value : Bool)
-
-    val = 0.0
-    if value == true
-      val = 1.0
-    end
-
-    LibGL.uniform1f(location,val)
   end
 
   #
