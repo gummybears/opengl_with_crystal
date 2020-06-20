@@ -45,5 +45,5 @@ def lesson_09(settings : Settings)
 end
 
 bg = Color.new(1.0,0.0,0.0,1.0)
-settings = Settings.new("OpenGL lesson 9, adding lights", 1920, 1080, 90, 0.1, 100, GLM::Vec3.new(0,0,1), bg)
+settings = Settings.new("OpenGL lesson 9, diffuse lighting", 1920, 1080, 90, 0.1, 100, GLM::Vec3.new(0,0,1), bg)
 lesson_09(settings)
