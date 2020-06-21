@@ -1,6 +1,6 @@
 require "../math/**"
 
-class ShaderProgram
+class Program
 
   property program_id : LibGL::UInt
   property vs_id      : LibGL::UInt
@@ -8,21 +8,15 @@ class ShaderProgram
 
   def initialize(vertexfile : String, fragmentfile : String)
 
-    if File.exists?(vertexfile) == false
-      puts "file #{vertexfile} not found"
-      exit
-    end
+    filenotfound(vertexfile)
+    filenotfound(fragmentfile)
 
-    if File.exists?(fragmentfile) == false
-      puts "file #{fragmentfile} not found"
-      exit
-    end
 
-    lines  = File.read_lines(vertexfile)
-    @vs_id = load_shader(lines.join("\n"), LibGL::VERTEX_SHADER)
+    lines  = File.read_lines(vertexfile).join("\n")
+    @vs_id = load_shader(lines, LibGL::VERTEX_SHADER)
 
-    lines  = File.read_lines(fragmentfile)
-    @fs_id = load_shader(lines.join("\n"), LibGL::FRAGMENT_SHADER)
+    lines  = File.read_lines(fragmentfile).join("\n")
+    @fs_id = load_shader(lines, LibGL::FRAGMENT_SHADER)
 
     @program_id = LibGL.create_program()
 

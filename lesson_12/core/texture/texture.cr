@@ -1,4 +1,5 @@
 require "./bitmap.cr"
+
 class Texture
 
   property id : UInt32
@@ -63,8 +64,8 @@ class Texture
 
 
     else
-      puts "error : failed to load bitmap #{filename}"
-      exit
+      report_error("error : failed to load bitmap #{filename}")
+      #exit
     end
     return texture_id
 

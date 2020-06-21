@@ -1,31 +1,42 @@
-#require "./texture_model.cr"
+require "../obj/obj.cr"
 
-class TerrainModel < Model #< TextureModel
+class ModelData
 
-  #property size         : Float32 = 800
-  #property vertex_count : Int32 = 10
-  #
-  #property x            : Float32
-  #property z            : Float32
-  #
-  #property model        : Model
+  property vertices : Array(Float32)
+  property textures : Array(Float32)
+  property normals  : Array(Float32)
+  property indices  : Array(Int32)
 
-  #def initialize(grid_x : Int32, grid_z : Int32) #, filename : String)
-  #
-  #  #filenotfound(filename)
-  #
-  #  @x = grid_x * size
-  #  @z = grid_z * size
-  #
-  #  @model = generate()
-  #  #super(@model,filename)
-  #  super(@model.vao_id,@model.vbos,@model.nr_vertices,@model.nr_attrib_arrays)
-  #end
+  def initialize(vertices : Array(Float32), textures :  Array(Float32), normals :  Array(Float32), indices : Array(Int32) )
+    @vertices = vertices
+    @textures = textures
+    @normals  = normals
+    @indices  = indices
+  end
 
-  def self.load(grid_x : Int32, grid_z : Int32) : Model
+  #
+  # load model from an OBJ file
+  #
+  def self.from_obj(filename : String) : ModelData
+    filenotfound(filename)
 
-    vertex_count = 10
-    size         = 800
+    obj = OBJ.new
+    obj.open(filename)
+    obj.to_opengl
+
+    vertices = obj.vertices_arr
+    indices  = obj.indices_arr
+    textures = obj.textures_arr
+    normals  = obj.normals_arr
+
+    data = ModelData.new(vertices,textures,normals,indices)
+    return data
+  end
+
+  def self.terrain(grid_x : Int32, grid_z : Int32, vertex_count : Int32, size : Int32) : ModelData
+
+    #vertex_count = 10
+    #size         = 800
 
     nr_count = (vertex_count * vertex_count)
     vertices = Array.new(nr_count * 3) {0.0f32}
@@ -85,15 +96,8 @@ class TerrainModel < Model #< TextureModel
       end
     end
 
-    r = Model.load(vertices,indices,textures,normals)
+    r = ModelData.new(vertices,textures,normals,indices)
     return r
   end
-
-  #def draw()
-  #  bind()
-  #  #LibGL.bind_texture(LibGL::TEXTURE_2D, @id)
-  #  LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
-  #  unbind()
-  #end
 
 end

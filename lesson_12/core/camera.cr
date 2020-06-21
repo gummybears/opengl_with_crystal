@@ -1,4 +1,4 @@
-require "../math/**"
+require "./math/**"
 
 class Camera
   property position : GLM::Vec3

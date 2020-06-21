@@ -1,0 +1,30 @@
+require "./obj/obj.cr"
+
+class ObjModel #< Model
+
+  #
+  # load model from an OBJ file
+  #
+  def self.load(filename : String) : Model
+    filenotfound(filename)
+
+    obj = OBJ.new
+    obj.open(filename)
+    obj.to_opengl
+
+    vertices = obj.vertices_arr
+    indices  = obj.indices_arr
+    textures = obj.textures_arr
+    normals  = obj.normals_arr
+
+    if textures.size == 0
+      model = Model.load(vertices,indices)
+      return model
+    else
+      model = Model.load(vertices,indices,textures,normals)
+      return model
+    end
+
+    return Model.new
+  end
+end

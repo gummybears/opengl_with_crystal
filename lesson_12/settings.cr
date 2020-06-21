@@ -1,11 +1,11 @@
 struct Settings
 
-  property title : String
-  property width : Float32
+  property title  : String
+  property width  : Float32
   property height : Float32
-  property fov : Float32
-  property near : Float32
-  property far  : Float32
+  property fov    : Float32
+  property near   : Float32
+  property far    : Float32
   property camera : GLM::Vec3
   property bg     : Color
 

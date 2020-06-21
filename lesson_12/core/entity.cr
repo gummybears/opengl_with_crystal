@@ -1,4 +1,4 @@
-require "../math/**"
+require "./math/**"
 
 class Entity
 
@@ -54,7 +54,7 @@ class Entity
   #
   # draw entity
   #
-  def draw(shaderprogram : ShaderProgram)
+  def draw(program : Program)
 
     #
     # commented out
@@ -62,7 +62,7 @@ class Entity
     #
     #rotate = GLM.rotate(@angle, GLM.vec3(@rotX,@rotY,@rotZ))
 
-    shaderprogram.set_uniform_matrix_4f("model", model_matrix())
+    program.set_uniform_matrix_4f("model", model_matrix())
 
     @model.draw()
   end
