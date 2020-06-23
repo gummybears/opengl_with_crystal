@@ -48,7 +48,7 @@ end
 
 x = ARGV
 if x.size != 1
-  puts "usage: lesson_20 config_file.yml"
+  puts "usage: lesson_12 config_file.yml"
   exit
 end
 

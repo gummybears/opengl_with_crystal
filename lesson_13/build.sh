@@ -1,1 +1,1 @@
-crystal build lesson_12.cr -o a.out
+crystal build lesson_13.cr -o a.out

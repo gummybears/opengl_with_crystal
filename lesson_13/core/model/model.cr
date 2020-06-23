@@ -1,10 +1,3 @@
-enum ModelType
-  TEXTURE
-  TERRAIN
-  OBJ
-  PLAYER
-end
-
 class Model
 
   property vao_id           : LibGL::UInt
@@ -114,7 +107,6 @@ class Model
   #
   # Loads vertices/normals/indices/texture coordinates from ModelData
   #
-  #def self.load(type : ModelType, data : ModelData) : Model
   def self.load(data : ModelData) : Model
     vao_id = create_vao
 

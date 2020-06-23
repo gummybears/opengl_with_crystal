@@ -4,39 +4,31 @@ require "crystglfw"
 include CrystGLFW
 require "./core/**"
 
-
 def lesson_terrain(configfile : String)
 
-  entities  = [] of Entity
-
-  scene = Scene.new(configfile)
-  settings = scene.settings()
+  entities     = [] of Entity
+  terrains     = [] of Terrain
+  scene        = Scene.new(configfile)
+  settings     = scene.settings()
 
   light  = Light.new(scene.light_position(),scene.light_color())
   camera = Camera.new(settings.camera)
-  puts "camera #{settings.camera.to_s}"
-
-  vertexshader   = scene.model_vertex_shader("terrain")
-  fragmentshader = scene.model_fragment_shader("terrain")
-
-  vertex_count = 100
-  size = 1920
-
-  terrain_data1  = ModelData.terrain(0,0,vertex_count,size)
 
   CrystGLFW.run do
 
     display = Display.new(settings)
 
-    terrain_model1 = TextureModel.new(Model.load(terrain_data1),scene.model_texture("terrain"))
-    terrain_model1.shine_damper = scene.model_shine("terrain")
-    terrain_model1.reflectivity = scene.model_reflectivity("terrain")
+    terrain1 = Terrain.new(0f32,0f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
+    terrain2 = Terrain.new(0f32,0.8f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
+    terrain3 = Terrain.new(-0.8f32,0f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
+    terrain4 = Terrain.new(-0.8f32,0.8f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
 
-    entities << Entity.new(terrain_model1,GLM::Vec3.new(0,0,0),scene.model_rotation("terrain"),scene.model_scale("terrain"))
-    entities << Entity.new(terrain_model1,GLM::Vec3.new(-1,0,0),scene.model_rotation("terrain"),scene.model_scale("terrain"))
+    terrains << terrain1
+    terrains << terrain2
+    terrains << terrain3
+    terrains << terrain4
 
-    program = Program.new(vertexshader,fragmentshader)
-    display.old_render(entities,program,camera,light)
+    display.render(entities,terrains,camera,light)
   end
 
 end

@@ -597,3 +597,25 @@ module GLM
     m
   end
 end
+
+
+#
+# operator Float32 * ASY::Matrix
+#
+struct Float32
+
+  # multiplies matrix other with a Float64
+  def *(other : GLM::Vec3) : GLM::Vec3
+
+    r = GLM::Vec3.new(0,0,0)
+
+    r.x = self * other.x
+    r.y = self * other.y
+    r.z = self * other.z
+
+    return r
+  end
+
+end
+
+

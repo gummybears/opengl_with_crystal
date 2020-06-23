@@ -34,6 +34,7 @@ class Scene
     @yaml["display"]["screen"]["far"].as_f.to_f32
   end
 
+
   def camera()
     key1 = "camera"
     r = GLM::Vec3.new(0,0,0)
@@ -142,19 +143,20 @@ class Scene
     return r
   end
 
-  def model_vertex_shader(model : String) : String
 
-    key1 = "entities"
-    key2 = "vertexshader"
-    @yaml[key1][model][key2].to_s
-  end
-
-  def model_fragment_shader(model : String) : String
-
-    key1 = "entities"
-    key2 = "fragmentshader"
-    @yaml[key1][model][key2].to_s
-  end
+  # old code def model_vertex_shader(model : String) : String
+  # old code
+  # old code   key1 = "entities"
+  # old code   key2 = "vertexshader"
+  # old code   @yaml[key1][model][key2].to_s
+  # old code end
+  # old code
+  # old code def model_fragment_shader(model : String) : String
+  # old code
+  # old code   key1 = "entities"
+  # old code   key2 = "fragmentshader"
+  # old code   @yaml[key1][model][key2].to_s
+  # old code end
 
   def model_shine(model : String) : Float32
 
@@ -181,6 +183,19 @@ class Scene
     key2 = "texture"
     @yaml[key1][model][key2].to_s
   end
+
+  def vertex_count(model : String) : Int32
+    key1 = "entities"
+    key2 = "vertex_count"
+    @yaml[key1][model][key2].as_i
+  end
+
+  def size(model : String) : Int32
+    key1 = "entities"
+    key2 = "size"
+    @yaml[key1][model][key2].as_i
+  end
+
 
 end
 

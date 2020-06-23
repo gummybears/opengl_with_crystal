@@ -1,7 +1,7 @@
 
 display:
   screen:
-    title  : OpenGL lesson 12, simple terrain
+    title  : OpenGL lesson 13, terrain model
     width  : 1920.0
     height : 1080.0
     fov    : 90.0
@@ -16,7 +16,7 @@ display:
 
 camera:
     x : 0.0
-    y : -15.0
+    y : -5.0
     z : 3.0
 
 light:
@@ -32,15 +32,13 @@ light:
 
 entities:
   dragon:
-    vertexshader:   res/uniform.vs
-    fragmentshader: res/uniform.fs
     texture: res/purple.png
     obj: res/dragon.obj
     type: obj
     shine: 10.0
     reflectivity: 1.0
     pos:
-      x: 0.0
+      x: 12.0
       y: 0.0
       z: -25.0
     rot:
@@ -53,8 +51,6 @@ entities:
       z: 0.0
 
   terrain:
-    vertexshader: res/terrain.vs
-    fragmentshader: res/terrain.fs
     texture: res/grass.png
     type : terrain
     pos:
@@ -71,10 +67,10 @@ entities:
       z: 0.0
     shine: 1.0
     reflectivity: 1.0
+    vertex_count: 128
+    size: 800
 
   player:
-    vertexshader: res/uniform.vs
-    fragmentshader: res/uniform.fs
     texture: res/white.png
     obj: res/bunny.obj
     type : player
