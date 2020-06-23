@@ -1,13 +1,5 @@
-enum ModelType
-  TEXTURE
-  TERRAIN
-  OBJ
-  PLAYER
-end
-
 class Model
 
-  #property type             : ModelType
   property vao_id           : LibGL::UInt
   property vbos             : Array(LibGL::UInt)
   property nr_vertices      : Int32
@@ -16,9 +8,7 @@ class Model
   property shine_damper : Float32 = 1.0f32
   property reflectivity : Float32 = 0.0f32
 
-  #def initialize(type : ModelType, vao_id : LibGL::UInt, vbos : Array(LibGL::UInt), nr_vertices : Int32, nr_attrib_arrays : Int32)
   def initialize(vao_id : LibGL::UInt, vbos : Array(LibGL::UInt), nr_vertices : Int32, nr_attrib_arrays : Int32)
-    #@type             = type
     @vao_id           = vao_id
     @vbos             = vbos
     @nr_vertices      = nr_vertices
@@ -117,7 +107,6 @@ class Model
   #
   # Loads vertices/normals/indices/texture coordinates from ModelData
   #
-  #def self.load(type : ModelType, data : ModelData) : Model
   def self.load(data : ModelData) : Model
     vao_id = create_vao
 
@@ -134,7 +123,6 @@ class Model
     # one of the vbos is for the indices, so we don't need an attribute array for that.
     #
     nr_attrib_arrays = vbos.size - 1
-    #Model.new(type, vao_id, vbos, data.indices.size(), nr_attrib_arrays)
     Model.new(vao_id, vbos, data.indices.size(), nr_attrib_arrays)
   end
 

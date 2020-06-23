@@ -2,15 +2,18 @@ require "../math/**"
 
 class Program
 
-  property program_id : LibGL::UInt
-  property vs_id      : LibGL::UInt
-  property fs_id      : LibGL::UInt
+  property program_id : LibGL::UInt = 0
+  property vs_id      : LibGL::UInt = 0
+  property fs_id      : LibGL::UInt = 0
 
   def initialize(vertexfile : String, fragmentfile : String)
+    compile(vertexfile,fragmentfile)
+  end
+
+  def compile(vertexfile : String, fragmentfile : String)
 
     filenotfound(vertexfile)
     filenotfound(fragmentfile)
-
 
     lines  = File.read_lines(vertexfile).join("\n")
     @vs_id = load_shader(lines, LibGL::VERTEX_SHADER)

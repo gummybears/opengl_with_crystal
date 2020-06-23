@@ -1,41 +1,39 @@
-require "../shader/program.cr"
+require "../shader/static_shader.cr"
 require "../light.cr"
 require "../camera.cr"
 require "./renderer.cr"
 
 class MasterRenderer
-  property shader   : Program
-  property renderer : Renderer
+  property shader    : StaticShader
+  property renderer  : Renderer
+  property entities   : Hash(Model,Array(Entity))
 
-  #property entities : Hash(TextureModel,Array(Entity))
-  property entities : Hash(Model,Array(Entity))
-
-  def initialize(shader : Program, fov : Float32, aspect_ratio : Float32, near : Float32, far : Float32, bg : Color)
-    @shader  = shader
-    @renderer = Renderer.new(shader,fov,aspect_ratio,near,far,bg)
-    #@entities = Hash(TextureModel,Array(Entity)).new
+  def initialize(settings : Settings)
+    @shader   = StaticShader.new()
+    @renderer = Renderer.new(shader,settings)
     @entities = Hash(Model,Array(Entity)).new
   end
 
   def render(light : Light, camera : Camera)
-    @renderer.prepare()
 
+    @renderer.prepare()
     @shader.use do
 
       # light
-      @shader.set_uniform_vector("light_position",light.position)
-      @shader.set_uniform_vector("light_color",light.color)
+      shader.load_light(light)
 
       # load view matrix
-      view  = GLM.translate(camera.position)
-      @shader.set_uniform_matrix_4f("view", view)
+      shader.load_view(camera.position)
 
       @renderer.render(entities)
-
     end
 
+    #
+    # Important
     # clear the hash map
-    #@entities = Hash(TextureModel,Array(Entity)).new
+    # otherwise the hash map accumulate entities
+    # each frame
+    #
     @entities = Hash(Model,Array(Entity)).new
   end
 
@@ -46,6 +44,8 @@ class MasterRenderer
 
     # get model per entity
     model = entity.model
+
+    # is the model present in our hash ?
     if @entities.has_key?(model)
 
       list = @entities[model]
@@ -56,7 +56,9 @@ class MasterRenderer
         list << entity
 
       else
+        #
         # no list found
+        #
         list = [] of Entity
         list << entity
 
@@ -64,18 +66,19 @@ class MasterRenderer
       end
     end
 
+    #
+    # model is not present
+    #
     if @entities.has_key?(model) == false
 
       list = [] of Entity
       list << entity
-
       @entities[model] = list
-
     end
 
   end
 
   def cleanup()
-    shader.cleanup()
+    @shader.cleanup()
   end
 end

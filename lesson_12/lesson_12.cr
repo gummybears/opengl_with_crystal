@@ -5,8 +5,6 @@ include CrystGLFW
 
 require "./core/**"
 
-PROGRAM = "lesson_12"
-
 def lesson_12(configfile : String)
 
   entities  = [] of Entity
@@ -22,7 +20,6 @@ def lesson_12(configfile : String)
 
   dragon_data    = ModelData.from_obj(scene.model_object("dragon"))
   player_data    = ModelData.from_obj(scene.model_object("player"))
-  terrain_data   = ModelData.terrain(0,0,32,64)
 
   CrystGLFW.run do
 
@@ -44,11 +41,7 @@ def lesson_12(configfile : String)
     entities << dragon
     entities << player
 
-    #terrain_model = TextureModel.new(Model.load(terrain_data),scene.model_texture("terrain"))
-    #entities << Entity.new(terrain_model,scene.model_position("terrain"),scene.model_rotation("terrain"),scene.model_scale("terrain"))
-
-    program = Program.new(vertexshader,fragmentshader)
-    display.old_render(entities,program,camera,light)
+    display.render(entities,camera,light)
   end
 
 end

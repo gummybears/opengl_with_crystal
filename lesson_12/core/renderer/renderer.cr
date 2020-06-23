@@ -3,44 +3,38 @@ require "../shader/program.cr"
 
 class Renderer
 
-  property fov          : Float32
-  property near         : Float32
-  property far          : Float32
-  property aspect_ratio : Float32
   property bg           : Color
+  property shader       : StaticShader
 
-  property projection   : GLM::Mat4
-  property shader       : Program
+  def initialize(shader : StaticShader, settings : Settings)
 
-  def initialize(shader : Program, fov : Float32, aspect_ratio : Float32, near : Float32, far : Float32, bg : Color)
+    @shader = shader
+    @bg     = settings.bg
 
     # cull all faces which are invisible for the camera
     LibGL.enable(LibGL::CULL_FACE)
     LibGL.cull_face(LibGL::BACK)
 
-    @shader       = shader
+    projection = create_projection(settings.fov,settings.aspect_ratio,settings.near,settings.far)
+    @shader.load_projection(projection)
 
-    @fov          = fov
-    @near         = near
-    @far          = far
-    @bg           = bg
-    @aspect_ratio = aspect_ratio
-    @projection   = GLM.perspective(@fov,@aspect_ratio,@near, @far)
   end
+
+  def create_projection(fov : Float32, aspect_ratio : Float32, near : Float32, far : Float32)
+    GLM.perspective(fov,aspect_ratio,near, far)
+  end
+
 
   def prepare()
     LibGL.enable(LibGL::DEPTH_TEST)
     LibGL.clear(LibGL::COLOR_BUFFER_BIT | LibGL::DEPTH_BUFFER_BIT)
 
-    # cull all faces which are invisible for the camera
-    LibGL.enable(LibGL::CULL_FACE)
-    LibGL.cull_face(LibGL::BACK)
-
     LibGL.clear_color(@bg.red, @bg.green, @bg.blue, @bg.opacity)
-
   end
 
-  #def render(entities : Hash(TextureModel,Array(Entity)) )
+  #
+  # render entities
+  #
   def render(entities : Hash(Model,Array(Entity)) )
 
     entities.each do |key, value|
@@ -63,7 +57,7 @@ class Renderer
 
   end
 
-  def prepare_texture_model(model : Model) #TextureModel)
+  def prepare_texture_model(model : Model)
     model.bind()
 
     if model.class.to_s == "TextureModel"
@@ -83,9 +77,10 @@ class Renderer
 
   def prepare_instance(entity : Entity)
 
-    # model matrix
-    @shader.set_uniform_matrix_4f("model", entity.model_matrix())
-
+    #
+    # load model matrix
+    #
+    @shader.load_transformation(entity.model_matrix)
   end
 end
 

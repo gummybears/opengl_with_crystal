@@ -120,6 +120,13 @@ module GLM
       @buffer[2] = z.to_f32
     end
 
+    def initialize(x : Float64, y : Float64, z : Float64)
+      @buffer = Pointer(T).malloc(3)
+      @buffer[0] = x.to_f32
+      @buffer[1] = y.to_f32
+      @buffer[2] = z.to_f32
+    end
+
     def [](i : Int32)
       raise IndexError.new if i >= 3 || i < 0
       @buffer[i]
@@ -297,7 +304,7 @@ module GLM
     end
 
     def to_s()
-      return sprintf("(%f,%f,%f)",x,y,z)
+      return sprintf("(%f,%f,%f,%f)",x,y,z,w)
     end
 
   end
@@ -391,6 +398,17 @@ module GLM
 
     def []=(row, col, value : T)
       self[row + col * 4] = value
+    end
+
+    def to_s : String
+      s = [] of String
+      s << sprintf("|%6.3f %6.3f %6.3f %6.3f|",self[0,0],self[0,1],self[0,2],self[0,3])
+      s << sprintf("|%6.3f %6.3f %6.3f %6.3f|",self[1,0],self[1,1],self[1,2],self[1,3])
+      s << sprintf("|%6.3f %6.3f %6.3f %6.3f|",self[2,0],self[2,1],self[2,2],self[2,3])
+      s << sprintf("|%6.3f %6.3f %6.3f %6.3f|",self[3,0],self[3,1],self[3,2],self[3,3])
+
+      r = s.join("\n")
+      return r
     end
   end
 

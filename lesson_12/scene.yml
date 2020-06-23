@@ -1,7 +1,7 @@
 
 display:
   screen:
-    title  : OpenGL lesson 12, simple terrain
+    title  : OpenGL lesson 12, optimize render process (redesign)
     width  : 1920.0
     height : 1080.0
     fov    : 90.0
@@ -40,7 +40,7 @@ entities:
     shine: 10.0
     reflectivity: 1.0
     pos:
-      x: 0.0
+      x: 12.0
       y: 0.0
       z: -25.0
     rot:
