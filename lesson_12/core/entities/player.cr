@@ -1,5 +1,3 @@
-require "./math/**"
-
 class Player < Entity
 
   # units per second

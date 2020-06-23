@@ -9,21 +9,21 @@ display:
     far    : 100.0
   background:
     color:
-      r : 0.5
-      g : 0.5
-      b : 0.5
+      r : 1.0
+      g : 1.0
+      b : 1.0
       a : 1.0
 
 camera:
     x : 0.0
-    y : -15.0
-    z : 3.0
+    y : 0.0
+    z : 2.0
 
 light:
   pos:
     x: 3.0
     y: 0.0
-    z: 20.0
+    z: -20.0
   color:
     r : 1.0
     g : 1.0
@@ -58,7 +58,7 @@ entities:
     texture: res/grass.png
     type : terrain
     pos:
-      x: 0.0
+      x: -1.0
       y: 0.0
       z: 0.0
     rot:
@@ -69,8 +69,6 @@ entities:
       x: 0.0
       y: 0.0
       z: 0.0
-    shine: 1.0
-    reflectivity: 1.0
 
   player:
     vertexshader: res/uniform.vs
@@ -78,15 +76,15 @@ entities:
     texture: res/white.png
     obj: res/bunny.obj
     type : player
-    shine: 5.0
+    shine: 10.0
     reflectivity: 1.0
     pos:
-      x: -12.0
+      x: 10.0
       y: 0.0
-      z: -25.0
+      z: -20.0
     rot:
       x: 0.0
-      y: -24.0
+      y: 0.0
       z: 0.0
     scale:
       x: 0.0

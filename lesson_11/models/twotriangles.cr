@@ -16,8 +16,8 @@ def twotriangles() : {Array(Float32), Array(Int32), Array(Float32)}
   texture_coords = [
             1.0f32, 1.0f32, # top right
             1.0f32, 0.0f32, # bottom right
-            0.0f32, 0.0f32, # bottom let
-            0.0f32, 1.0f32  # top let
+            0.0f32, 0.0f32, # bottom left
+            0.0f32, 1.0f32  # top left
           ]
 
   return vertices, indices, texture_coords

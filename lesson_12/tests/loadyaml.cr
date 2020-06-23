@@ -10,5 +10,13 @@ puts
 
 #camera = x["display"]["camera"]
 #puts camera
-entities = x["objects"] #["model1"]
-puts entities.size
+entity = x["entities"]["dragon"]
+puts entity
+#puts entities.size
+#entities.to_a.each do |x|
+#  puts x
+#end
+#(0..entities.size-1).each do |i|
+#  x = entities[i]
+#  puts x
+#end

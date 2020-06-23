@@ -19,7 +19,7 @@ void main(void) {
   vec4 world_position = model * vec4(position, 1.0);
 
   gl_Position = projection * view * world_position;
-  pass_textureCoords = textureCoords;
+  pass_textureCoords = textureCoords * 16;
 
   surface_normal   = (model * vec4(normal,0.0)).xyz;
   to_light_source  = light_position - world_position.xyz;

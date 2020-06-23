@@ -1,4 +1,4 @@
-require "./math/**"
+require "../math/**"
 
 class Entity
 
@@ -63,7 +63,6 @@ class Entity
     #rotate = GLM.rotate(@angle, GLM.vec3(@rotX,@rotY,@rotZ))
 
     program.set_uniform_matrix_4f("model", model_matrix())
-
     @model.draw()
   end
 end

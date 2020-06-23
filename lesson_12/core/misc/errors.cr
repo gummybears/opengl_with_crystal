@@ -1,7 +1,7 @@
 #
 # errors.cr
 #
-PROGRAM = "lesson08"
+PROGRAM = "program"
 
 def report_error(text : String)
   puts sprintf("%s error : %s",PROGRAM,text)

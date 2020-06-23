@@ -7,7 +7,7 @@ end
 
 class Model
 
-  property type             : ModelType
+  #property type             : ModelType
   property vao_id           : LibGL::UInt
   property vbos             : Array(LibGL::UInt)
   property nr_vertices      : Int32
@@ -16,8 +16,9 @@ class Model
   property shine_damper : Float32 = 1.0f32
   property reflectivity : Float32 = 0.0f32
 
-  def initialize(type : ModelType, vao_id : LibGL::UInt, vbos : Array(LibGL::UInt), nr_vertices : Int32, nr_attrib_arrays : Int32)
-    @type             = type
+  #def initialize(type : ModelType, vao_id : LibGL::UInt, vbos : Array(LibGL::UInt), nr_vertices : Int32, nr_attrib_arrays : Int32)
+  def initialize(vao_id : LibGL::UInt, vbos : Array(LibGL::UInt), nr_vertices : Int32, nr_attrib_arrays : Int32)
+    #@type             = type
     @vao_id           = vao_id
     @vbos             = vbos
     @nr_vertices      = nr_vertices
@@ -113,34 +114,11 @@ class Model
     Model.new(vao_id, vbos, indices.size(), nr_attrib_arrays)
   end
 
-  # old code #
-  # old code # Loads vertices/normals/indices/texture coordinates into open gl and returns a model object that can be used for drawing.
-  # old code #
-  # old code def self.load(vertices : Array(Float32), indices : Array(Int32), texture_coords : Array(Float32), normals : Array(Float32) ) : Model
-  # old code
-  # old code   vao_id = create_vao
-  # old code
-  # old code   vbos = [] of LibGL::UInt
-  # old code
-  # old code   vbos << bind_indices_buffer(indices)
-  # old code   vbos << store_data_in_attribute_list(0, 3, vertices)
-  # old code   vbos << store_data_in_attribute_list(1, 2, texture_coords)
-  # old code   vbos << store_data_in_attribute_list(2, 3, normals)
-  # old code   unbind_vao
-  # old code
-  # old code   #
-  # old code   # Note:
-  # old code   # one of the vbos is for the indices, so we don't need an attribute array for that.
-  # old code   #
-  # old code   nr_attrib_arrays = vbos.size - 1
-  # old code   Model.new(vao_id, vbos, indices.size(), nr_attrib_arrays)
-  # old code end
-
   #
   # Loads vertices/normals/indices/texture coordinates from ModelData
   #
-  def self.load(type : ModelType, data : ModelData) : Model
-
+  #def self.load(type : ModelType, data : ModelData) : Model
+  def self.load(data : ModelData) : Model
     vao_id = create_vao
 
     vbos = [] of LibGL::UInt
@@ -156,7 +134,8 @@ class Model
     # one of the vbos is for the indices, so we don't need an attribute array for that.
     #
     nr_attrib_arrays = vbos.size - 1
-    Model.new(type, vao_id, vbos, data.indices.size(), nr_attrib_arrays)
+    #Model.new(type, vao_id, vbos, data.indices.size(), nr_attrib_arrays)
+    Model.new(vao_id, vbos, data.indices.size(), nr_attrib_arrays)
   end
 
   #
