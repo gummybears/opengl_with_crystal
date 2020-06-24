@@ -1,0 +1,105 @@
+
+display:
+  screen:
+    title  : OpenGL lesson 14, transparency
+    width  : 1920.0
+    height : 1080.0
+    fov    : 90.0
+    near   : 0.1
+    far    : 100.0
+  background:
+    color:
+      r : 0.5
+      g : 0.5
+      b : 0.5
+      a : 1.0
+
+camera:
+    x : 0.0
+    y : -5.0
+    z : 3.0
+
+light:
+  pos:
+    x: 0.0
+    y: 0.0
+    z: 100.0
+  color:
+    r : 1.0
+    g : 1.0
+    b : 1.0
+    a : 1.0
+
+entities:
+  tree:
+    texture: res/tree.png
+    obj: res/tree.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 5.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 5.0
+      y: 5.0
+      z: 5.0
+
+  terrain:
+    texture: res/grass.png
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    shine: 1.0
+    reflectivity: 1.0
+    vertex_count: 128
+    size: 800
+
+  fern:
+    texture: res/fern.png
+    obj: res/fern.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: -12.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: -24.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  grass:
+    texture: res/grassTexture.png
+    obj: res/grassModel.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0

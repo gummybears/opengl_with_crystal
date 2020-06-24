@@ -195,8 +195,6 @@ class Scene
     key2 = "size"
     @yaml[key1][model][key2].as_i
   end
-
-
 end
 
 
