@@ -1,19 +1,20 @@
 #version 400 core
 
-in  vec3 position;
-in  vec3 normal;
-in  vec2 textureCoords;
+in  vec3      position;
+in  vec3      normal;
+in  vec2      textureCoords;
 
-out vec2 pass_textureCoords;
-out vec3 surface_normal;
-out vec3 to_light_source;
-out vec3 to_camera_vector;
+out vec2      pass_textureCoords;
+out vec3      surface_normal;
+out vec3      to_light_source;
+out vec3      to_camera_vector;
 
 uniform mat4  model;
 uniform mat4  projection;
 uniform mat4  view;
 uniform vec3  light_position;
-uniform float use_fake_lighting = 0.0;
+
+uniform float use_fake_lighting;
 
 void main(void) {
 

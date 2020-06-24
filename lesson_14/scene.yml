@@ -1,7 +1,7 @@
 
 display:
   screen:
-    title  : OpenGL lesson 14, transparency
+    title  : OpenGL lesson 14, adding transparency and fake lighting
     width  : 1920.0
     height : 1080.0
     fov    : 90.0
@@ -71,7 +71,7 @@ entities:
   fern:
     texture: res/fern.png
     obj: res/fern.obj
-    shine: 10.0
+    shine: 5.0
     reflectivity: 1.0
     pos:
       x: -12.0
@@ -89,7 +89,7 @@ entities:
   grass:
     texture: res/grassTexture.png
     obj: res/grassModel.obj
-    shine: 10.0
+    shine: 15.0
     reflectivity: 1.0
     pos:
       x: 0.0

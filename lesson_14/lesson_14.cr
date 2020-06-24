@@ -35,7 +35,7 @@ def lesson_14(configfile : String)
 
   tree_data  = ModelData.from_obj(scene.model_object("tree"))
   fern_data  = ModelData.from_obj(scene.model_object("fern"))
-  grass_data  = ModelData.from_obj(scene.model_object("grass"))
+  grass_data = ModelData.from_obj(scene.model_object("grass"))
 
   CrystGLFW.run do
 
@@ -49,16 +49,19 @@ def lesson_14(configfile : String)
     tree_model.reflectivity  = scene.model_reflectivity("tree")
     tree_model.has_transparency  = false
     tree_model.use_fake_lighting = false
+    tree_model.name = "tree"
 
     fern_model.shine_damper  = scene.model_shine("fern")
     fern_model.reflectivity  = scene.model_reflectivity("fern")
     fern_model.has_transparency  = false
     fern_model.use_fake_lighting = false
+    fern_model.name = "fern"
 
     grass_model.shine_damper = scene.model_shine("grass")
     grass_model.reflectivity = scene.model_reflectivity("grass")
     grass_model.has_transparency  = true
-    grass_model.use_fake_lighting = false
+    grass_model.use_fake_lighting = true
+    grass_model.name = "grass"
 
     1.upto(100) do |i|
 
