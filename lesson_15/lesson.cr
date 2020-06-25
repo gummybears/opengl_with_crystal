@@ -9,14 +9,14 @@ require "./core/**"
 
 def get_random_pos() : GLM::Vec3
 
-  rand = Random.rand(300).to_f32
+  rand = Random.rand(800).to_f32
 
   # random x position
-  x = rand  - 150f32
+  x = rand  - 400f32
   y = 0.0f32
 
   # random z position
-  rand = Random.rand(300).to_f32
+  rand = Random.rand(800).to_f32
   z = -rand/4.0f32
 
   position = GLM::Vec3.new(x,y,z)
@@ -79,14 +79,11 @@ def lesson(configfile : String)
       entities << grass
 
     end
+    terrain1 = Terrain.new(0f32,0f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
+    terrain2 = Terrain.new(0f32,0.8f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
+    terrain3 = Terrain.new(-0.8f32,0f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
+    terrain4 = Terrain.new(-0.8f32,0.8f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
 
-    vertex_count = scene.vertex_count("terrain")
-    terrain_size = scene.size("terrain")
-
-    terrain1 = Terrain.new(0f32,0f32,     vertex_count,terrain_size,scene.model_texture("terrain"))
-    terrain2 = Terrain.new(0f32,0.8f32,   vertex_count,terrain_size,scene.model_texture("terrain"))
-    terrain3 = Terrain.new(-0.8f32,0f32,  vertex_count,terrain_size,scene.model_texture("terrain"))
-    terrain4 = Terrain.new(-0.8f32,0.8f32,vertex_count,terrain_size,scene.model_texture("terrain"))
     terrains << terrain1
     terrains << terrain2
     terrains << terrain3

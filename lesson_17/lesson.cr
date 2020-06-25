@@ -17,7 +17,7 @@ def get_random_pos() : GLM::Vec3
 
   # random z position
   rand = Random.rand(400).to_f32
-  z = -rand - 200f32
+  z = -rand - 200f32 #/4.0f32
 
   position = GLM::Vec3.new(x,y,z)
   return position
@@ -33,21 +33,19 @@ def lesson(configfile : String)
   light      = Light.new(scene.light_position(),scene.light_color())
   camera     = Camera.new(settings.camera)
 
-  tree_data        = ModelData.from_obj(scene.model_object("tree"))
+  tree_data  = ModelData.from_obj(scene.model_object("tree"))
   other_tree_data  = ModelData.from_obj(scene.model_object("other_tree"))
-  fern_data        = ModelData.from_obj(scene.model_object("fern"))
-  grass_data       = ModelData.from_obj(scene.model_object("grass"))
-  player_data      = ModelData.from_obj(scene.model_object("player"))
+  fern_data  = ModelData.from_obj(scene.model_object("fern"))
+  grass_data = ModelData.from_obj(scene.model_object("grass"))
 
   CrystGLFW.run do
 
     display = Display.new(settings)
 
-    tree_model       = TextureModel.new(Model.load(tree_data),scene.model_texture("tree"))
-    other_tree_model = TextureModel.new(Model.load(other_tree_data),scene.model_texture("other_tree"))
-    fern_model       = TextureModel.new(Model.load(fern_data),scene.model_texture("fern"))
-    grass_model      = TextureModel.new(Model.load(grass_data),scene.model_texture("grass"))
-    player_model     = TextureModel.new(Model.load(player_data),scene.model_texture("player"))
+    tree_model  = TextureModel.new(Model.load(tree_data),scene.model_texture("tree"))
+    other_tree_model  = TextureModel.new(Model.load(other_tree_data),scene.model_texture("other_tree"))
+    fern_model  = TextureModel.new(Model.load(fern_data),scene.model_texture("fern"))
+    grass_model = TextureModel.new(Model.load(grass_data),scene.model_texture("grass"))
 
     tree_model.shine_damper  = scene.model_shine("tree")
     tree_model.reflectivity  = scene.model_reflectivity("tree")
@@ -72,12 +70,6 @@ def lesson(configfile : String)
     other_tree_model.has_transparency  = false
     other_tree_model.use_fake_lighting = false
     other_tree_model.name = "other_tree"
-
-    player_model.shine_damper  = scene.model_shine("player")
-    player_model.reflectivity  = scene.model_reflectivity("player")
-    player_model.has_transparency  = false
-    player_model.use_fake_lighting = false
-    player_model.name = "player"
 
     1.upto(200) do |i|
 
@@ -127,13 +119,6 @@ def lesson(configfile : String)
     terrains << terrain2
     terrains << terrain3
     terrains << terrain4
-
-    #
-    # use the bunny model to simulate a player
-    #
-    player = Player.new(player_model,scene.model_position("player"),scene.model_rotation("player"),scene.model_scale("player"))
-    player.name = "player"
-    entities << player
 
     display.render(entities,terrains,camera,light)
   end

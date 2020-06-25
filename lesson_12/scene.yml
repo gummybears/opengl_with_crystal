@@ -1,7 +1,7 @@
 
 display:
   screen:
-    title  : OpenGL lesson 12, optimize render process (redesign)
+    title  : OpenGL lesson 12, optimize render process (part 1)
     width  : 1920.0
     height : 1080.0
     fov    : 90.0

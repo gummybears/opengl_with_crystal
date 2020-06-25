@@ -56,12 +56,6 @@ class MasterRenderer
     LibGL.disable(LibGL::CULL_FACE)
   end
 
-  def prepare()
-    LibGL.enable(LibGL::DEPTH_TEST)
-    LibGL.clear(LibGL::COLOR_BUFFER_BIT | LibGL::DEPTH_BUFFER_BIT)
-    LibGL.clear_color(@settings.bg.red, @settings.bg.green, @settings.bg.blue, @settings.bg.opacity)
-  end
-
   #
   # create perspective matrix
   #
@@ -71,24 +65,24 @@ class MasterRenderer
 
   def render(light : Light, camera : Camera)
 
+    # @renderer.prepare()
     prepare()
     @shader.use do
 
-      # load sky color
-      @shader.load_sky_color(@settings.bg.red,@settings.bg.green,@settings.bg.blue)
       # light
       @shader.load_light(light)
+
       # load view matrix
       @shader.load_view(camera.position)
 
-      @renderer.render(@entities)
+      @renderer.render(entities)
     end
 
     @terrain_shader.use do
-      # load sky color
-      @terrain_shader.load_sky_color(@settings.bg.red,@settings.bg.green,@settings.bg.blue)
+
       # light
       @terrain_shader.load_light(light)
+
       # load view matrix
       @terrain_shader.load_view(camera.position)
 
@@ -160,6 +154,12 @@ class MasterRenderer
   def cleanup()
     @shader.cleanup()
     @terrain_shader.cleanup()
+  end
+
+  def prepare()
+    LibGL.enable(LibGL::DEPTH_TEST)
+    LibGL.clear(LibGL::COLOR_BUFFER_BIT | LibGL::DEPTH_BUFFER_BIT)
+    LibGL.clear_color(@settings.bg.red, @settings.bg.green, @settings.bg.blue, @settings.bg.opacity)
   end
 
 end

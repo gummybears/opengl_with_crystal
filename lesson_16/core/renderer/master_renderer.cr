@@ -1,5 +1,5 @@
-require "../shaders/static_shader.cr"
-require "../shaders/terrain_shader.cr"
+require "../shader/static_shader.cr"
+require "../shader/terrain_shader.cr"
 require "../light.cr"
 require "../camera.cr"
 
@@ -31,6 +31,7 @@ class MasterRenderer
     #
     # cull all faces which are invisible for the camera
     #
+    #MasterRenderer.enable_culling()
     enable_culling()
 
     #

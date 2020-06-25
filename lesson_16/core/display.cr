@@ -1,7 +1,7 @@
 require "lib_gl"
 require "crystglfw"
-require "./shaders/program.cr"
-require "./textures/color.cr"
+require "./shader/program.cr"
+require "./texture/color.cr"
 
 include CrystGLFW
 
@@ -72,35 +72,35 @@ class Display
   end # render
 
   def move(camera : Camera)
-    # move negative z
-    if @window.key_pressed?(Key::W)
-      camera.move_in()
-    end
+      # move negative z
+      if @window.key_pressed?(Key::W)
+        camera.move_in()
+      end
 
-    # move positive z
-    if @window.key_pressed?(Key::X)
-      camera.move_out()
-    end
+      # move positive z
+      if @window.key_pressed?(Key::X)
+        camera.move_out()
+      end
 
-    # move negative x
-    if @window.key_pressed?(Key::A)
-      camera.move_left()
-    end
+      # move negative x
+      if @window.key_pressed?(Key::A)
+        camera.move_left()
+      end
 
-    # move positive x
-    if @window.key_pressed?(Key::D)
-      camera.move_right()
-    end
+      # move positive x
+      if @window.key_pressed?(Key::D)
+        camera.move_right()
+      end
 
-    # move negative y
-    if @window.key_pressed?(Key::Y)
-      camera.move_down()
-    end
+      # move negative y
+      if @window.key_pressed?(Key::Y)
+        camera.move_down()
+      end
 
-    # move positive y
-    if @window.key_pressed?(Key::Z)
-      camera.move_up()
-    end
+      # move positive y
+      if @window.key_pressed?(Key::Z)
+        camera.move_up()
+      end
   end
 
 end

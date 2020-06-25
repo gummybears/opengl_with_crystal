@@ -1,20 +1,18 @@
 class Terrain
 
-  property x            : Float32
-  property z            : Float32
-  property model        : Model
-  property texture_pack : TerrainTexturePack
-  property blend_map    : TerrainTexture
+  property x     : Float32
+  property z     : Float32
+  property model : TextureModel
 
-  def initialize(grid_x : Float32, grid_z : Float32, vertex_count : Int32, size : Int32, texture_pack : TerrainTexturePack, blend_map : TerrainTexture)
+  def initialize(grid_x : Float32, grid_z : Float32, vertex_count : Int32, size : Int32, filename : String)
 
-    @texture_pack = texture_pack
-    @blend_map    = blend_map
+    filenotfound(filename)
 
     @x         = grid_x * size
     @z         = grid_z * size
     model_data = generate(vertex_count,size)
-    @model     = Model.load(model_data)
+    @model = TextureModel.new(Model.load(model_data),filename)
+
   end
 
   def generate(vertex_count : Int32, size : Int32) : ModelData
@@ -24,6 +22,7 @@ class Terrain
     indices  = [] of Int32
 
     dx = (vertex_count-1).to_f32
+    #dx = (vertex_count).to_f32
     dy = 0.0f32
     dz = dx
 
@@ -35,9 +34,9 @@ class Terrain
         vertices <<  -(i/dz).to_f32 * size
 
         # normal is in the y direction (up)
-        normals << 0.0f32
-        normals << 1.0f32
-        normals << 0.0f32
+        normals << 0
+        normals << 1
+        normals << 0
 
         textures << (j / dx).to_f32
         textures << (i / dx).to_f32
@@ -59,6 +58,15 @@ class Terrain
         indices << bottom_right
       end # each j
     end # each i
+
+    #puts "vertices"
+    #puts vertices
+    #
+    #puts "textures"
+    #puts textures
+    #
+    #puts "indices"
+    #puts indices
 
     r = ModelData.new(vertices,textures,normals,indices)
     return r

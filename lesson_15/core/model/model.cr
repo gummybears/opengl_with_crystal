@@ -42,14 +42,14 @@ class Model
     LibGL.bind_vertex_array(0)
   end
 
-  # disabled #
-  # disabled # draw a model
-  # disabled #
-  # disabled def draw()
-  # disabled   bind()
-  # disabled   LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
-  # disabled   unbind()
-  # disabled end
+  #
+  # draw a model
+  #
+  def draw()
+    bind()
+    LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
+    unbind()
+  end
 
   #
   # creates a new vertex array object so we can store all of our buffered data

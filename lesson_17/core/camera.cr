@@ -51,37 +51,4 @@ class Camera
     @position.y = @position.y + 0.015f32
   end
 
-  def move(display : Display)
-
-    window = display.window
-    # move negative z
-    if window.key_pressed?(Key::I)
-      move_in()
-    end
-
-    # move positive z
-    if window.key_pressed?(Key::J)
-      move_out()
-    end
-
-    # move negative x
-    if window.key_pressed?(Key::L)
-      move_left()
-    end
-
-    # move positive x
-    if window.key_pressed?(Key::M)
-      move_right()
-    end
-
-    # move negative y
-    if window.key_pressed?(Key::N)
-      move_down()
-    end
-
-    # move positive y
-    if window.key_pressed?(Key::O)
-      move_up()
-    end
-  end
 end

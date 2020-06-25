@@ -3,13 +3,10 @@ require "../shader/program.cr"
 
 class TerrainRenderer
 
-  property settings : Settings
-  property shader   : TerrainShader
+  property shader : TerrainShader
 
   def initialize(shader : TerrainShader, projection : GLM::Mat4, settings : Settings)
-    @settings = settings
-    @shader   = shader
-
+    @shader = shader
     @shader.load_projection(projection)
   end
 
@@ -38,7 +35,11 @@ class TerrainRenderer
     model = terrain.model
     model.bind()
 
-    LibGL.bind_texture(LibGL::TEXTURE_2D, model.id)
+    if model.class.to_s == "TextureModel"
+      x = model.as(TextureModel)
+      LibGL.bind_texture(LibGL::TEXTURE_2D, x.id)
+    end
+
     @shader.set_uniform_float("shine_damper",model.shine_damper)
     @shader.set_uniform_float("reflectivity",model.reflectivity)
 
@@ -58,11 +59,11 @@ class TerrainRenderer
     rot      = GLM::Vec3.new(0,0,0)
     scale    = GLM::Vec3.new(0,0,0)
 
-    model_trans  = GLM.translate(position)
-    model_rotate = GLM.rotation(rot)
-    model_scale  = GLM.scale(scale)
+    trans  = GLM.translate(position)
+    rotate = GLM.rotation(rot)
+    scale  = GLM.scale(scale)
 
-    model_matrix = model_trans * model_rotate * model_scale
+    model_matrix = trans * rotate * scale
     @shader.load_transformation(model_matrix)
   end
 end

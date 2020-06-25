@@ -58,8 +58,7 @@ class Program
 
   def bind_attributes()
     bind_attribute(0,"position")
-    #bind_attribute(1,"pass_textureCoords")
-    bind_attribute(1,"textureCoords")
+    bind_attribute(1,"pass_textureCoords")
     bind_attribute(2,"normal")
   end
 
@@ -122,7 +121,7 @@ class Program
   #
   # set uniform vector3
   #
-  def set_uniform_vector(name : String, value : GLM::Vec3)
+  def set_uniform_vector(name, value)
     use do
       location = LibGL.get_uniform_location(@program_id, name)
       LibGL.uniform_3fv(location, 1, value.buffer)
@@ -141,12 +140,6 @@ class Program
     end
   end
 
-  def load_sky_color(red : Float32, green : Float32, blue : Float32)
-    use do
-      set_uniform_vector("sky_color",GLM::Vec3.new(red,green,blue))
-    end
-  end
-
   def load_light(light : Light)
     use do
       set_uniform_vector("light_position",light.position)
@@ -156,8 +149,7 @@ class Program
 
   def load_view(position : GLM::Vec3)
     use do
-      # was view  = GLM.translate(position)
-      view = GLM.translation(position)
+      view  = GLM.translate(position)
       set_uniform_matrix_4f("view", view)
     end
   end

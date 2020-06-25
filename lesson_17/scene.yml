@@ -1,7 +1,7 @@
 
 display:
   screen:
-    title  : OpenGL lesson 17, player movement
+    title  : OpenGL lesson 17, multi texturing
     width  : 1920.0
     height : 1080.0
     fov    : 70.0
@@ -202,24 +202,6 @@ entities:
       x: 0.0
       y: 0.0
       z: 0.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-
-  player:
-    texture: res/purple.png
-    obj: res/bunny.obj
-    shine: 15.0
-    reflectivity: 1.0
-    pos:
-      x: 0.0
-      y: 0.0
-      z: -80.0
     rot:
       x: 0.0
       y: 0.0

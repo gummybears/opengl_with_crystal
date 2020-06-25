@@ -1,12 +1,12 @@
 
 display:
   screen:
-    title  : OpenGL lesson 15, adding fog (rendering of terrain, some flickering when moving the camera in the z direction)
+    title  : OpenGL lesson 15, adding transparency and fake lighting
     width  : 1920.0
     height : 1080.0
-    fov    : 70.0
-    near   : 0.3
-    far    : 1000.0
+    fov    : 90.0
+    near   : 0.1
+    far    : 100.0
   background:
     color:
       r : 0.5
@@ -16,14 +16,14 @@ display:
 
 camera:
     x : 0.0
-    y : -10.0
-    z : 30.0
+    y : -5.0
+    z : 3.0
 
 light:
   pos:
     x: 0.0
-    y: 50.0
-    z: 50.0
+    y: 0.0
+    z: 100.0
   color:
     r : 1.0
     g : 1.0
@@ -65,7 +65,7 @@ entities:
       z: 0.0
     shine: 1.0
     reflectivity: 1.0
-    vertex_count: 100
+    vertex_count: 128
     size: 800
 
   fern:

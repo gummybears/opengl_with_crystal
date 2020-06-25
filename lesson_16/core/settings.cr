@@ -9,10 +9,8 @@ struct Settings
   property aspect_ratio : Float32
   property camera       : GLM::Vec3
   property bg           : Color
-  property fog_density  : Float32
-  property fog_gradient : Float32
 
-  def initialize(title : String, width : Float32, height : Float32, fov : Float32, near : Float32, far :  Float32, camera : GLM::Vec3, bg : Color, fog_density : Float32, fog_gradient : Float32)
+  def initialize(title : String, width : Float32, height : Float32, fov : Float32, near : Float32, far :  Float32, camera : GLM::Vec3, bg : Color)
     @title        = title
     @width        = width
     @height       = height
@@ -23,8 +21,6 @@ struct Settings
 
     @camera       = camera
     @bg           = bg
-    @fog_density  = fog_density
-    @fog_gradient = fog_gradient
   end
 end
 

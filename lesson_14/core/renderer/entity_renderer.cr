@@ -3,36 +3,44 @@ require "../shader/program.cr"
 
 class EntityRenderer
 
-  property shader : StaticShader
+  #property bg           : Color
+  property shader       : StaticShader
 
   def initialize(shader : StaticShader, projection : GLM::Mat4, settings : Settings)
+
     @shader = shader
+    #@bg     = settings.bg
+
+    # moved # cull all faces which are invisible for the camera
+    # moved LibGL.enable(LibGL::CULL_FACE)
+    # moved LibGL.cull_face(LibGL::BACK)
+
+    #projection = create_projection(settings.fov,settings.aspect_ratio,settings.near,settings.far)
     @shader.load_projection(projection)
+
   end
 
-  # enable/disable back face culling
-  def enable_culling()
-    LibGL.enable(LibGL::CULL_FACE)
-    LibGL.cull_face(LibGL::BACK)
-  end
+  # moved def create_projection(fov : Float32, aspect_ratio : Float32, near : Float32, far : Float32)
+  # moved   GLM.perspective(fov,aspect_ratio,near, far)
+  # moved end
 
-  def disable_culling()
-    LibGL.disable(LibGL::CULL_FACE)
-  end
+  # moved def prepare()
+  # moved   LibGL.enable(LibGL::DEPTH_TEST)
+  # moved   LibGL.clear(LibGL::COLOR_BUFFER_BIT | LibGL::DEPTH_BUFFER_BIT)
+  # moved   LibGL.clear_color(@bg.red, @bg.green, @bg.blue, @bg.opacity)
+  # moved end
 
   #
   # render entities
   #
-  def render(entities : Hash(TextureModel,Array(Entity)) )
+  def render(entities : Hash(Model,Array(Entity)) )
 
     entities.each do |key, value|
 
       model = key
       prepare_texture_model(model)
 
-      #
       # value is a list of entities
-      #
       list = value
       list.each do |entity|
         prepare_instance(entity)
@@ -47,28 +55,12 @@ class EntityRenderer
 
   end
 
-  def prepare_texture_model(model : TextureModel)
+  def prepare_texture_model(model : Model)
     model.bind()
 
-    #if model.class.to_s == "TextureModel"
-    #  x = model.as(TextureModel)
-    #  LibGL.bind_texture(LibGL::TEXTURE_2D, x.id)
-    #end
-    LibGL.bind_texture(LibGL::TEXTURE_2D, model.id)
-
-    #puts "model #{model.name} has transparency #{model.has_transparency} fake lighting #{model.use_fake_lighting} shine #{model.shine_damper} reflectivity #{model.reflectivity}"
-
-    if model.has_transparency
-      #MasterRenderer.disable_culling()
-      disable_culling()
-    end
-
-    if model.use_fake_lighting
-      fake_lighting = 1.0f32
-      @shader.set_uniform_float("use_fake_lighting",fake_lighting)
-    else
-      fake_lighting = 0.0f32
-      @shader.set_uniform_float("use_fake_lighting",fake_lighting)
+    if model.class.to_s == "TextureModel"
+      x = model.as(TextureModel)
+      LibGL.bind_texture(LibGL::TEXTURE_2D, x.id)
     end
 
     @shader.set_uniform_float("shine_damper",model.shine_damper)
@@ -78,12 +70,11 @@ class EntityRenderer
 
   def unbind_texture_model(model : Model)
     model.unbind()
-    # enable back face culling
-    #MasterRenderer.enable_culling()
-    enable_culling()
+
   end
 
   def prepare_instance(entity : Entity)
+
     #
     # load model matrix
     #

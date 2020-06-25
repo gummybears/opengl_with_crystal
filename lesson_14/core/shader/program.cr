@@ -71,13 +71,7 @@ class Program
     shader_id = LibGL.create_shader(type)
     if shader_id == 0
       shader_error_code = LibGL.get_error
-
-      str = [] of String
-      str << "shader creation failed, error :"
-      str << "#{shader_error_code}"
-      s = str.join("\n")
-      puts s
-      exit
+      raise "error #{shader_error_code}: shader creation failed. Could not find valid memory location when adding shader"
     end
 
     ptr    = text.to_unsafe
@@ -94,15 +88,7 @@ class Program
       compile_log_str    = String.new(pointerof(compile_log))
       compile_error_code = LibGL.get_error
 
-      #raise "error #{compile_error_code}: failed compiling shader.\n'#{text}': #{compile_log_str}"
-      str = [] of String
-      str << "shader compile error"
-      str << "failed to compile"
-      str << text
-      #str << "#{compile_log_str}"
-      s = str.join("\n")
-      puts s
-      exit
+      raise "error #{compile_error_code}: failed compiling shader.\n'#{text}': #{compile_log_str}"
     end
 
     return shader_id
@@ -131,12 +117,13 @@ class Program
   #
   # set uniform float
   #
-  def set_uniform_float(name : String, value : Float32)
+  def set_uniform_float(name, value)
     use do
-      location  = LibGL.get_uniform_location(@program_id, name)
-      buffer    = Pointer(Float32).malloc(1)
+      location = LibGL.get_uniform_location(@program_id, name)
+
+      buffer = Pointer(Float32).malloc(1)
       buffer[0] = value
-      LibGL.uniform_1fv(location,1,buffer)
+      LibGL.uniform_1fv(location, 1, buffer)
     end
   end
 
@@ -164,5 +151,7 @@ class Program
     use do
       set_uniform_matrix_4f("model", matrix)
     end
+
   end
+
 end

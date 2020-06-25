@@ -41,7 +41,7 @@ class Display
   #
   # render entities
   #
-  def render(entities : Array(Entity), terrains : Array(Terrain), camera : Camera, light : Light)
+  def render(entities : Array(Entity), camera : Camera, light : Light)
 
     master_renderer = MasterRenderer.new(@settings)
     until @window.should_close?
@@ -53,9 +53,6 @@ class Display
       if @window.key_pressed?(Key::Escape)
         @window.should_close
       end
-
-      # render the terrains
-      master_renderer.process_terrains(terrains)
 
       entities.each do |entity|
         master_renderer.process_entity(entity)

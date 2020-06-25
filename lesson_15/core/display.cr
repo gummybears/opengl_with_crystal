@@ -45,10 +45,8 @@ class Display
 
     master_renderer = MasterRenderer.new(@settings)
     until @window.should_close?
-
       CrystGLFW.poll_events
 
-      move(camera)
       #
       # close when ESCAPE key is pressed
       #
@@ -64,6 +62,7 @@ class Display
       end
       master_renderer.render(light,camera)
 
+      move(camera)
       @window.swap_buffers
     end
 

@@ -1,19 +1,17 @@
 #version 400 core
 
-in  vec2          pass_textureCoords;
-in  vec3          surface_normal;
-in  vec3          to_light_source;
-in  vec3          to_camera_vector;
-in  float         visibility;
+in  vec2 pass_textureCoords;
+in  vec3 surface_normal;
+in  vec3 to_light_source;
+in  vec3 to_camera_vector;
 
-out vec4          out_color;
+out vec4 out_color;
 
 uniform sampler2D texture_sampler;
 uniform vec3      light_color;
 
 uniform float     shine_damper;
 uniform float     reflectivity;
-uniform vec3      sky_color;
 
 void main(void){
 
@@ -25,7 +23,7 @@ void main(void){
 
   // adjust the minimum so each pixels receives a bit of light
   // this is called ambient lighting
-  float brightness = max(dot_value,0.1);
+  float brightness = max(dot_value,0.2);
   vec3  diffuse    = brightness * light_color;
 
   vec3  unit_camera_vector = normalize(to_camera_vector);
@@ -38,8 +36,5 @@ void main(void){
   float damped_factor   = pow(specular_factor,shine_damper);
   vec3  final_specular  = damped_factor * reflectivity * light_color;
 
-  vec4 texture_color = texture(texture_sampler,pass_textureCoords);
-  out_color = vec4(diffuse,1.0) * texture_color + vec4(final_specular,1.0);
-  out_color = mix(vec4(sky_color,1.0), out_color, visibility);
-
+  out_color = vec4(diffuse,1.0) * texture(texture_sampler,pass_textureCoords) + vec4(final_specular,1.0);;
 }

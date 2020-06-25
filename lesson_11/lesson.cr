@@ -47,5 +47,5 @@ def lesson(settings : Settings)
 end
 
 bg = Color.new(0.5,0.5,0.5,1.0)
-settings = Settings.new("OpenGL lesson 11, ambient lighting and optimizing", 1920, 1080, 90, 0.1, 100, GLM::Vec3.new(0,0,1), bg)
+settings = Settings.new("OpenGL lesson 11, per pixel lighting (ambient lighting)", 1920, 1080, 90, 0.1, 100, GLM::Vec3.new(0,0,1), bg)
 lesson(settings)

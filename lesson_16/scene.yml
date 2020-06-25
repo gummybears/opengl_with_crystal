@@ -1,7 +1,7 @@
 
 display:
   screen:
-    title  : OpenGL lesson 16, multi texturing
+    title  : OpenGL lesson 16, adding fog (rendering of terrain, some flickering when moving the camera in the z direction)
     width  : 1920.0
     height : 1080.0
     fov    : 70.0
@@ -14,20 +14,16 @@ display:
       b : 0.5
       a : 1.0
 
-fog:
-  density: 0.0035
-  gradient: 5.0
-
 camera:
-  x : 0.0
-  y : -10.0
-  z : 30.0
+    x : 0.0
+    y : -10.0
+    z : 30.0
 
 light:
   pos:
     x: 0.0
     y: 50.0
-    z: 10.0
+    z: 50.0
   color:
     r : 1.0
     g : 1.0
@@ -38,24 +34,6 @@ entities:
   tree:
     texture: res/tree.png
     obj: res/tree.obj
-    shine: 10.0
-    reflectivity: 1.0
-    pos:
-      x: 5.0
-      y: 0.0
-      z: -25.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 5.0
-      y: 5.0
-      z: 5.0
-
-  other_tree:
-    texture: res/lowPolyTree.png
-    obj: res/lowPolyTree.obj
     shine: 10.0
     reflectivity: 1.0
     pos:
@@ -111,91 +89,6 @@ entities:
   grass:
     texture: res/grassTexture.png
     obj: res/grassModel.obj
-    shine: 15.0
-    reflectivity: 1.0
-    pos:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-
-  grassy:
-    texture: res/grassy2.png
-    shine: 15.0
-    reflectivity: 1.0
-    pos:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-
-  dirt:
-    texture: res/mud.png
-    shine: 15.0
-    reflectivity: 1.0
-    pos:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-
-  pink_flowers:
-    texture: res/grassFlowers.png
-    shine: 15.0
-    reflectivity: 1.0
-    pos:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-
-  path:
-    texture: res/path.png
-    shine: 15.0
-    reflectivity: 1.0
-    pos:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-
-  blend_map:
-    texture: res/blendMap.png
     shine: 15.0
     reflectivity: 1.0
     pos:

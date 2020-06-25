@@ -7,9 +7,9 @@ class TextureModel < Model
 
   def initialize(model : Model, filename : String)
 
-    filenotfound(filename)
-
+    # call super
     super(model.vao_id,model.vbos,model.nr_vertices,model.nr_attrib_arrays)
+    filenotfound(filename)
     @id = Texture.load(filename)
   end
 

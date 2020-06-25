@@ -1,14 +1,12 @@
 require "lib_gl"
-require "../shaders/program.cr"
+require "../shader/program.cr"
 
 class EntityRenderer
 
-  property settings : Settings
   property shader : StaticShader
 
   def initialize(shader : StaticShader, projection : GLM::Mat4, settings : Settings)
-    @settings = settings
-    @shader   = shader
+    @shader = shader
     @shader.load_projection(projection)
   end
 
@@ -50,13 +48,18 @@ class EntityRenderer
   end
 
   def prepare_texture_model(model : TextureModel)
-
     model.bind()
 
-    LibGL.active_texture(LibGL::TEXTURE0)
+    #if model.class.to_s == "TextureModel"
+    #  x = model.as(TextureModel)
+    #  LibGL.bind_texture(LibGL::TEXTURE_2D, x.id)
+    #end
     LibGL.bind_texture(LibGL::TEXTURE_2D, model.id)
 
+    #puts "model #{model.name} has transparency #{model.has_transparency} fake lighting #{model.use_fake_lighting} shine #{model.shine_damper} reflectivity #{model.reflectivity}"
+
     if model.has_transparency
+      #MasterRenderer.disable_culling()
       disable_culling()
     end
 
@@ -70,14 +73,13 @@ class EntityRenderer
 
     @shader.set_uniform_float("shine_damper",model.shine_damper)
     @shader.set_uniform_float("reflectivity",model.reflectivity)
-    @shader.set_uniform_float("density",@settings.fog_density)
-    @shader.set_uniform_float("gradient",@settings.fog_gradient)
 
   end
 
   def unbind_texture_model(model : Model)
     model.unbind()
     # enable back face culling
+    #MasterRenderer.enable_culling()
     enable_culling()
   end
 

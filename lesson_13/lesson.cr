@@ -8,15 +8,18 @@ require "./core/**"
 def lesson(configfile : String)
 
   entities  = [] of Entity
-  terrains  = [] of Terrain
-  scene     = Scene.new(configfile)
-  settings  = scene.settings()
 
-  light        = Light.new(scene.light_position(),scene.light_color())
-  camera       = Camera.new(settings.camera)
+  scene = Scene.new(configfile)
+  settings = scene.settings()
 
-  dragon_data  = ModelData.from_obj(scene.model_object("dragon"))
-  player_data  = ModelData.from_obj(scene.model_object("player"))
+  light  = Light.new(scene.light_position(),scene.light_color())
+  camera = Camera.new(settings.camera)
+
+  vertexshader   = scene.model_vertex_shader("dragon")
+  fragmentshader = scene.model_fragment_shader("dragon")
+
+  dragon_data    = ModelData.from_obj(scene.model_object("dragon"))
+  player_data    = ModelData.from_obj(scene.model_object("player"))
 
   CrystGLFW.run do
 
@@ -31,23 +34,14 @@ def lesson(configfile : String)
     player_model.shine_damper = scene.model_shine("player")
     player_model.reflectivity = scene.model_reflectivity("player")
 
+
     dragon = Entity.new(dragon_model,scene.model_position("dragon"),scene.model_rotation("dragon"),scene.model_scale("dragon"))
     player = Player.new(player_model,scene.model_position("player"),scene.model_rotation("player"),scene.model_scale("player"))
 
     entities << dragon
     entities << player
 
-    terrain1 = Terrain.new(0f32,0f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
-    terrain2 = Terrain.new(0f32,0.8f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
-    terrain3 = Terrain.new(-0.8f32,0f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
-    terrain4 = Terrain.new(-0.8f32,0.8f32,scene.vertex_count("terrain"),scene.size("terrain"),scene.model_texture("terrain"))
-
-    terrains << terrain1
-    terrains << terrain2
-    terrains << terrain3
-    terrains << terrain4
-
-    display.render(entities,terrains,camera,light)
+    display.render(entities,camera,light)
   end
 
 end

@@ -137,10 +137,26 @@ class Scene
     red      = @yaml[key1][key2]["r"].as_f.to_f32
     blue     = @yaml[key1][key2]["b"].as_f.to_f32
     green    = @yaml[key1][key2]["g"].as_f.to_f32
+    #opacity  = @yaml[key1][key2]["a"].as_f.to_f32
 
     r = GLM::Vec3.new(red,green,blue)
     return r
   end
+
+
+  # old code def model_vertex_shader(model : String) : String
+  # old code
+  # old code   key1 = "entities"
+  # old code   key2 = "vertexshader"
+  # old code   @yaml[key1][model][key2].to_s
+  # old code end
+  # old code
+  # old code def model_fragment_shader(model : String) : String
+  # old code
+  # old code   key1 = "entities"
+  # old code   key2 = "fragmentshader"
+  # old code   @yaml[key1][model][key2].to_s
+  # old code end
 
   def model_shine(model : String) : Float32
 
@@ -153,44 +169,25 @@ class Scene
 
     key1 = "entities"
     key2 = "reflectivity"
-    begin
-      @yaml[key1][model][key2].as_f.to_f32
-    rescue
-      report_error("model not found in yaml file, '#{model}'")
-    end
-
+    @yaml[key1][model][key2].as_f.to_f32
   end
 
   def model_object(model : String) : String
     key1 = "entities"
     key2 = "obj"
-    begin
-      @yaml[key1][model][key2].to_s
-    rescue
-      report_error("model not found in yaml file, '#{model}'")
-    end
+    @yaml[key1][model][key2].to_s
   end
 
   def model_texture(model : String) : String
     key1 = "entities"
     key2 = "texture"
-    begin
-      @yaml[key1][model][key2].to_s
-    rescue
-      report_error("model not found in yaml file, '#{model}'")
-    end
-
+    @yaml[key1][model][key2].to_s
   end
 
   def vertex_count(model : String) : Int32
     key1 = "entities"
     key2 = "vertex_count"
-    begin
-      @yaml[key1][model][key2].as_i
-    rescue
-      report_error("model not found in yaml file, '#{model}'")
-    end
-
+    @yaml[key1][model][key2].as_i
   end
 
   def size(model : String) : Int32

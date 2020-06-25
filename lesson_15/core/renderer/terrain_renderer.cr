@@ -33,16 +33,20 @@ class TerrainRenderer
 
   def prepare_terrain(terrain : Terrain)
 
+    #model = TextureModel.new(terrain.model_data,scene.model_texture("terrain"))
+
     model = terrain.model
     model.bind()
 
     LibGL.bind_texture(LibGL::TEXTURE_2D, model.id)
     @shader.set_uniform_float("shine_damper",model.shine_damper)
     @shader.set_uniform_float("reflectivity",model.reflectivity)
+
   end
 
   def unbind_texture_model(model : Model)
     model.unbind()
+
   end
 
   #

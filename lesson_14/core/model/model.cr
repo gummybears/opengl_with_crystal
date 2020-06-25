@@ -1,24 +1,18 @@
 class Model
 
-  property vao_id            : LibGL::UInt
-  property vbos              : Array(LibGL::UInt)
-  property nr_vertices       : Int32
-  property nr_attrib_arrays  : Int32
+  property vao_id           : LibGL::UInt
+  property vbos             : Array(LibGL::UInt)
+  property nr_vertices      : Int32
+  property nr_attrib_arrays : Int32
 
-  property shine_damper      : Float32 = 1.0f32
-  property reflectivity      : Float32 = 0.0f32
-  property has_transparency  : Bool
-  property use_fake_lighting : Bool
-  property name              : String = ""
+  property shine_damper : Float32 = 1.0f32
+  property reflectivity : Float32 = 0.0f32
 
   def initialize(vao_id : LibGL::UInt, vbos : Array(LibGL::UInt), nr_vertices : Int32, nr_attrib_arrays : Int32)
     @vao_id           = vao_id
     @vbos             = vbos
     @nr_vertices      = nr_vertices
     @nr_attrib_arrays = nr_attrib_arrays
-
-    @has_transparency  = false
-    @use_fake_lighting = false
   end
 
   #

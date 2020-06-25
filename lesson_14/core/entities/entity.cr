@@ -2,7 +2,7 @@ require "../math/**"
 
 class Entity
 
-  property model    : TextureModel
+  property model    : Model
   property position : GLM::Vec3
   property rotX     : Float32
   property rotY     : Float32
@@ -10,7 +10,7 @@ class Entity
   property scale    : GLM::Vec3
   property angle    : Float32
 
-  def initialize(model : TextureModel, position : GLM::Vec3, rotation : GLM::Vec3, scale : GLM::Vec3, angle : Float32 = 0.0f32)
+  def initialize(model : Model, position : GLM::Vec3, rotation : GLM::Vec3, scale : GLM::Vec3, angle : Float32 = 0.0f32)
     @model    = model
     @position = position
     @scale    = scale

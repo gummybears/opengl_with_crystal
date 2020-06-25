@@ -374,17 +374,6 @@ module GLM
       r
     end
 
-    def *(v : GLM::Vec4) : GLM::Vec4
-      r = self
-      x = r[0,0] * v.x + r[0,1] * v.y + r[0,2] * v.z + r[0,3] * v.w
-      y = r[1,0] * v.x + r[1,1] * v.y + r[1,2] * v.z + r[1,3] * v.w
-      z = r[2,0] * v.x + r[2,1] * v.y + r[2,2] * v.z + r[2,3] * v.w
-      w = r[3,0] * v.x + r[3,1] * v.y + r[3,2] * v.z + r[3,3] * v.w
-
-      v = GLM::Vec4.new(x,y,z,w)
-    end
-
-
     def buffer
       @buffer
     end
@@ -449,8 +438,7 @@ module GLM
     result[0, 3] = vec.x
     result[1, 3] = vec.y
     result[2, 3] = vec.z
-    r = other * result
-    return r
+    other * result
   end
 
   def self.scale(other, vec)
@@ -498,12 +486,6 @@ module GLM
     other * result
   end
 
-  #
-  # don't tranpose this matrix
-  #
-  # in the Java tutorial the matrix is transposed
-  # and is wrong
-  #
   def self.perspective(fov_y, aspect, near, far)
     #
     # aspect ratio is 0 or the near plane equals the far plane
@@ -514,15 +496,13 @@ module GLM
 
     rad          = GLM.deg_to_rad(fov_y)
     tan_half_fov = Math.tan(rad / 2)
-    frustrum_length = far - near
 
     m = Mat4.zero
-    m[0, 0] = 1.0f32 / (aspect * tan_half_fov).to_f32
-    m[1, 1] = 1.0f32 / tan_half_fov.to_f32
-    m[2, 2] = -(far + near).to_f32 / (frustrum_length).to_f32
-    m[2, 3] = -(2.0f32 * far * near) / (frustrum_length).to_f32
-    m[3, 2] = -1.0f32
-    m[3, 3] = 0.0f32
+    m[0, 0] = 1 / (aspect * tan_half_fov).to_f32
+    m[1, 1] = 1 / tan_half_fov.to_f32
+    m[2, 2] = -(far + near).to_f32 / (far - near).to_f32
+    m[3, 2] = -1_f32
+    m[2, 3] = -(2_f32 * far * near) / (far - near)
     m
   end
 

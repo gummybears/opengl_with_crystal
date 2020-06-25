@@ -28,19 +28,19 @@ class Camera
   end
 
   def move_in()
-    @position.z = @position.z - 0.1f32
+    @position.z = @position.z - 0.025f32
   end
 
   def move_out()
-    @position.z = @position.z + 0.1f32
+    @position.z = @position.z + 0.025f32
   end
 
   def move_right()
-    @position.x = @position.x + 0.5f32
+    @position.x = @position.x + 0.015f32
   end
 
   def move_left()
-    @position.x = @position.x - 0.5f32
+    @position.x = @position.x - 0.015f32
   end
 
   def move_down()

@@ -12,7 +12,7 @@ class MasterRenderer
   property settings   : Settings
   property shader     : StaticShader
   property renderer   : EntityRenderer
-  property entities   : Hash(TextureModel,Array(Entity))
+  property entities   : Hash(Model,Array(Entity))
   property projection : GLM::Mat4
 
   property terrain_renderer : TerrainRenderer
@@ -27,38 +27,24 @@ class MasterRenderer
 
     @shader         = StaticShader.new()
     @terrain_shader = TerrainShader.new()
-
     #
     # cull all faces which are invisible for the camera
     #
-    #MasterRenderer.enable_culling()
-    enable_culling()
+    LibGL.enable(LibGL::CULL_FACE)
+    LibGL.cull_face(LibGL::BACK)
 
     #
-    # create projection matrix
+    # projection matrix
     #
     @projection       = create_projection(settings.fov,settings.aspect_ratio,settings.near,settings.far)
 
     @renderer         = EntityRenderer.new(@shader,@projection,settings)
     @terrain_renderer = TerrainRenderer.new(@terrain_shader,@projection,settings)
 
-    @entities         = Hash(TextureModel,Array(Entity)).new
+    @entities         = Hash(Model,Array(Entity)).new
 
   end
 
-  # enable/disable back face culling
-  def enable_culling()
-    LibGL.enable(LibGL::CULL_FACE)
-    LibGL.cull_face(LibGL::BACK)
-  end
-
-  def disable_culling()
-    LibGL.disable(LibGL::CULL_FACE)
-  end
-
-  #
-  # create perspective matrix
-  #
   def create_projection(fov : Float32, aspect_ratio : Float32, near : Float32, far : Float32)
     GLM.perspective(fov,aspect_ratio,near, far)
   end
@@ -87,7 +73,7 @@ class MasterRenderer
       @terrain_shader.load_view(camera.position)
 
       # render terrains
-      @terrain_renderer.render(@terrains)
+      @terrain_renderer.render(terrains)
     end
 
     #
@@ -96,7 +82,7 @@ class MasterRenderer
     # otherwise the hash map accumulate entities
     # each frame
     #
-    @entities = Hash(TextureModel,Array(Entity)).new
+    @entities = Hash(Model,Array(Entity)).new
     @terrains = [] of Terrain
   end
 

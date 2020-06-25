@@ -4,6 +4,7 @@ require "../texture/texture.cr"
 class TextureModel < Model
 
   property id : UInt32
+
   def initialize(model : Model, filename : String)
 
     filenotfound(filename)

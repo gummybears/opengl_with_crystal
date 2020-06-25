@@ -7,13 +7,10 @@ include CrystGLFW
 
 class Display
 
-  property settings : Settings
-  property window   : CrystGLFW::Window
-  property delta    : Float64
+  property settings     : Settings
+  property window       : CrystGLFW::Window
 
   def initialize(settings : Settings)
-
-    @delta = 0.0f32
     @settings = settings
 
     #
@@ -35,6 +32,10 @@ class Display
     # Make the window the current OpenGL context
     #
     @window.make_context_current
+
+    @last_frame_time = Time::Span.zero
+    @delta = Time::Span.zero
+
   end
 
   #
@@ -47,12 +48,7 @@ class Display
 
       CrystGLFW.poll_events
 
-      # get current time
-      last_frame_time = LibGLFW.get_time
-
-      # move the camera
-      camera.move(self)
-
+      move(camera)
       #
       # close when ESCAPE key is pressed
       #
@@ -60,35 +56,51 @@ class Display
         @window.should_close
       end
 
-      #
       # render the terrains
-      #
       master_renderer.process_terrains(terrains)
-      entities.each do |entity|
 
-        #
-        # move the player
-        #
-        if entity.name == "player"
-          player = entity.as(Player)
-          player.move(self)
-        end
+      entities.each do |entity|
         master_renderer.process_entity(entity)
       end
       master_renderer.render(light,camera)
 
       @window.swap_buffers
-
-      #
-      # get the current time
-      #
-      current_time = LibGLFW.get_time
-      @delta = 1.0 * (current_time - last_frame_time)
-
     end
 
     @window.destroy
     master_renderer.cleanup()
   end # render
+
+  def move(camera : Camera)
+    # move negative z
+    if @window.key_pressed?(Key::W)
+      camera.move_in()
+    end
+
+    # move positive z
+    if @window.key_pressed?(Key::X)
+      camera.move_out()
+    end
+
+    # move negative x
+    if @window.key_pressed?(Key::A)
+      camera.move_left()
+    end
+
+    # move positive x
+    if @window.key_pressed?(Key::D)
+      camera.move_right()
+    end
+
+    # move negative y
+    if @window.key_pressed?(Key::Y)
+      camera.move_down()
+    end
+
+    # move positive y
+    if @window.key_pressed?(Key::Z)
+      camera.move_up()
+    end
+  end
 
 end

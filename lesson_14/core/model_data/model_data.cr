@@ -29,15 +29,6 @@ class ModelData
     textures = obj.textures_arr
     normals  = obj.normals_arr
 
-    #puts "vertices"
-    #puts vertices
-    #
-    #puts "normals"
-    #puts normals
-    #
-    #puts "indices"
-    #puts indices
-
     data = ModelData.new(vertices,textures,normals,indices)
     return data
   end

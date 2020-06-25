@@ -1,7 +1,7 @@
 
 display:
   screen:
-    title  : OpenGL lesson 14, adding transparency and fake lighting
+    title  : OpenGL lesson 14, simple terrain
     width  : 1920.0
     height : 1080.0
     fov    : 90.0
@@ -21,9 +21,9 @@ camera:
 
 light:
   pos:
-    x: 0.0
+    x: 3.0
     y: 0.0
-    z: 100.0
+    z: 20.0
   color:
     r : 1.0
     g : 1.0
@@ -31,13 +31,14 @@ light:
     a : 1.0
 
 entities:
-  tree:
-    texture: res/tree.png
-    obj: res/tree.obj
+  dragon:
+    texture: res/purple.png
+    obj: res/dragon.obj
+    type: obj
     shine: 10.0
     reflectivity: 1.0
     pos:
-      x: 5.0
+      x: 12.0
       y: 0.0
       z: -25.0
     rot:
@@ -45,12 +46,13 @@ entities:
       y: 0.0
       z: 0.0
     scale:
-      x: 5.0
-      y: 5.0
-      z: 5.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
 
   terrain:
     texture: res/grass.png
+    type : terrain
     pos:
       x: 0.0
       y: 0.0
@@ -68,9 +70,10 @@ entities:
     vertex_count: 128
     size: 800
 
-  fern:
-    texture: res/fern.png
-    obj: res/fern.obj
+  player:
+    texture: res/white.png
+    obj: res/bunny.obj
+    type : player
     shine: 5.0
     reflectivity: 1.0
     pos:
@@ -86,20 +89,3 @@ entities:
       y: 0.0
       z: 0.0
 
-  grass:
-    texture: res/grassTexture.png
-    obj: res/grassModel.obj
-    shine: 15.0
-    reflectivity: 1.0
-    pos:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    rot:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-    scale:
-      x: 0.0
-      y: 0.0
-      z: 0.0

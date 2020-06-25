@@ -10,8 +10,6 @@ class Entity
   property scale    : GLM::Vec3
   property angle    : Float32
 
-  property name     : String
-
   def initialize(model : TextureModel, position : GLM::Vec3, rotation : GLM::Vec3, scale : GLM::Vec3, angle : Float32 = 0.0f32)
     @model    = model
     @position = position
@@ -20,7 +18,6 @@ class Entity
     @rotY     = rotation.y
     @rotZ     = rotation.z
     @angle    = angle
-    @name     = "empty"
   end
 
   def increasePosition(dx : Float32, dy : Float32, dz : Float32)

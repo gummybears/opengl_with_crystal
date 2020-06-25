@@ -36,10 +36,5 @@ void main(void){
   float damped_factor   = pow(specular_factor,shine_damper);
   vec3  final_specular  = damped_factor * reflectivity * light_color;
 
-  // test alpha value of the texture
-  vec4 texture_color = texture(texture_sampler,pass_textureCoords);
-  if( texture_color.a < 0.5){
-    discard;
-  }
-  out_color = vec4(diffuse,1.0) * texture_color + vec4(final_specular,1.0);;
+  out_color = vec4(diffuse,1.0) * texture(texture_sampler,pass_textureCoords) + vec4(final_specular,1.0);;
 }

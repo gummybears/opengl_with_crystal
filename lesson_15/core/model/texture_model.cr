@@ -12,11 +12,11 @@ class TextureModel < Model
     @id = Texture.load(filename)
   end
 
-  # disabled def draw()
-  # disabled   bind()
-  # disabled   LibGL.bind_texture(LibGL::TEXTURE_2D, @id)
-  # disabled   LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
-  # disabled   unbind()
-  # disabled end
+  def draw()
+    bind()
+    LibGL.bind_texture(LibGL::TEXTURE_2D, @id)
+    LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
+    unbind()
+  end
 
 end
