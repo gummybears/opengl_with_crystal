@@ -63,7 +63,7 @@ class Scene
   end
 
   def settings : Settings
-    Settings.new(title(), width(), height(), fov(), near(), far(), camera(), bg())
+    Settings.new(title(), width(), height(), fov(), near(), far(), camera(), bg(),fog_density(), fog_gradient())
   end
 
   def models() : Array(ModelData)
@@ -196,6 +196,13 @@ class Scene
     @yaml[key1][model][key2].as_i
   end
 
+  def fog_gradient()
+    @yaml["fog"]["gradient"].as_f.to_f32
+  end
+
+  def fog_density()
+    @yaml["fog"]["density"].as_f.to_f32
+  end
 
 end
 

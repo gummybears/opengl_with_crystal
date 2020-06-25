@@ -30,7 +30,7 @@ void main(void) {
   vec4 world_position              = model * vec4(position, 1.0);
   vec4 position_relative_to_camera = view * world_position;
 
-  gl_Position = projection * view * position_relative_to_camera;
+  gl_Position = projection * position_relative_to_camera;
 
   // wrap the terrain texture so it repeats ??
   pass_textureCoords = textureCoords * 50;

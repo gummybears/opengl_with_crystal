@@ -1,0 +1,88 @@
+class Player < Entity
+
+  # run speed in units per second
+  property run_speed          : Float32
+
+  # turn speed in degrees per second
+  property turn_speed         : Float32
+  property current_speed      : Float32
+  property current_turn_speed : Float32
+
+  property gravity            : Float32
+  property jump_power         : Float32
+  property upwards_speed      : Float32
+  property terrain_height     : Float32
+
+  def initialize(model : TextureModel, position : GLM::Vec3, rotation : GLM::Vec3, scale : GLM::Vec3, angle : Float32 = 0.0f32)
+    super(model,position,rotation,scale,angle)
+
+    @run_speed          = 20f32
+    @turn_speed         = 160f32
+    @current_speed      = 0f32
+    @current_turn_speed = 0f32
+    @gravity            = -50f32
+    @jump_power         = 30f32
+    @upwards_speed      = 0f32
+    @terrain_height     = 0f32
+  end
+
+  def move(display : Display)
+
+    check_inputs(display.window)
+
+    #
+    # get the number of seconds elapsed since the last frame
+    #
+    seconds = display.delta
+    increaseRotation(0f32, @current_turn_speed * seconds , 0f32)
+
+    distance = @current_speed * seconds
+
+    dx = distance * Math.sin(GLM.radians(@rotY))
+    dz = distance * Math.cos(GLM.radians(@rotY))
+
+    increasePosition(dx,0f32,dz)
+
+    @upwards_speed = @upwards_speed + @gravity * seconds
+    dy             = @upwards_speed * seconds
+    increasePosition(0f32,dy,0f32)
+
+    if @position.y < @terrain_height
+      @upwards_speed = 0f32
+      @position.y = @terrain_height
+    end
+  end
+
+  def jump()
+    @upwards_speed = @jump_power
+  end
+
+  def check_inputs(window : Window)
+
+    if window.key_pressed?(Key::W)
+      # move forwards
+      @current_speed = @run_speed
+    elsif window.key_pressed?(Key::S)
+      # move backwards
+      @current_speed = -@run_speed
+    else
+      # player stays still
+      @current_speed = 0f32
+    end
+
+    if window.key_pressed?(Key::D)
+      # rotate clockwise
+      @current_turn_speed = -@turn_speed
+    elsif window.key_pressed?(Key::A)
+      @current_turn_speed = @turn_speed
+    else
+      @current_turn_speed = 0f32
+    end
+
+    # jump
+    if window.key_pressed?(Key::Space)
+      jump()
+    end
+
+  end
+end
