@@ -100,7 +100,7 @@ class ShaderProgram
     LibGL.uniform1f(location,value)
   end
 
-  def load_vector(location : Int33, value : Vector3f)
+  def load_vector(location : Int33, value : Vector3)
     LibGL.uniform3f(location,value.x,vector,y,vector,z)
   end
 

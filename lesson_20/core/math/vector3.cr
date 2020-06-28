@@ -92,7 +92,7 @@ module GLM
     # returns a new normalized vector.
     def to_normalized
       length = length()
-      return Vector3f.new(x / length, y / length, z / length)
+      return Vector3.new(x / length, y / length, z / length)
     end
 
     def cross(v : TVector3(T))

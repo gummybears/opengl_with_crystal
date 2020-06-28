@@ -22,9 +22,9 @@ class Texture
     # best results with textures
     # when the width/height are modulo 2
     #
-    modulo_width = bitmap.width % 2
-    module_height = bitmap.height % 2
-    if modulo_width != 0 || module_height != 0
+    modulo_width  = bitmap.width % 2
+    modulo_height = bitmap.height % 2
+    if modulo_width != 0 || modulo_height != 0
       puts "warning : texture bitmap width/height is not modulo 2"
     end
 

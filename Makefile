@@ -20,4 +20,6 @@ lessons:
 	cd lesson_17; ./build.sh
 	cd lesson_18; ./build.sh
 	cd lesson_19; ./build.sh
+	cd lesson_20; ./build.sh
+	cd lesson_21; ./build.sh
 
