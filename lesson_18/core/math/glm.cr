@@ -12,7 +12,6 @@ module GLM
     return r.to_f32
   end
 
-
   def self.deg_to_rad(d)
     d / 180.0 * Math::PI
   end
@@ -440,11 +439,11 @@ module GLM
     Vec4.new(x.to_f32, y.to_f32, z.to_f32, w.to_f32)
   end
 
-  def self.translate(vec)
+  def self.translate(vec : GLM::Vec3)
     translate(Mat4.identity, vec)
   end
 
-  def self.translate(other, vec)
+  def self.translate(other : GLM::Mat4, vec : GLM::Vec3)
     result = Mat4.identity
     result[0, 3] = vec.x
     result[1, 3] = vec.y
@@ -453,18 +452,18 @@ module GLM
     return r
   end
 
-  def self.scale(other, vec)
+  def self.scale(other : GLM::Mat4, vec : GLM::Vec3)
     result = Mat4.identity
     if vec.x == 0
-      vec.x = 1
+      vec.x = 1.0f32
     end
 
     if vec.y == 0
-      vec.y = 1
+      vec.y = 1.0f32
     end
 
     if vec.z == 0
-      vec.z = 1
+      vec.z = 1.0f32
     end
 
     result[0, 0] = vec.x
@@ -477,25 +476,26 @@ module GLM
     rotate(Mat4.identity, angle, vec)
   end
 
-  def self.rotate(other, angle, vec)
-    c = Math.cos(angle).to_f32
-    s = Math.sin(angle).to_f32
-    result = Mat4.identity
+  def self.rotate(other : GLM::Mat4, angle : Float32, vec : GLM::Vec3 )
+
+    c    = Math.cos(angle).to_f32
+    s    = Math.sin(angle).to_f32
+    r    = Mat4.identity
     axis = vec.normalize
 
-    result[0, 0] = c + (1 - c) * axis.x * axis.x
-    result[0, 1] = (1 - c) * axis.x * axis.y + s * axis.z
-    result[0, 2] = (1 - c) * axis.x * axis.z - s * axis.y
+    r[0, 0] = c + (1 - c) * axis.x * axis.x
+    r[0, 1] = (1 - c) * axis.x * axis.y + s * axis.z
+    r[0, 2] = (1 - c) * axis.x * axis.z - s * axis.y
 
-    result[1, 0] = (1 - c) * axis.y * axis.x - s * axis.z
-    result[1, 1] = c + (1 - c) * axis.y * axis.y
-    result[1, 2] = (1 - c) * axis.y * axis.z + s * axis.x
+    r[1, 0] = (1 - c) * axis.y * axis.x - s * axis.z
+    r[1, 1] = c + (1 - c) * axis.y * axis.y
+    r[1, 2] = (1 - c) * axis.y * axis.z + s * axis.x
 
-    result[2, 0] = (1 - c) * axis.z * axis.x + s * axis.y
-    result[2, 1] = (1 - c) * axis.z * axis.y - s * axis.x
-    result[2, 2] = c + (1 - c) * axis.z * axis.z
+    r[2, 0] = (1 - c) * axis.z * axis.x + s * axis.y
+    r[2, 1] = (1 - c) * axis.z * axis.y - s * axis.x
+    r[2, 2] = c + (1 - c) * axis.z * axis.z
 
-    other * result
+    other * r
   end
 
   #
@@ -504,22 +504,28 @@ module GLM
   # in the Java tutorial the matrix is transposed
   # and is wrong
   #
-  def self.perspective(fov_y, aspect, near, far)
+  def self.perspective(fov, aspect, near, far)
     #
     # aspect ratio is 0 or the near plane equals the far plane
     #
-    if aspect == 0 || near == far
-      raise ArgumentError.new
+    if aspect == 0
+      report_error("aspect ratio is 0")
     end
 
-    rad          = GLM.deg_to_rad(fov_y)
-    tan_half_fov = Math.tan(rad / 2)
+    if near == far
+      report_error("the near and far plane are equal")
+    end
+
+    rad          = GLM.radians(fov)
+    tan_half_fov = Math.tan(rad/2.0)
     frustrum_length = far - near
 
     m = Mat4.zero
     m[0, 0] = 1.0f32 / (aspect * tan_half_fov).to_f32
     m[1, 1] = 1.0f32 / tan_half_fov.to_f32
     m[2, 2] = -(far + near).to_f32 / (frustrum_length).to_f32
+    m[3, 3] = 0.0f32
+
     m[2, 3] = -(2.0f32 * far * near) / (frustrum_length).to_f32
     m[3, 2] = -1.0f32
     m[3, 3] = 0.0f32
@@ -562,20 +568,20 @@ module GLM
       vec.z = 1.0f32
     end
 
-    r[0,0] = vec.x
-    r[1,1] = vec.y
-    r[2,2] = vec.z
+    r[0,0] = vec.x.to_f32
+    r[1,1] = vec.y.to_f32
+    r[2,2] = vec.z.to_f32
     return r
   end
 
   def self.rotation(vec : Vec3)
-    rx       = Mat4.identity()
-    ry       = Mat4.identity()
-    rz       = Mat4.identity()
+    rx        = Mat4.identity()
+    ry        = Mat4.identity()
+    rz        = Mat4.identity()
 
-    xrad     = self.radians(vec.x)
-    yrad     = self.radians(vec.y)
-    zrad     = self.radians(vec.z)
+    xrad      = self.radians(vec.x)
+    yrad      = self.radians(vec.y)
+    zrad      = self.radians(vec.z)
 
     rx[1, 1] =  Math.cos(xrad)
     rx[2, 2] =  Math.cos(xrad)
@@ -618,13 +624,12 @@ module GLM
   end
 end
 
-
 #
-# operator Float32 * ASY::Matrix
+# operator Float32 * GLM::Vec3
 #
 struct Float32
 
-  # multiplies matrix other with a Float64
+  # multiplies matrix other with a Float32
   def *(other : GLM::Vec3) : GLM::Vec3
 
     r = GLM::Vec3.new(0,0,0)
@@ -635,7 +640,6 @@ struct Float32
 
     return r
   end
-
 end
 
 

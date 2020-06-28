@@ -10,7 +10,7 @@ class Display
   property settings : Settings
   property window   : CrystGLFW::Window
 
-  property scroll_offset : GLM::Vec2
+  property scroll_offset : GLM::Vector2
   property mouse_dx : Float32
   property mouse_dy : Float32
   property elapsed  : Float64
@@ -20,7 +20,7 @@ class Display
 
   def initialize(settings : Settings)
 
-    @scroll_offset = GLM::Vec2.new(0f32,0f32)
+    @scroll_offset = GLM::Vector2.new(0f32,0f32)
     @mouse_dx = 0.0f32
     @mouse_dy = 0.0f32
     @elapsed  = 0.0f32
@@ -76,36 +76,34 @@ class Display
         @window.should_close
       end
 
+      ##
+      ## get the window cursor position
+      ##
+      #old_cursor_pos = @window.cursor.position
       #
-      # get the window cursor position
-      #
-      old_cursor_pos = @window.cursor.position
-      #puts "dx #{old_cursor_pos[:x]} dy #{old_cursor_pos[:y]}"
-
       @window.on_scroll do |event|
         #@scroll_update = Time.monotonic.total_seconds
-        @scroll_offset = GLM::Vec2.new(event.offset[:x].to_f32,event.offset[:y].to_f32)
+        @scroll_offset = GLM::Vector2.new(event.offset[:x].to_f32,event.offset[:y].to_f32)
       end
+      #
+      #@window.on_mouse_button do |event|
+      #  mouse_button = event.mouse_button
+      #
+      #  if mouse_button.left?
+      #    @mouse_left  = 1
+      #    @mouse_right = 0
+      #  end
+      #
+      #  if mouse_button.right?
+      #    @mouse_left  = 0
+      #    @mouse_right = 1
+      #  end
+      #
+      #  new_cursor_pos = @window.cursor.position
+      #  @mouse_dx = (new_cursor_pos[:x] - old_cursor_pos[:x]).to_f32
+      #  @mouse_dy = (new_cursor_pos[:y] - old_cursor_pos[:y]).to_f32
+      #end
 
-      @window.on_mouse_button do |event|
-        mouse_button = event.mouse_button
-
-        if mouse_button.left?
-          @mouse_left  = 1
-          @mouse_right = 0
-        end
-
-        if mouse_button.right?
-          @mouse_left  = 0
-          @mouse_right = 1
-        end
-
-      end
-
-      new_cursor_pos = @window.cursor.position
-      @mouse_dx = (new_cursor_pos[:x] - old_cursor_pos[:x]).to_f32
-      @mouse_dy = (new_cursor_pos[:y] - old_cursor_pos[:y]).to_f32
-      #puts "dx #{@mouse_dx} dy #{@mouse_dy}"
 
       #
       # render the terrains
@@ -113,19 +111,17 @@ class Display
       master_renderer.process_terrains(terrains)
       entities.each do |entity|
 
-        ##
-        ## move the player
-        ##
-        #if entity.name == "player"
-        #  player = entity.as(Player)
-        #  player.move(self)
-        #  camera.move(self)
         #
-        #  #puts "player pos #{player.position.to_s} rot #{player.rotation.to_s} camera pos #{camera.position.to_s}"
-        #end
+        # move the player
+        #
+        if entity.name == "player"
+          player = entity.as(Player)
+          player.move(self)
+          if camera.is_a?(ThirdPersonCamera)
+            camera.move(self)
+          end
+        end
 
-        entity.move(self)
-        camera.move(self)
         master_renderer.process_entity(entity)
       end
 

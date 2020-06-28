@@ -15,7 +15,7 @@ class Player < Entity
 
   property is_in_air          : Bool = false
 
-  def initialize(model : TextureModel, position : GLM::Vec3, rotation : GLM::Vec3, scale : GLM::Vec3, angle : Float32 = 0.0f32)
+  def initialize(model : TextureModel, position : GLM::Vector3, rotation : GLM::Vector3, scale : GLM::Vector3, angle : Float32 = 0.0f32)
     super(model,position,rotation,scale,angle)
 
     @run_speed          = 20f32

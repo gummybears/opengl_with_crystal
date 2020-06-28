@@ -7,7 +7,7 @@ include CrystGLFW
 
 require "./core/**"
 
-def get_random_pos() : GLM::Vec3
+def get_random_pos() : GLM::Vector3
 
   w = 200.0f32
 
@@ -21,7 +21,7 @@ def get_random_pos() : GLM::Vec3
   rand = Random.rand(w).to_f32
   z = -rand - w/2.0f32
 
-  position = GLM::Vec3.new(x,y,z)
+  position = GLM::Vector3.new(x,y,z)
   return position
 end
 
@@ -33,7 +33,6 @@ def lesson(configfile : String)
   settings  = scene.settings()
 
   light      = Light.new(scene.light_position(),scene.light_color())
-  #camera     = Camera.new(settings.camera)
 
   tree_data        = ModelData.from_obj(scene.model_object("tree"))
   other_tree_data  = ModelData.from_obj(scene.model_object("other_tree"))
@@ -138,7 +137,7 @@ def lesson(configfile : String)
     entities << player
 
     # the camera is now following the player
-    camera = Camera.new(player)
+    camera = ThirdPersonCamera.new(player)
     display.render(entities,terrains,camera,light)
   end
 

@@ -6,7 +6,7 @@ class TerrainRenderer
   property settings : Settings
   property shader   : TerrainShader
 
-  def initialize(shader : TerrainShader, projection : GLM::Mat4, settings : Settings)
+  def initialize(shader : TerrainShader, projection : GLM::Matrix, settings : Settings)
     @settings = settings
     @shader   = shader
 
@@ -69,41 +69,11 @@ class TerrainRenderer
     LibGL.bind_texture(LibGL::TEXTURE_2D, terrain.blend_map.id)
   end
 
-  def create_model_matrix(terrain : Terrain) : GLM::Mat4
-
-    matrix = GLM::Mat4.identity()
-    x_axis = GLM::Vec3.new(1,0,0)
-    y_axis = GLM::Vec3.new(0,1,0)
-    z_axis = GLM::Vec3.new(0,0,1)
-
-    position = GLM::Vec3.new(terrain.x,0,terrain.z)
-    matrix = GLM.translate(matrix, position)
-
-    matrix = GLM.rotate(matrix, GLM.radians(0f32), x_axis)
-    matrix = GLM.rotate(matrix, GLM.radians(0f32), y_axis)
-    matrix = GLM.rotate(matrix, GLM.radians(0f32), z_axis)
-
-    scale = GLM::Vec3.new(0,0,0)
-    matrix = GLM.scale(matrix, scale)
-    return matrix
-  end
-
   #
   # load model matrix
   #
   def load_model_matrix(terrain : Terrain)
-
-    position = GLM::Vec3.new(terrain.x,0,terrain.z)
-    rot      = GLM::Vec3.new(0,0,0)
-    scale    = GLM::Vec3.new(0,0,0)
-
-    model_trans  = GLM.translate(position)
-    model_rotate = GLM.rotation(rot)
-    model_scale  = GLM.scale(scale)
-
-    model_matrix = model_trans * model_rotate * model_scale
-
-    # new code model_matrix = create_model_matrix(terrain)
+    model_matrix = terrain.create_model_matrix()
     @shader.load_transformation(model_matrix)
   end
 end

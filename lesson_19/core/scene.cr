@@ -37,12 +37,12 @@ class Scene
 
   def camera()
     key1 = "camera"
-    r = GLM::Vec3.new(0,0,0)
+    r = GLM::Vector3.new(0,0,0)
     begin
       x  = @yaml[key1]["x"].as_f.to_f32
       y  = @yaml[key1]["y"].as_f.to_f32
       z  = @yaml[key1]["z"].as_f.to_f32
-      r = GLM::Vec3.new(x,y,z)
+      r = GLM::Vector3.new(x,y,z)
       return r
     rescue
     end
@@ -69,11 +69,11 @@ class Scene
   def models() : Array(ModelData)
   end
 
-  def model_position(model : String) : GLM::Vec3
+  def model_position(model : String) : GLM::Vector3
 
     key1 = "entities"
     key2 = "pos"
-    r = GLM::Vec3.new(0,0,0)
+    r = GLM::Vector3.new(0,0,0)
 
     begin
       entity = @yaml[key1][model][key2]
@@ -81,7 +81,7 @@ class Scene
       x = entity["x"].as_f.to_f32
       y = entity["y"].as_f.to_f32
       z = entity["z"].as_f.to_f32
-      r = GLM::Vec3.new(x,y,z)
+      r = GLM::Vector3.new(x,y,z)
       return r
     rescue
     end
@@ -90,7 +90,7 @@ class Scene
 
   end
 
-  def model_rotation(model : String) : GLM::Vec3
+  def model_rotation(model : String) : GLM::Vector3
 
     key1 = "entities"
     key2 = "rot"
@@ -100,12 +100,12 @@ class Scene
     x = entity["x"].as_f.to_f32
     y = entity["y"].as_f.to_f32
     z = entity["z"].as_f.to_f32
-    r = GLM::Vec3.new(x,y,z)
+    r = GLM::Vector3.new(x,y,z)
     return r
 
   end
 
-  def model_scale(model : String) : GLM::Vec3
+  def model_scale(model : String) : GLM::Vector3
 
     key1 = "entities"
     key2 = "scale"
@@ -115,30 +115,30 @@ class Scene
     x = entity["x"].as_f.to_f32
     y = entity["y"].as_f.to_f32
     z = entity["z"].as_f.to_f32
-    r = GLM::Vec3.new(x,y,z)
+    r = GLM::Vector3.new(x,y,z)
     return r
 
   end
 
-  def light_position() : GLM::Vec3
+  def light_position() : GLM::Vector3
     key1 = "light"
     key2 = "pos"
     x = @yaml[key1][key2]["x"].as_f.to_f32
     y = @yaml[key1][key2]["y"].as_f.to_f32
     z = @yaml[key1][key2]["z"].as_f.to_f32
 
-    r = GLM::Vec3.new(x,y,z)
+    r = GLM::Vector3.new(x,y,z)
     return r
   end
 
-  def light_color() : GLM::Vec3
+  def light_color() : GLM::Vector3
     key1 = "light"
     key2 = "color"
     red      = @yaml[key1][key2]["r"].as_f.to_f32
     blue     = @yaml[key1][key2]["b"].as_f.to_f32
     green    = @yaml[key1][key2]["g"].as_f.to_f32
 
-    r = GLM::Vec3.new(red,green,blue)
+    r = GLM::Vector3.new(red,green,blue)
     return r
   end
 

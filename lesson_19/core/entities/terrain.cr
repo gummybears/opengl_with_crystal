@@ -34,7 +34,9 @@ class Terrain
         vertices <<  dy
         vertices <<  -(i/dz).to_f32 * size
 
+        #
         # normal is in the y direction (up)
+        #
         normals << 0.0f32
         normals << 1.0f32
         normals << 0.0f32
@@ -63,5 +65,19 @@ class Terrain
     r = ModelData.new(vertices,textures,normals,indices)
     return r
   end # generate
+
+  def create_model_matrix() : GLM::Matrix
+
+    position = GLM::Vector3.new(@x,0,@z)
+    rot      = GLM::Vector3.new(0,0,0)
+    scale    = GLM::Vector3.new(0,0,0)
+
+    trans    = GLM.translate(position)
+    rotation = GLM.rotation(rot)
+    scale    = GLM.scale(scale)
+
+    r = trans * rotation * scale
+    return r
+  end
 
 end

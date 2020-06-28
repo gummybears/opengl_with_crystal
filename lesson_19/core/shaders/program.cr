@@ -110,7 +110,7 @@ class Program
   #
   # set uniform matrix
   #
-  def set_uniform_matrix_4f(name, value)
+  def set_uniform_matrix_4f(name : String, value : GLM::Matrix)
     use do
       location = LibGL.get_uniform_location(@program_id, name)
       LibGL.uniform_matrix_4fv(location, 1, LibGL::FALSE, value.buffer)
@@ -120,7 +120,7 @@ class Program
   #
   # set uniform vector3
   #
-  def set_uniform_vector(name : String, value : GLM::Vec3)
+  def set_uniform_vector(name : String, value : GLM::Vector3)
     use do
       location = LibGL.get_uniform_location(@program_id, name)
       LibGL.uniform_3fv(location, 1, value.buffer)
@@ -149,7 +149,7 @@ class Program
 
   def load_sky_color(red : Float32, green : Float32, blue : Float32)
     use do
-      set_uniform_vector("sky_color",GLM::Vec3.new(red,green,blue))
+      set_uniform_vector("sky_color",GLM::Vector3.new(red,green,blue))
     end
   end
 
@@ -160,19 +160,19 @@ class Program
     end
   end
 
-  def load_view_matrix(matrix : GLM::Mat4)
+  def load_view_matrix(matrix : GLM::Matrix)
     use do
       set_uniform_matrix_4f("view", matrix)
     end
   end
 
-  def load_projection_matrix(matrix : GLM::Mat4)
+  def load_projection_matrix(matrix : GLM::Matrix)
     use do
       set_uniform_matrix_4f("projection", matrix)
     end
   end
 
-  def load_transformation(matrix : GLM::Mat4)
+  def load_transformation(matrix : GLM::Matrix)
     use do
       set_uniform_matrix_4f("model", matrix)
     end
@@ -187,5 +187,4 @@ class Program
       set_uniform_int("blend_map",4)
     end
   end
-
 end

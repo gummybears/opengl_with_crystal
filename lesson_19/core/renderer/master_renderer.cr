@@ -1,11 +1,11 @@
 require "../shaders/static_shader.cr"
 require "../shaders/terrain_shader.cr"
 require "../light.cr"
-require "../camera.cr"
 
 require "./entity_renderer.cr"
 require "./terrain_renderer.cr"
 
+require "../entities/camera.cr"
 require "../entities/terrain.cr"
 
 class MasterRenderer
@@ -13,7 +13,7 @@ class MasterRenderer
   property shader     : StaticShader
   property renderer   : EntityRenderer
   property entities   : Hash(TextureModel,Array(Entity))
-  property projection : GLM::Mat4
+  property projection : GLM::Matrix
 
   property terrain_renderer : TerrainRenderer
   property terrain_shader   : TerrainShader
@@ -40,7 +40,6 @@ class MasterRenderer
 
     @renderer         = EntityRenderer.new(@shader,@projection,settings)
     @terrain_renderer = TerrainRenderer.new(@terrain_shader,@projection,settings)
-
     @entities         = Hash(TextureModel,Array(Entity)).new
 
   end
@@ -65,50 +64,77 @@ class MasterRenderer
   # create projection matrix (perspective projection)
   #
   def create_projection_matrix(fov : Float32, aspect_ratio : Float32, near : Float32, far : Float32)
-    GLM.perspective(fov,aspect_ratio,near, far)
+    r = GLM.perspective(fov,aspect_ratio,near, far)
+    puts r.to_s
+    r
   end
 
-  #
-  # new view matrix, old matrix is wrong
-  #
-  def org_create_view_matrix(camera : Camera)
-    camera.position.y = -1.0f32 * camera.position.y
-    GLM.translation(camera.position)
-  end
-
+  ##
+  ## new view matrix, old matrix is wrong
+  ##
   def create_view_matrix(camera : Camera)
-    matrix = GLM::Mat4.identity()
-    x_axis = GLM::Vec3.new(1,0,0)
-    y_axis = GLM::Vec3.new(0,1,0)
-    pitch  = camera.pitch
-    yaw    = camera.yaw
-
-    pitch_radians = GLM.radians(pitch)
-    yaw_radians   = GLM.radians(yaw)
-
-    #
-    # rotate the matrix matrix 'pitch' radians around the x axis
-    #
-    matrix = GLM.rotate(matrix, pitch_radians, x_axis)
-
-    #
-    # rotate the matrix matrix 'yaw' radians around the x axis
-    #
-    matrix = GLM.rotate(matrix, yaw_radians, y_axis)
-
-    negative_camera_pos = GLM::Vec3.new(-1.0f32 * camera.position.x, -1.0f32 * camera.position.y, -1.0f32 * camera.position.z)
-    matrix = GLM.translate(matrix, negative_camera_pos)
-
-    return matrix
+    r = GLM.translate(camera.position)
+    return r
   end
+
+  #def new_view_matrix1(camera : Camera)
+  #  matrix = GLM::Matrix.identity()
+  #  x_axis = GLM::Vector3.new(1,0,0)
+  #  y_axis = GLM::Vector3.new(0,1,0)
+  #  pitch  = camera.pitch
+  #  yaw    = camera.yaw
+  #
+  #  pitch_radians = GLM.radians(pitch)
+  #  yaw_radians   = GLM.radians(yaw)
+  #
+  #  #
+  #  # rotate the matrix matrix 'pitch' radians around the x axis
+  #  #
+  #  matrix = GLM.rotate(matrix, pitch_radians, x_axis)
+  #
+  #  #
+  #  # rotate the matrix matrix 'yaw' radians around the x axis
+  #  #
+  #  matrix = GLM.rotate(matrix, yaw_radians, y_axis)
+  #
+  #  negative_camera_pos = GLM::Vector3.new(-1.0f32 * camera.position.x, -1.0f32 * camera.position.y, -1.0f32 * camera.position.z)
+  #  matrix = GLM.translate(matrix, negative_camera_pos)
+  #  puts "master view matrix (1)"
+  #  puts matrix.to_s
+  #
+  #  return matrix
+  #end
+  #
+  #def create_view_matrix2(camera : Camera)
+  #  #negative_camera_pos = GLM::Vector3.new(-1.0f32 * camera.position.x, -1.0f32 * camera.position.y, -1.0f32 * camera.position.z)
+  #  negative_camera_pos = camera.position
+  #  rotation = GLM.rotation(GLM::Vector3.new(camera.pitch,camera.yaw,0f32))
+  #  trans    = GLM.translate(negative_camera_pos)
+  #  scale    = GLM::Matrix.identity()
+  #
+  #  r = trans * rotation * scale
+  #
+  #  puts "master view matrix (2)"
+  #  puts r.to_s
+  #
+  #  return r
+  #end
+
+  #def new_view_matrix3(camera : Camera)
+  # camera_rotation = transform.rot.conjugate.to_rotation_matrix
+  # camera_pos = transform.pos * -1
+  # camera_translation = Matrix4f.new.init_translation(camera_pos.x, camera_pos.y, camera_pos.z)
+  # camera_rotation * camera_translation
+  #end
 
   def render(light : Light, camera : Camera)
 
     prepare()
-    # old code view_matrix = create_view_matrix(camera.position)
 
-    #puts "master renderer camera pos #{camera.position.to_s}"
     view_matrix = create_view_matrix(camera)
+    if camera.is_a?(ThirdPersonCamera)
+      view_matrix = camera.view_matrix()
+    end
 
     @shader.use do
 
@@ -117,7 +143,6 @@ class MasterRenderer
       # light
       @shader.load_light(light)
       # load view matrix
-      #@shader.load_view_matrix(camera.position)
       @shader.load_view_matrix(view_matrix)
 
       @renderer.render(@entities)
@@ -129,7 +154,6 @@ class MasterRenderer
       # light
       @terrain_shader.load_light(light)
       # load view matrix
-      #@terrain_shader.load_view_matrix(camera.position)
       @terrain_shader.load_view_matrix(view_matrix)
 
       # render terrains

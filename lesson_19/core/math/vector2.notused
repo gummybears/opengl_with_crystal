@@ -1,0 +1,276 @@
+#
+# vector2.cr
+#
+#
+require "./angle.cr"
+
+module GLM
+  class Vector2
+    property buffer  : Float32*
+
+    # Initialize a Vector2 object with a (x,y) coordinate of (0,0)
+    def initialize
+      @buffer = Pointer(Float32).malloc(2)
+      @buffer[0] = 0f32
+      @buffer[1] = 0f32
+    end
+
+    # Initialize a Vector2 object given a (x,y) coordinate
+    def initialize(x : Float32, y : Float32 )
+      @buffer = Pointer(Float32).malloc(2)
+      @buffer[0] = x
+      @buffer[1] = y
+    end
+
+    # Initialize a Vector2 object given a (x,y) coordinate
+    def initialize(x : Number, y : Number)
+      @buffer = Pointer(Float32).malloc(2)
+      @buffer[0]  = 1f32 * x
+      @buffer[1]  = 1f32 * y
+    end
+
+    # Initialize a Vector2 object given a (x,y,z) coordinate
+    def initialize(x : Number, y : Number, z : Number)
+      @buffer = Pointer(Float32).malloc(2)
+      @buffer[0] = 1.0 * x
+      @buffer[1] = 1.0 * y
+    end
+
+    def x : Float32
+      @buffer[0]
+    end
+
+    def y : Float32
+      @buffer[1]
+    end
+
+    def x=(value)
+      @buffer[0] = value
+    end
+
+    def y=(value)
+      @buffer[1] = value
+    end
+
+    # returns the length of a Vector2
+    def abs()
+      Math.sqrt(x() * x() + y() * y())
+    end
+
+    # returns the length of a Vector2
+    def length()
+      abs()
+    end
+
+    # returns the length of a Vector2 squared
+    def abs2()
+      (x() * x() + y() * y())
+    end
+
+    # returns the angle of a Vector2 (radians)
+    def angle()
+      return ::ASY.angle(x, y)
+    end
+
+    # returns the angle of a Vector2 (degrees)
+    def degrees()
+      return ::ASY.degrees(::ASY.angle(x, y))
+    end
+
+    # returns true if x() != 0 and y() != 0
+    def non_zero?() : Bool
+      return x() != 0.0 || y() != 0.0
+    end
+
+    # returns true if vector A < B
+    def <(other : Vector2)
+      return x() < other.x || (x() == other.x && y() < other.y)
+    end
+
+    # returns true if vector A == B
+    def ==(other : Vector2)
+      return (x() == other.x && y() == other.y)
+    end
+
+    # returns true if vector A != B
+    def !=(other : Vector2)
+      return (x() != other.x || y() != other.y)
+    end
+
+    # returns true if vector A <= B
+    def <=(other : Vector2)
+      flag1 = self < other
+      flag2 = self == other
+      return flag1 || flag2
+    end
+
+    # returns true if vector A >= B
+    def >=(other : Vector2)
+      flag1 = self > other
+      flag2 = self == other
+      return flag1 || flag2
+    end
+
+    # returns true if vector A > B
+    def >(other : Vector2)
+      flag = !(self <= other)
+      return flag
+    end
+
+    #
+    # returns
+    #- 1 if abs(self) < abs(other)
+    #  0 if abs(self) == abs(other)
+    #  1 if abs(self) >  abs(other)
+    #
+    def <=>(other : Vector2)
+      if abs(self) < abs(other)
+        return -1
+      end
+
+      if abs(self) == abs(other)
+        return 0
+      end
+
+      return 1
+    end
+
+    #
+    # adds two vectors A and B
+    #
+    def +(other : Vector2) : Vector2
+      return Vector2.new(x() + other.x,y() + other.y)
+    end
+
+    #
+    # subtracts two vectors A and B
+    #
+    def -(other : Vector2) : Vector2
+      return Vector2.new(x() - other.x,y() - other.y)
+    end
+
+    #
+    # multiplies two vectors A and B
+    # complex multiplication
+    #
+    def *(other : Vector2) : Vector2
+      return Vector2.new( x() * other.x - y() * other.y, x() * other.y + other.x * y())
+    end
+
+    #
+    # divides two vectors A and B
+    #
+    def /(other : Vector2) : Vector2
+
+      if other.non_zero?() == false
+        report_error("division by vector (0,0)")
+      end
+
+      zx = x()
+      zy = y()
+      w  = other
+      t  = 1.0 / (w.x * w.x + w.y * w.y)
+
+      new_x = t * (zx * w.x + zy * w.y)
+      new_y = t * (-1.0 * zx * w.y + w.x * zy)
+      p     = Vector2.new(new_x,new_y)
+      return p
+    end
+
+    #
+    # multiplies two vectors A and B
+    #
+    def *(other : Real) : Vector2
+      return Vector2.new(x() * other,y() * other)
+    end
+
+    #
+    # returns the conjutive of a Vector2
+    #
+    def conj() : Vector2
+      return Vector2.new(x(), -1.0 * y())
+    end
+
+    # method used by to_s and to_s_trimmed
+    private def fabs(r : Real) : Real
+      return r.abs
+    end
+
+    # returns the string representation of a Vector2
+    def to_s(precision = 15,truncate = false) : String
+      lx = x()
+      ly = y()
+
+      precision_x = precision
+      precision_y = precision
+      format_x    = "%.#{precision_x}f"
+      format_y    = "%.#{precision_y}f"
+
+      if truncate
+        if fabs(x) <= 1.0E-15
+          precision_x = 1
+          #format_x    = "%.#{precision_x}f"
+          format_x    = "%.1g"
+          lx = 0.0
+        else
+          format_x    = "%.#{precision_x}g"
+        end
+
+        if fabs(y) <= 1.0E-15
+          precision_y = 1
+          #format_y    = "%.#{precision_y}f"
+          format_y    = "%.1g"
+          ly = 0.0
+        else
+          format_y    = "%.#{precision_y}g"
+        end
+      end
+
+      if precision == 0
+        return sprintf("(%g,%g)",lx,ly)
+      end
+
+      #return sprintf("(%.#{precision}f,%.#{precision}f)",x,y)
+      return sprintf("(#{format_x},#{format_y})",lx,ly)
+    end
+
+    #
+    # returns a Vector3 from a Vector3
+    #
+    def to_Vector3() : Vector3
+      t = Vector3.new(x(),y(),0.0)
+      return t
+    end
+
+    #
+    # clones a vector
+    #
+    def clone() : GLM::Vector2
+      r = GLM::Vector2.new(x(),y())
+      r.depth = @depth
+      return r
+    end
+
+  end
+end
+
+
+# operator Int32 * GLM::Vector2
+struct Int32
+
+  def *(other : GLM::Vector2) : GLM::Vector2
+    x = self * other.x
+    y = self * other.y
+    return GLM::Vector2.new(x,y)
+  end
+end
+
+# operator Float32 * GLM::Vector2
+struct Float32
+
+  def *(other : GLM::Vector2) : GLM::Vector2
+    x = self * other.x
+    y = self * other.y
+    return GLM::Vector2.new(x,y)
+  end
+end

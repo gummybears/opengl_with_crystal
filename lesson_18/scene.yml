@@ -212,8 +212,8 @@ entities:
       z: 0.0
 
   player:
-    texture: res/purple.png
-    obj: res/bunny.obj
+    texture: res/player.png
+    obj: res/player.obj
     shine: 15.0
     reflectivity: 1.0
     pos:

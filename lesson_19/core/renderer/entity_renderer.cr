@@ -6,7 +6,7 @@ class EntityRenderer
   property settings : Settings
   property shader : StaticShader
 
-  def initialize(shader : StaticShader, projection : GLM::Mat4, settings : Settings)
+  def initialize(shader : StaticShader, projection : GLM::Matrix, settings : Settings)
     @settings = settings
     @shader   = shader
     @shader.load_projection_matrix(projection)
@@ -81,10 +81,10 @@ class EntityRenderer
     enable_culling()
   end
 
+  #
+  # load model matrix
+  #
   def prepare_instance(entity : Entity)
-    #
-    # load model matrix
-    #
     model_matrix = entity.create_model_matrix()
     @shader.load_transformation(model_matrix)
   end

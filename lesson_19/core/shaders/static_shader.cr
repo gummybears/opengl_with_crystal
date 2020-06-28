@@ -1,4 +1,3 @@
-require "../math/**"
 require "./program.cr"
 
 class StaticShader < Program

@@ -1,0 +1,158 @@
+#
+# transform3.cr
+#
+require "./alias.cr"
+require "./for_macro.cr"
+require "./vector3.cr"
+require "./projection.cr"
+
+module GLM
+  class Transform3
+
+    property t : Array(Array(Float32))
+
+    def allocate() : Array(Array(Float32))
+      dim = 4
+      @t = Array.new(dim) do |i|
+        Array.new(dim) do |j|
+          0f32
+        end
+      end
+    end
+
+    def initialize
+      @t = allocate()
+
+      @t[0][0] = 1f32
+      @t[0][1] = 0f32
+      @t[0][2] = 0f32
+      @t[0][3] = 0f32
+
+      @t[1][0] = 0f32
+      @t[1][1] = 1f32
+      @t[1][2] = 0f32
+      @t[1][3] = 0f32
+
+      @t[2][0] = 0f32
+      @t[2][1] = 0f32
+      @t[2][2] = 1f32
+      @t[2][3] = 0f32
+
+      @t[3][0] = 0f32
+      @t[3][1] = 0f32
+      @t[3][2] = 0f32
+      @t[3][3] = 1f32
+    end
+
+    #
+    # added 21-03-2020
+    #
+    def initialize(t : Array(Array(Float32)) )
+      @t = t.dup
+    end
+
+    def identity4() : Transform3
+      trans = Transform3.new
+      return trans
+    end
+
+    def get_transform3()
+      return @t
+    end
+
+    # Transform3 = Transform3 * Transform3
+    def *(other : Transform3) : Transform3
+      localt = Transform3.new
+      localt = Transform3.new
+      for i = 0, i < 4, i = i + 1 do
+        for j = 0, j < 4, j = j + 1 do
+          localt.t[i][j] = 0.0
+        end
+      end
+
+      for i = 0, i < 4, i = i + 1 do
+        for j = 0, j < 4, j = j + 1 do
+          for k = 0, k < 4, k = k + 1 do
+            localt.t[i][j] = localt.t[i][j] + @t[i][k] * other.t[k][j]
+          end
+        end
+      end
+
+      return localt
+    end
+
+    # Array(Array(Float32)) = Transform3 * Array(Array(Float32))
+    def *(other : Array(Array(Float32)) ) : Array(Array(Float32))
+      localt = Transform3.new
+      for i = 0, i < 4, i = i + 1 do
+        for j = 0, j < 4, j = j + 1 do
+          localt.t[i][j] = 0.0
+        end
+      end
+
+      for i = 0, i < 4, i = i + 1 do
+        for j = 0, j < 4, j = j + 1 do
+          for k = 0, k < 4, k = k + 1 do
+            # note : other is an array
+            localt.t[i][j] = localt.t[i][j] + @t[i][k] * other[k][j]
+          end
+        end
+      end
+
+      # return array
+      return localt.t
+    end
+
+    #
+    # applies the operation Transform3 * Vector3 => Vector3
+    #
+    def * (z : Vector3) : Vector3
+      x = @t[0][0] * z.x + @t[0][1] * z.y + @t[0][2] * z.z + @t[0][3] * 1.0
+      y = @t[1][0] * z.x + @t[1][1] * z.y + @t[1][2] * z.z + @t[1][3] * 1.0
+      z = @t[2][0] * z.x + @t[2][1] * z.y + @t[2][2] * z.z + @t[2][3] * 1.0
+      return Vector3.new(x,y,z)
+    end
+
+
+    def * (f : Quad) : Quad
+      x = @t[0][0] * f.x + @t[0][1] * f.y + @t[0][2] * f.z + @t[0][3] * f.w
+      y = @t[1][0] * f.x + @t[1][1] * f.y + @t[1][2] * f.z + @t[1][3] * f.w
+      z = @t[2][0] * f.x + @t[2][1] * f.y + @t[2][2] * f.z + @t[2][3] * f.w
+      w = @t[3][0] * f.x + @t[3][1] * f.y + @t[3][2] * f.z + @t[3][3] * f.w
+      return Quad.new(x,y,z,w)
+    end
+
+    #
+    # applies the operation Transform3 * Projection => Transform3
+    #
+    def *(other : GLM::Projection) : GLM::Projection
+
+      transform3 = self
+      proj       = other
+
+      if proj.absolute == false
+        proj.camera = transform3 * proj.camera
+        target      = proj.target
+        proj.target = transform3 * proj.target
+
+        if proj.infinity
+          proj.normal = transform3 * ( target + proj.normal) - proj.target
+        else
+          proj.normal = other.vector()
+        end
+
+        proj.calculate()
+      end
+
+      return proj
+    end
+
+    def print(text : String = "", precision : Int32 = 2,with_row : Bool = false)
+      if text != ""
+        puts
+        puts text
+      end
+      print(@t,precision,with_row)
+    end
+  end
+end

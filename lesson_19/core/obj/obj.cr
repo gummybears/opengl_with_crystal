@@ -10,9 +10,9 @@ NOINDEX = -1
 class OBJ
   property filename            : String = ""
   property error               : String = ""
-  property normals             : Array(GLM::Vec3)
-  property vertices            : Array(GLM::Vec4)
-  property texture_coordinates : Array(GLM::Vec3)
+  property normals             : Array(GLM::Vector3)
+  property vertices            : Array(GLM::Vector3)
+  property texture_coordinates : Array(GLM::Vector3)
   property faces               : Array(WaveFront::Face)
 
   # used to convert OBJ data to OpenGL arrays
@@ -22,9 +22,9 @@ class OBJ
   property indices_arr         : Array(Int32)
 
   def initialize
-    @normals             = [] of GLM::Vec3
-    @vertices            = [] of GLM::Vec4
-    @texture_coordinates = [] of GLM::Vec3
+    @normals             = [] of GLM::Vector3
+    @vertices            = [] of GLM::Vector3
+    @texture_coordinates = [] of GLM::Vector3
     @faces               = [] of WaveFront::Face
 
     @vertices_arr        = [] of Float32
@@ -134,13 +134,13 @@ class OBJ
           x = components[0].to_f32
           y = components[1].to_f32
           z = components[2].to_f32
-          w = 0.0f32
-          if components.size() == 4
-            w = components[3].to_f32
-          else
-            w = 1.0f32
-          end
-          @vertices << GLM::Vec4.new(x,y,z,w)
+          #w = 0.0f32
+          #if components.size() == 4
+          #  w = components[3].to_f32
+          #else
+          #  w = 1.0f32
+          #end
+          @vertices << GLM::Vector3.new(x,y,z)
 
         when "vt"
 
@@ -160,7 +160,7 @@ class OBJ
             w = components[2].to_f32
           end
 
-          @texture_coordinates << GLM::Vec3.new(u,v,w)
+          @texture_coordinates << GLM::Vector3.new(u,v,w)
 
         when "vn"
           if components.size() != 3
@@ -170,7 +170,7 @@ class OBJ
           x = components[0].to_f32
           y = components[1].to_f32
           z = components[2].to_f32
-          @normals << GLM::Vec3.new(x,y,z)
+          @normals << GLM::Vector3.new(x,y,z)
 
         when "vp"
 

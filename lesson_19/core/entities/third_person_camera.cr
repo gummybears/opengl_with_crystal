@@ -1,35 +1,39 @@
-require "./math/**"
+#require "./math/**"
 
 MIN_ZOOM  = 1f32
 MAX_ZOOM  = 100f32
 MIN_PITCH = 0f32
 MAX_PITCH = 89.999f32
 
-class Camera
-  property position : GLM::Vec3
-  property pitch    : Float32
-  property yaw      : Float32
-  property roll     : Float32
+class ThirdPersonCamera < Camera
+
   property player   : Player
   property distance_from_player : Float32 = 50.0f32
   property angle_around_player  : Float32 = 0.0f32
 
+  property prev_mouse_position  : GLM::Vector2
 
   def initialize(player : Player)
-    @position = GLM::Vec3.new(0f32,0f32,0f32)
-    @pitch    = 20.0f32
-    @yaw      = 0.0f32
-    @roll     = 0.0f32
-    @player   = player
+    position = GLM::Vector3.new(0f32,0f32,0f32)
+    pitch    = 20.0f32
+    yaw      = 0.0f32
+    roll     = 0.0f32
 
-    horizontal_distance = calculate_horizontal_distance()
-    vertical_distance   = calculate_vertical_distance()
+    super(position,pitch,yaw,roll)
+
+    @player   = player
+    @prev_mouse_position = GLM::Vector2.new(0f32,0f32)
+    horizontal_distance  = calculate_horizontal_distance()
+    vertical_distance    = calculate_vertical_distance()
 
     @position = calculate_camera_position(horizontal_distance,vertical_distance)
 
   end
 
   def move(display : Display)
+
+    @prev_mouse_position = GLM::Vector2.new(display.window.cursor.position[:x].to_f32,display.window.cursor.position[:y].to_f32)
+
     calculate_zoom(display)
     calculate_pitch(display)
     calculate_angle_around_player(display)
@@ -37,18 +41,14 @@ class Camera
     horizontal_distance = calculate_horizontal_distance()
     vertical_distance   = calculate_vertical_distance()
 
-    #puts "horz distance #{horizontal_distance} vert distance #{vertical_distance}"
-
     @position = calculate_camera_position(horizontal_distance,vertical_distance)
 
     # calculate yaw angle
     @yaw = 180.0f32 - (@player.rotY - @angle_around_player)
 
-    #puts "camera position #{@position.to_s}"
-
   end
 
-  def calculate_camera_position(horizontal_distance : Float32, vertical_distance : Float32) : GLM::Vec3
+  def calculate_camera_position(horizontal_distance : Float32, vertical_distance : Float32) : GLM::Vector3
 
     theta      = @player.rotY + @angle_around_player
     offset_x   = horizontal_distance + Math.sin(GLM.radians(theta))
@@ -74,7 +74,7 @@ class Camera
   def calculate_zoom(display : Display)
 
     offset     = display.scroll_offset
-    zoom_level = offset.y.to_f32 * 0.02f32
+    zoom_level = offset.y.to_f32 * 0.2f32
 
     @distance_from_player = @distance_from_player - zoom_level
     if @distance_from_player < MIN_ZOOM
@@ -116,5 +116,10 @@ class Camera
       angle_change = display.mouse_dx #* 0.3f32
       @angle_around_player = @angle_around_player - angle_change
     end
+  end
+
+  def view_matrix() : GLM::Matrix
+    up  = GLM::Vector3.new(0f32, 1f32, 0f32)
+    view_matrix = GLM.look_at(@position,@player.position,up)
   end
 end
