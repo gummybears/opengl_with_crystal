@@ -14,7 +14,6 @@ class Display
   property scrolling     : Bool = false
   property mouse_dx      : Float32
   property mouse_dy      : Float32
-  property last_time     : Float64
   property elapsed       : Float64
 
   property mouse_left    : Int32 = -1
@@ -26,7 +25,6 @@ class Display
     @mouse_dx      = 0.0f32
     @mouse_dy      = 0.0f32
     @elapsed       = 0.0f32
-    @last_time     = 0.0
     @settings      = settings
 
     #
@@ -69,7 +67,7 @@ class Display
       CrystGLFW.poll_events
 
       # get current time
-      @last_time = LibGLFW.get_time
+      last_time = LibGLFW.get_time
 
       process_keys()
       process_mouse()
@@ -101,7 +99,7 @@ class Display
       # get the current time
       #
       current_time = LibGLFW.get_time
-      @elapsed = 1.0 * (current_time - @last_time)
+      @elapsed = 1.0 * (current_time - last_time)
 
     end
 
