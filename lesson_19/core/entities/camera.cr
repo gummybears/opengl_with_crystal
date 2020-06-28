@@ -26,6 +26,11 @@ class Camera
     @roll     = 0.0f32
   end
 
+  def view_matrix() : GLM::Matrix
+    r = GLM.translate(@position)
+    return r
+  end
+
   def move(display : Display)
   end
 

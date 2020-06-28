@@ -69,72 +69,15 @@ class MasterRenderer
     r
   end
 
-  ##
-  ## new view matrix, old matrix is wrong
-  ##
   def create_view_matrix(camera : Camera)
     r = GLM.translate(camera.position)
     return r
   end
 
-  #def new_view_matrix1(camera : Camera)
-  #  matrix = GLM::Matrix.identity()
-  #  x_axis = GLM::Vector3.new(1,0,0)
-  #  y_axis = GLM::Vector3.new(0,1,0)
-  #  pitch  = camera.pitch
-  #  yaw    = camera.yaw
-  #
-  #  pitch_radians = GLM.radians(pitch)
-  #  yaw_radians   = GLM.radians(yaw)
-  #
-  #  #
-  #  # rotate the matrix matrix 'pitch' radians around the x axis
-  #  #
-  #  matrix = GLM.rotate(matrix, pitch_radians, x_axis)
-  #
-  #  #
-  #  # rotate the matrix matrix 'yaw' radians around the x axis
-  #  #
-  #  matrix = GLM.rotate(matrix, yaw_radians, y_axis)
-  #
-  #  negative_camera_pos = GLM::Vector3.new(-1.0f32 * camera.position.x, -1.0f32 * camera.position.y, -1.0f32 * camera.position.z)
-  #  matrix = GLM.translate(matrix, negative_camera_pos)
-  #  puts "master view matrix (1)"
-  #  puts matrix.to_s
-  #
-  #  return matrix
-  #end
-  #
-  #def create_view_matrix2(camera : Camera)
-  #  #negative_camera_pos = GLM::Vector3.new(-1.0f32 * camera.position.x, -1.0f32 * camera.position.y, -1.0f32 * camera.position.z)
-  #  negative_camera_pos = camera.position
-  #  rotation = GLM.rotation(GLM::Vector3.new(camera.pitch,camera.yaw,0f32))
-  #  trans    = GLM.translate(negative_camera_pos)
-  #  scale    = GLM::Matrix.identity()
-  #
-  #  r = trans * rotation * scale
-  #
-  #  puts "master view matrix (2)"
-  #  puts r.to_s
-  #
-  #  return r
-  #end
-
-  #def new_view_matrix3(camera : Camera)
-  # camera_rotation = transform.rot.conjugate.to_rotation_matrix
-  # camera_pos = transform.pos * -1
-  # camera_translation = Matrix4f.new.init_translation(camera_pos.x, camera_pos.y, camera_pos.z)
-  # camera_rotation * camera_translation
-  #end
-
   def render(light : Light, camera : Camera)
 
     prepare()
-
-    view_matrix = create_view_matrix(camera)
-    if camera.is_a?(ThirdPersonCamera)
-      view_matrix = camera.view_matrix()
-    end
+    view_matrix = camera.view_matrix()
 
     @shader.use do
 

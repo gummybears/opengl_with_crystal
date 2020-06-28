@@ -15,6 +15,8 @@ class Player < Entity
 
   property is_in_air          : Bool = false
 
+  property offset_y           : Float32
+
   def initialize(model : TextureModel, position : GLM::Vector3, rotation : GLM::Vector3, scale : GLM::Vector3, angle : Float32 = 0.0f32)
     super(model,position,rotation,scale,angle)
 
@@ -26,6 +28,8 @@ class Player < Entity
     @jump_power         = 30f32
     @upwards_speed      = 0f32
     @terrain_height     = 0f32
+
+    @offset_y           = 5f32
   end
 
   def move(display : Display)
