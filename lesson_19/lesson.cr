@@ -121,9 +121,9 @@ def lesson(configfile : String)
     terrain_size = scene.size("terrain")
 
     terrain1 = Terrain.new(0f32,0f32,      vertex_count,terrain_size, texture_pack, blend_map)
-    terrain2 = Terrain.new(0f32,0.8f32,    vertex_count,terrain_size, texture_pack, blend_map)
-    terrain3 = Terrain.new(-0.8f32,0f32,   vertex_count,terrain_size, texture_pack, blend_map)
-    terrain4 = Terrain.new(-0.8f32,0.8f32, vertex_count,terrain_size, texture_pack, blend_map)
+    terrain2 = Terrain.new(0f32,1f32,    vertex_count,terrain_size, texture_pack, blend_map)
+    terrain3 = Terrain.new(-1f32,0f32,   vertex_count,terrain_size, texture_pack, blend_map)
+    terrain4 = Terrain.new(-1f32,1f32, vertex_count,terrain_size, texture_pack, blend_map)
     terrains << terrain1
     terrains << terrain2
     terrains << terrain3

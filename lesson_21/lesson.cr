@@ -131,12 +131,12 @@ def lesson(configfile : String)
     res5 = scene.model_texture("blend_map")
     blend_map = TerrainTexture.new(ModelTexture.load(res5))
 
-    terrains << Terrain.new(0f32,-1f32,  texture_pack, blend_map, "res/heightmap.png")
-    terrains << Terrain.new(0f32,0f32,   texture_pack, blend_map, "res/heightmap.png")
-    terrains << Terrain.new(0f32,1f32,   texture_pack, blend_map, "res/heightmap.png")
-    terrains << Terrain.new(-1f32,-1f32, texture_pack, blend_map, "res/heightmap.png")
-    terrains << Terrain.new(-1f32,0f32,  texture_pack, blend_map, "res/heightmap.png")
-    terrains << Terrain.new(-1f32,1f32,  texture_pack, blend_map, "res/heightmap.png")
+    terrains << TerrainHeightMap.new(0f32,-1f32,  texture_pack, blend_map, "res/heightmap.png")
+    terrains << TerrainHeightMap.new(0f32,0f32,   texture_pack, blend_map, "res/heightmap.png")
+    terrains << TerrainHeightMap.new(0f32,1f32,   texture_pack, blend_map, "res/heightmap.png")
+    terrains << TerrainHeightMap.new(-1f32,-1f32, texture_pack, blend_map, "res/heightmap.png")
+    terrains << TerrainHeightMap.new(-1f32,0f32,  texture_pack, blend_map, "res/heightmap.png")
+    terrains << TerrainHeightMap.new(-1f32,1f32,  texture_pack, blend_map, "res/heightmap.png")
 
     #
     # use the bunny model to simulate a player

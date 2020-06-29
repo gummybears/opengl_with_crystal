@@ -1,0 +1,249 @@
+
+display:
+  screen:
+    title  : OpenGL lesson 22, terrain collision detection
+    width  : 1920.0
+    height : 1080.0
+    fov    : 70.0
+    near   : 0.1
+    far    : 1000.0
+  background:
+    color:
+      r : 128
+      g : 128
+      b : 128
+      a : 1
+
+fog:
+  density: 0.0035
+  gradient: 5.0
+
+camera:
+  x : 0.0
+  y : -10.0
+  z : 30.0
+
+light:
+  pos:
+    x: 100.0
+    y: 100.0
+    z: -100.0
+  color:
+    r : 1.0
+    g : 1.0
+    b : 1.0
+    a : 1.0
+
+entities:
+
+  box:
+    texture: res/box.png
+    obj: res/box.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 5.0
+      y: 5.0
+      z: 5.0
+
+  tree:
+    texture: res/tree.png
+    obj: res/tree.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 5.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 5.0
+      y: 5.0
+      z: 5.0
+
+  other_tree:
+    texture: res/lowPolyTree.png
+    obj: res/lowPolyTree.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 5.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 5.0
+      y: 5.0
+      z: 5.0
+
+  terrain:
+    texture: res/grass.png
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    shine: 1.0
+    reflectivity: 1.0
+    vertex_count: 100
+    size: 800
+
+  fern:
+    texture: res/fern.png
+    obj: res/fern.obj
+    shine: 5.0
+    reflectivity: 1.0
+    pos:
+      x: -12.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: -24.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  grass:
+    texture: res/grassTexture.png
+    obj: res/grassModel.obj
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  grassy:
+    texture: res/grassy2.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  dirt:
+    texture: res/mud.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  pink_flowers:
+    texture: res/grassFlowers.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  path:
+    texture: res/path.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  blend_map:
+    texture: res/blendMap.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  player:
+    texture: res/player.png
+    obj: res/player.obj
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: -150.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0

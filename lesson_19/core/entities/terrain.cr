@@ -23,16 +23,15 @@ class Terrain
     textures = [] of Float32
     indices  = [] of Int32
 
-    dx = (vertex_count-1).to_f32
-    dy = 0.0f32
-    dz = dx
+    0.upto(vertex_count - 1) do |i|
+      0.upto(vertex_count - 1) do |j|
 
-    (0.. vertex_count - 1).each do |i|
-      (0.. vertex_count - 1).each do |j|
+        vertices << (j / (vertex_count - 1) * size).to_f32
+        vertices << 0f32
+        vertices << -(i / (vertex_count - 1) * size).to_f32
 
-        vertices <<  (j/dx).to_f32 * size
-        vertices <<  dy
-        vertices <<  -(i/dz).to_f32 * size
+        textures << j.to_f32 / (vertex_count - 1)
+        textures << i.to_f32 / (vertex_count - 1)
 
         #
         # normal is in the y direction (up)
@@ -40,27 +39,24 @@ class Terrain
         normals << 0.0f32
         normals << 1.0f32
         normals << 0.0f32
-
-        textures << (j / dx).to_f32
-        textures << (i / dx).to_f32
       end
     end
 
-    (0..vertex_count - 1).each do |i|
-      (0..vertex_count - 1).each do |j|
-
-        top_left     = (i * vertex_count) + j
+    0.upto(vertex_count - 1) do |gz|
+      0.upto(vertex_count - 1) do |gx|
+        top_left     = (gz * vertex_count) + gx
         top_right    = top_left + 1
-        bottom_left  = ((i + 1) * vertex_count) + j
+        bottom_left  = ((gz + 1)*vertex_count) + gx
         bottom_right = bottom_left + 1
+
         indices << top_left
         indices << bottom_left
         indices << top_right
         indices << top_right
         indices << bottom_left
         indices << bottom_right
-      end # each j
-    end # each i
+      end
+    end
 
     r = ModelData.new(vertices,textures,normals,indices)
     return r
