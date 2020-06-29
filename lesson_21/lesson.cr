@@ -139,7 +139,7 @@ def lesson(configfile : String)
     terrains << TerrainHeightMap.new(-1f32,1f32,  texture_pack, blend_map, "res/heightmap.png")
 
     #
-    # use the bunny model to simulate a player
+    # Player model
     #
     player = Player.new(player_model,scene.model_position("player"),scene.model_rotation("player"),scene.model_scale("player"))
     player.name = "player"
