@@ -176,19 +176,23 @@ class Model
   def self.load(positions : Array(Float32)) : Model
 
     vao_id = create_vao
-
     vbos   = [] of LibGL::UInt
+
+    #
     # store the 2D coordinate in attribute 0
-    vbos <<  store_data_in_attribute_list(0, 2, positions)
+    #
+    vbos << store_data_in_attribute_list(0, 2, positions)
 
     unbind_vao
 
     #
     # Note:
-    # one of the vbos is for the indices, so we don't need an attribute array for that.
+    # there is only 1 attribute array
+    # and 4 vertices for a gui quad
     #
-    nr_attrib_arrays = vbos.size - 1
-    Model.new(vao_id, vbos, (positions.size()/2).to_i , nr_attrib_arrays)
+    nr_attrib_arrays = 1
+    nr_vertices      = (positions.size()/2).to_i
+    Model.new(vao_id, vbos, nr_vertices, nr_attrib_arrays)
   end
 
 end

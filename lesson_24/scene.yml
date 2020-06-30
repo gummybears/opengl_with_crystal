@@ -68,9 +68,9 @@ entities:
       y: 0.0
       z: 0.0
     scale:
-      x: 5.0
-      y: 5.0
-      z: 5.0
+      x: 10.0
+      y: 10.0
+      z: 10.0
 
   other_tree:
     texture: res/lowPolyTree.png
@@ -86,9 +86,9 @@ entities:
       y: 0.0
       z: 0.0
     scale:
-      x: 5.0
-      y: 5.0
-      z: 5.0
+      x: 2.0
+      y: 2.0
+      z: 2.0
 
   terrain:
     texture: res/grass.png

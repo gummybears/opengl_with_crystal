@@ -8,4 +8,10 @@ class GuiShader < Program
   def initialize()
     super(VERTEX_FILE,FRAGMENT_FILE)
   end
+
+  def bind_attributes()
+    bind_attribute(0,"position")
+    #bind_attribute(1,"textureCoords")
+  end
+
 end

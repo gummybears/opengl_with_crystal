@@ -8,7 +8,6 @@ class Entity
   property rotY     : Float32
   property rotZ     : Float32
   property scale    : GLM::Vector3
-  #property angle    : Float32
 
   property name     : String
 
@@ -24,26 +23,24 @@ class Entity
   #
   property texture_index : Int32 = 0
 
-  def initialize(model : TextureModel, position : GLM::Vector3, rotation : GLM::Vector3, scale : GLM::Vector3) #, angle : Float32 = 0.0f32)
+  def initialize(model : TextureModel, position : GLM::Vector3, rotation : GLM::Vector3, scale : GLM::Vector3)
     @model    = model
     @position = position
     @scale    = scale
     @rotX     = rotation.x
     @rotY     = rotation.y
     @rotZ     = rotation.z
-    #@angle    = angle
     @name     = "empty"
   end
 
   # constructor to allow you which texture to use
-  def initialize(model : TextureModel, index : Int32, position : GLM::Vector3, rotation : GLM::Vector3, scale : GLM::Vector3) #, angle : Float32 = 0.0f32)
+  def initialize(model : TextureModel, index : Int32, position : GLM::Vector3, rotation : GLM::Vector3, scale : GLM::Vector3)
     @model    = model
     @position = position
     @scale    = scale
     @rotX     = rotation.x
     @rotY     = rotation.y
     @rotZ     = rotation.z
-    #@angle    = angle
     @name     = "empty"
 
     @texture_index = index

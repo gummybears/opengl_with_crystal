@@ -58,20 +58,18 @@ class Game
     # set the cursor input mode, see https://www.glfw.org/docs/3.2/group__input.html#gaa92336e173da9c8834558b54ee80563b
     #
     @window.cursor.disable
-
-
   end
 
   def load_model_with_texture(name : String, has_transparency : Bool, use_fake_lighting : Bool) : TextureModel
 
-    texture_file = config.model_texture(name)
+    texture_file  = @config.model_texture(name)
 
     model_data    = ModelData.from_obj(@config.model_object(name))
     model         = Model.load(model_data)
     texture_model = TextureModel.new(model,texture_file)
 
-    texture_model.shine_damper      = config.model_shine(name)
-    texture_model.reflectivity      = config.model_reflectivity(name)
+    texture_model.shine_damper      = @config.model_shine(name)
+    texture_model.reflectivity      = @config.model_reflectivity(name)
     texture_model.has_transparency  = has_transparency
     texture_model.use_fake_lighting = use_fake_lighting
     texture_model.name = name
@@ -93,8 +91,8 @@ class Game
     texture_model = TextureModel.new(model,texture_atlas)
     texture_model.number_of_rows = number_of_rows
 
-    texture_model.shine_damper  = config.model_shine(name)
-    texture_model.reflectivity  = config.model_reflectivity(name)
+    texture_model.shine_damper      = @config.model_shine(name)
+    texture_model.reflectivity      = @config.model_reflectivity(name)
     texture_model.has_transparency  = has_transparency
     texture_model.use_fake_lighting = use_fake_lighting
     texture_model.name = name
@@ -195,7 +193,7 @@ class Game
 
   def get_random_pos() : GLM::Vector3
 
-    w = 400.0f32
+    w = 800.0f32
 
     rand = Random.rand(-w..w).to_f32
 
@@ -218,7 +216,7 @@ class Game
     rotation = @config.model_rotation(name)
     scale    = @config.model_scale(name)
 
-    @entities << Entity.new(@models["tree"],position,rotation,scale)
+    @entities << Entity.new(@models[name],position,rotation,scale)
 
   end
 
@@ -242,19 +240,31 @@ class Game
 
     end
 
-    1.upto(5) do |i|
+    1.upto(10) do |i|
       position_model_in_world("box")
     end
   end
 
   def setup_window()
-    # settings = @config.settings()
 
     @scroll_offset = GLM::Vector2.new(0f32,0f32)
     @mouse_dx      = 0.0f32
     @mouse_dy      = 0.0f32
     @elapsed       = 0.0f32
 
+  end
+
+  #
+  # GUI textures
+  #
+  def setup_guis
+
+    w = @config.settings.width
+    h = config.settings.height
+
+    texture_id = ModelTexture.load("res/socuwan.png")
+    gui = GuiTexture.new(texture_id, GLM::Vector2.new(0.5f32, 0.5f32), GLM::Vector2.new(0.25f32, 0.25f32))
+    @guis << gui
   end
 
   #
@@ -270,6 +280,7 @@ class Game
     @entities << player
 
     setup_third_person_camera(player)
+    setup_guis()
 
     setup_world_scene()
     setup_window()
@@ -305,6 +316,11 @@ class Game
     end
   end
 
+  #
+  # processing of mouse events is
+  # basic, just to make things work
+  # need to be improved
+  #
   def process_mouse()
 
     # get current time
@@ -322,7 +338,9 @@ class Game
       @mouse_right   = -1
     end
 
+    #
     # reset scrolling
+    #
     if @scrolling == false
       @scroll_offset = GLM::Vector2.new(0f32,0f32)
     end
@@ -348,7 +366,9 @@ class Game
 
     @window.on_cursor_move do |event|
 
+      #
       # stop scrolling
+      #
       @scrolling = false
       new_cursor_pos = event.position
       @mouse_dx = (new_cursor_pos[:x] - old_cursor_pos[:x]).to_f32
@@ -361,7 +381,7 @@ class Game
     #
     # gui and master renderer
     #
-    settings = @config.settings
+    settings        = @config.settings
     gui_renderer    = GuiRenderer.new(settings)
     master_renderer = MasterRenderer.new(settings)
 
@@ -392,7 +412,6 @@ class Game
           # need to find the terrain the player is standing on
           # for now take the first terrain as test
           #
-
           terrain_index = player_in_which_terrain(@terrains,player)
           terrain = terrains[terrain_index]
           player.move(self,terrain)
@@ -406,12 +425,16 @@ class Game
       end
 
       #
+      # we only have 1 light (at the moment)
+      #
+      master_renderer.render(@lights[0],@camera)
+
+      #
       # render the GUI's
       #
       gui_renderer.render(@guis)
 
-      # we only have 1 light (at the moment)
-      master_renderer.render(@lights[0],@camera)
+
       @window.swap_buffers
 
       #
