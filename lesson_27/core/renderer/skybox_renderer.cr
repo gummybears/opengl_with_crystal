@@ -43,7 +43,6 @@ class SkyBoxRenderer
     @shader.load_projection_matrix(projection)
   end
 
-
   def render(camera : Camera)
 
     #
