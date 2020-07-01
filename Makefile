@@ -27,4 +27,5 @@ lessons:
 	cd lesson_24; ./build.sh
 	cd lesson_25; ./build.sh
 	cd lesson_26; ./build.sh
+	cd lesson_27; ./build.sh
 
