@@ -121,9 +121,10 @@ class Bitmap
   # Note:
   # Order of the loop is important
   #
-  def load_bitmap(file_path : String)
+  def load_bitmap(filename : String)
 
-    canvas = StumpyPNG.read(file_path)
+    filenotfound(filename)
+    canvas = StumpyPNG.read(filename)
 
     # create bitmap
     @num_channels = 4

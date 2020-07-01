@@ -9,14 +9,18 @@ require "../entities/camera.cr"
 require "../entities/terrain.cr"
 
 class MasterRenderer
-  property settings   : Settings
-  property shader     : StaticShader
-  property renderer   : EntityRenderer
-  property entities   : Hash(TextureModel,Array(Entity))
-  property projection : GLM::Matrix
+  property settings         : Settings
 
-  property terrain_renderer : TerrainRenderer
+  property shader           : StaticShader
   property terrain_shader   : TerrainShader
+
+  property entities         : Hash(TextureModel,Array(Entity))
+  property projection       : GLM::Matrix
+
+  property renderer         : EntityRenderer
+  property terrain_renderer : TerrainRenderer
+  property skybox_renderer  : SkyBoxRenderer
+
   property terrains         : Array(Terrain)
 
   def initialize(settings : Settings)
@@ -51,7 +55,7 @@ class MasterRenderer
     #
     # skybox renderer
     #
-    @renderer         = SkyBoxRenderer.new(@projection,settings)
+    @skybox_renderer  = SkyBoxRenderer.new(@projection,settings)
 
     #
     # entities (hash of texture models)
@@ -117,6 +121,12 @@ class MasterRenderer
       # render terrains
       @terrain_renderer.render(@terrains)
     end
+
+    #
+    # render the sky box
+    # Note: need to be rendered last
+    #
+    @skybox_renderer.render(camera)
 
     #
     # Important

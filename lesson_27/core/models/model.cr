@@ -174,7 +174,7 @@ class Model
   # load positions of the GUI's
   # or the vertices of a cube
   #
-  def self.load(positions : Array(Float32), dimension : Int32) : Model
+  def self.load(positions : Array(Float32), dimensions : Int32) : Model
 
     vao_id = create_vao
     vbos   = [] of LibGL::UInt
@@ -182,7 +182,7 @@ class Model
     #
     # store the 2D coordinate in attribute 0
     #
-    vbos << store_data_in_attribute_list(0, dimension, positions)
+    vbos << store_data_in_attribute_list(0, dimensions, positions)
 
     unbind_vao
 
@@ -191,7 +191,7 @@ class Model
     # there is only 1 attribute array
     #
     nr_attrib_arrays = 1
-    nr_vertices      = (positions.size()/dimension).to_i
+    nr_vertices      = (positions.size()/dimensions).to_i
     Model.new(vao_id, vbos, nr_vertices, nr_attrib_arrays)
   end
 

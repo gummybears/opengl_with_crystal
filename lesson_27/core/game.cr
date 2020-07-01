@@ -84,7 +84,7 @@ class Game
     #
     # load texture atlas
     #
-    texture_atlas = ModelTexture.load(image)
+    texture_atlas = Texture.load(image)
 
     model_data    = ModelData.from_obj(@config.model_object(name))
     model         = Model.load(model_data)
@@ -110,7 +110,7 @@ class Game
     models.each do |model|
 
       resource = @config.model_texture(model)
-      terrain_texture = TerrainTexture.new(ModelTexture.load(resource))
+      terrain_texture = TerrainTexture.new(Texture.load(resource))
 
       terrain_textures << terrain_texture
     end
@@ -124,7 +124,7 @@ class Game
     # Terrain texture
     #
     resource = config.model_texture(blend_map)
-    blend_map = TerrainTexture.new(ModelTexture.load(resource))
+    blend_map = TerrainTexture.new(Texture.load(resource))
 
     return {texture_pack, blend_map}
   end
@@ -350,7 +350,7 @@ class Game
     w = @config.settings.width
     h = config.settings.height
 
-    texture_id = ModelTexture.load("res/png/socuwan.png")
+    texture_id = Texture.load("res/png/socuwan.png")
     gui = GuiTexture.new(texture_id, GLM::Vector2.new(0.5f32, 0.5f32), GLM::Vector2.new(0.25f32, 0.25f32))
     @guis << gui
   end
@@ -489,6 +489,10 @@ class Game
     # gui and master renderer
     #
     settings        = @config.settings
+
+    #
+    # renderers
+    #
     gui_renderer    = GuiRenderer.new(settings)
     master_renderer = MasterRenderer.new(settings)
 
@@ -542,7 +546,6 @@ class Game
       gui_renderer.render(@guis)
 
       @window.swap_buffers
-
       #
       # get the current time
       #

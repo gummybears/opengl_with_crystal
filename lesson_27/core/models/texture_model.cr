@@ -1,5 +1,5 @@
 require "./model.cr"
-require "../textures/model_texture.cr"
+require "../textures/texture.cr"
 
 class TextureModel < Model
 
@@ -9,7 +9,7 @@ class TextureModel < Model
     filenotfound(filename)
 
     super(model.vao_id,model.vbos,model.nr_vertices,model.nr_attrib_arrays)
-    @id = ModelTexture.load(filename)
+    @id = Texture.load(filename)
   end
 
   def initialize(model : Model, id : UInt32)
@@ -17,11 +17,11 @@ class TextureModel < Model
     @id = id
   end
 
-  def draw()
-    bind()
-    LibGL.bind_texture(LibGL::TEXTURE_2D, @id)
-    LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
-    unbind()
-  end
+  # not used def draw()
+  # not used   bind()
+  # not used   LibGL.bind_texture(LibGL::TEXTURE_2D, @id)
+  # not used   LibGL.draw_elements(LibGL::TRIANGLES, @nr_vertices, LibGL::UNSIGNED_INT, Pointer(Void).new(0))
+  # not used   unbind()
+  # not used end
 
 end

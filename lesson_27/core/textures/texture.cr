@@ -1,6 +1,6 @@
 require "./bitmap.cr"
 
-class ModelTexture
+class Texture
 
   property id : UInt32
   def initialize(id : UInt32)
@@ -20,7 +20,7 @@ class ModelTexture
     # best results with textures
     # when the width/height are modulo 2
     #
-    modulo_width = bitmap.width % 2
+    modulo_width  = bitmap.width % 2
     modulo_height = bitmap.height % 2
     if modulo_width != 0 || modulo_height != 0
       puts "warning : texture bitmap width/height is not modulo 2"
@@ -67,6 +67,50 @@ class ModelTexture
     end
 
     return texture_id
+  end # self.load
 
+  #
+  # load cube map
+  #
+  def self.load_cube_map(texture_files : Array(String) ) : UInt32
+
+    LibGL.gen_textures(1, out texture_id)
+    LibGL.active_texture(LibGL::TEXTURE0)
+    LibGL.bind_texture(LibGL::TEXTURE_CUBE_MAP, texture_id)
+
+    texture_files.each_with_index do |file,i|
+
+      #texture_data = decode_texture_file(file)
+
+      bitmap = Bitmap.new(file)
+      format = bitmap.alpha? ? LibGL::RGBA : LibGL::RGB
+      LibGL.tex_image_2d(LibGL::TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, bitmap.width, bitmap.height, 0, format, LibGL::UNSIGNED_BYTE, bitmap.pixels)
+
+    end # each texture
+
+    LibGL.tex_parameter_i(LibGL::TEXTURE_CUBE_MAP, LibGL::TEXTURE_MAG_FILTER, LibGL::LINEAR)
+    LibGL.tex_parameter_i(LibGL::TEXTURE_CUBE_MAP, LibGL::TEXTURE_MIN_FILTER, LibGL::LINEAR)
+
+    return texture_id
   end
+
+  #
+  # Loads a cube map texture
+  # expects *texture_files* to be in the order of:
+  # right face, left face, top face, bottom face, back face, front face
+  #
+  # Not used
+  #
+  def self.decode_texture_file(texture_file : String ) : TextureData
+
+    filenotfound(texture_file)
+
+    bitmap = Bitmap.new(texture_file)
+    width  = bitmap.width
+    height = bitmap.height
+    pixels = bitmap.pixels
+    r = TextureData.new(pixels,width,height)
+    return r
+  end
+
 end

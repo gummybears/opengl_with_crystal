@@ -4,10 +4,10 @@ in  vec3      position;
 out vec3      textureCoords;
 
 uniform mat4  projection;
-uniform mat4  model;
+uniform mat4  view;
 
 void main(void) {
 
-  gl_Position   = projection * model * vec4(position, 1.0);
+  gl_Position   = projection * view * vec4(position, 1.0);
   textureCoords = position;
 }

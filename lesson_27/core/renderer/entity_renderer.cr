@@ -12,12 +12,17 @@ class EntityRenderer
     @shader.load_projection_matrix(projection)
   end
 
-  # enable/disable back face culling
+  #
+  # enable back face culling
+  #
   def enable_culling()
     LibGL.enable(LibGL::CULL_FACE)
     LibGL.cull_face(LibGL::BACK)
   end
 
+  #
+  # disable back face culling
+  #
   def disable_culling()
     LibGL.disable(LibGL::CULL_FACE)
   end
@@ -80,7 +85,9 @@ class EntityRenderer
 
   def unbind_texture_model(model : Model)
     model.unbind()
+    #
     # enable back face culling
+    #
     enable_culling()
   end
 
