@@ -1,0 +1,316 @@
+
+display:
+  screen:
+    title  : OpenGL lesson 28, day/night
+    width  : 1920.0
+    height : 1080.0
+    fov    : 70.0
+    near   : 0.1
+    far    : 1000.0
+  background:
+    color:
+      r : 128
+      g : 128
+      b : 128
+      a : 1
+
+fog:
+  density: 0.0035
+  gradient: 5.0
+
+camera:
+  x : 0.0
+  y : -10.0
+  z : 30.0
+
+light1:
+  pos:
+    x: 0.0
+    y: 1000.0
+    z: -7000.0
+  color:
+    r : 0.5
+    g : 0.5
+    b : 0.5
+    a : 1.0
+  attenuation:
+    x: 1.0
+    y: 0.0
+    z: 0.0
+
+light2:
+  pos:
+    x:  10.0
+    y:  10.0
+    z: -100.0
+  color:
+    r : 2.0
+    g : 0.0
+    b : 0.0
+    a : 1.0
+  attenuation:
+    x: 1.0
+    y: 0.01
+    z: 0.002
+
+light3:
+  pos:
+    x:  10.0
+    y:  10.0
+    z: -150.0
+  color:
+    r : 0.0
+    g : 2.0
+    b : 2.0
+    a : 1.0
+  attenuation:
+    x: 1.0
+    y: 0.01
+    z: 0.002
+
+light4:
+  pos:
+    x:  10.0
+    y:  10.0
+    z: -200.0
+  color:
+    r : 2.0
+    g : 2.0
+    b : 0.0
+    a : 1.0
+  attenuation:
+    x: 1.0
+    y: 0.01
+    z: 0.002
+
+entities:
+
+  lamp:
+    texture: res/png/lamp.png
+    obj: res/obj/lamp.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 1.0
+      y: 1.0
+      z: 1.0
+
+  box:
+    texture: res/png/box.png
+    obj: res/obj/box.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 5.0
+      y: 5.0
+      z: 5.0
+
+  tree:
+    texture: res/png/tree.png
+    obj: res/obj/tree.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 5.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 10.0
+      y: 10.0
+      z: 10.0
+
+  other_tree:
+    texture: res/png/lowPolyTree.png
+    obj: res/obj/lowPolyTree.obj
+    shine: 10.0
+    reflectivity: 1.0
+    pos:
+      x: 5.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 2.0
+      y: 2.0
+      z: 2.0
+
+  terrain:
+    texture: res/png/grass.png
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    shine: 1.0
+    reflectivity: 1.0
+    vertex_count: 100
+    size: 800
+
+  fern:
+    texture: res/png/fern.png
+    obj: res/obj/fern.obj
+    shine: 5.0
+    reflectivity: 1.0
+    pos:
+      x: -12.0
+      y: 0.0
+      z: -25.0
+    rot:
+      x: 0.0
+      y: -24.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  grass:
+    texture: res/png/grassTexture.png
+    obj: res/obj/grassModel.obj
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  grassy:
+    texture: res/png/grassy2.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  dirt:
+    texture: res/png/mud.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  pink_flowers:
+    texture: res/png/grassFlowers.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  path:
+    texture: res/png/path.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  blend_map:
+    texture: res/png/blendMap.png
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+
+  player:
+    texture: res/png/player.png
+    obj: res/obj/player.obj
+    shine: 15.0
+    reflectivity: 1.0
+    pos:
+      x: 20.0
+      y: 15.0
+      z: -100.0
+    rot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    scale:
+      x: 0.0
+      y: 0.0
+      z: 0.0
