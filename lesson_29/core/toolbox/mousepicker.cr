@@ -3,31 +3,22 @@ class MousePicker
   property current_ray : GLM::Vector3
   property view        : GLM::Matrix
   property projection  : GLM::Matrix
-  #property camera      : Camera
   property game        : Game
 
   def initialize(game : Game, camera : Camera, projection : GLM::Matrix)
     @game        = game
-    #@camera      = camera
     @projection  = projection
 
-    #@view        = create_view_matrix(camera)
     @view = camera.view_matrix()
     @current_ray = GLM::Vector3.new(0,0,0)
   end
 
-  #def create_view_matrix(camera : Camera)
-  #  r = GLM.translate(camera.position)
-  #  return r
-  #end
-
-  # called every frame
+  #
+  # method update is called every frame
+  #
   def update(camera : Camera)
-    #@view        = create_view_matrix(camera)
     @view = camera.view_matrix()
     @current_ray = calculate_mouse_ray()
-
-    puts "ray #{@current_ray.to_s}"
   end
 
   def calculate_mouse_ray() : GLM::Vector3
@@ -68,13 +59,13 @@ class MousePicker
   end
 
   def get_normalized_device_coords(mouse_x : Float32, mouse_y : Float32) : GLM::Vector2
-    x = (2f32 * mouse_x)/(@game.config.settings.width - 1)
-    y = (2f32 * mouse_y)/(@game.config.settings.height - 1)
 
-    # the point (0,0) is in the upper/lower corner ?
-    # if upper corner y -> -y
-    # check
-    r = GLM::Vector2.new(x,-y)
+    w = @game.config.settings.width
+    h = @game.config.settings.height
+
+    x = (2.0 * mouse_x)/w - 1.0
+    y = 1.0 - (2.0 * mouse_y)/h
+
+    r = GLM::Vector2.new(x.to_f32,y.to_f32)
   end
-
 end

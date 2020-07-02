@@ -1,6 +1,9 @@
 #
 # matrix.cr
 #
+require "../errors.cr"
+require "./for_macro.cr"
+
 module GLM
 
   class Matrix
@@ -8,13 +11,9 @@ module GLM
     getter   nr_cols : Int32
     property data    : Array(Float32)
 
-    #
-    # the default Matrix is a matrix with 2 rows and 2 columns
-    #
     def initialize()
-      @nr_rows = 2
-      @nr_cols = 2
-
+      @nr_rows = 4
+      @nr_cols = 4
       @data = Array.new(nr_rows*nr_cols) { 0f32 }
     end
 
@@ -22,10 +21,11 @@ module GLM
       @data
     end
 
+    #
     # computes the offset into the internal 1-dimensional array 'data'
+    #
     private def compute_index(row : Int32, col : Int32) : Int32
 
-      # Important, order is row major
       i = row + @nr_cols * col
       return i
 
@@ -34,7 +34,6 @@ module GLM
     #
     # given a row and column
     # computes the offset in the array '@data'
-    # in row major order
     #
     private def row_col_to_index(row : Int32, col : Int32) : Int32
 
@@ -42,7 +41,9 @@ module GLM
       if index >= 0 && index < @data.size
         return index
       end
+
       report_error("invalid indices for matrix[#{row},#{col}]")
+      return -1
     end
 
     #
@@ -63,13 +64,14 @@ module GLM
         report_error("cannot create a matrix with negative sizes")
       end
 
+      if @nr_cols != @nr_rows
+        report_error("can only create a square matrix")
+      end
+
       @data = Array.new(nr_rows*nr_cols) { 0f32 }
     end
 
-    #
-    # initializes Matrix from a nested array of Real
-    #
-    def initialize(arr : Array(Array(Real)) )
+    def initialize(arr : Array(Array(Float32)) )
       @nr_rows = arr.size()
       @nr_cols = arr[0].size()
 
@@ -78,18 +80,15 @@ module GLM
       (0..@nr_rows - 1).each do |r|
         (0..@nr_cols - 1).each do |c|
 
-          index    = r * @nr_cols + c
-          real_val = 1.0 * arr[r][c]
+          index    = compute_index(r,c)
+          real_val = 1.0f32 * arr[r][c]
           @data[index] = real_val
 
         end
       end
     end
 
-    #
-    # initializes Matrix from a nested array of Real
-    #
-    def initialize(arr : Array(Array(Real)) )
+    def initialize(arr : Array(Array(Float64)) )
       @nr_rows = arr.size()
       @nr_cols = arr[0].size()
 
@@ -98,15 +97,32 @@ module GLM
       (0..@nr_rows - 1).each do |r|
         (0..@nr_cols - 1).each do |c|
 
-          index = r * @nr_cols + c
-          @data[index] = arr[r][c]
+          index    = compute_index(r,c)
+          real_val = 1.0f32 * arr[r][c]
+          @data[index] = real_val
+
+        end
+      end
+    end
+
+    def initialize(arr : Array(Array(Int32)) )
+      @nr_rows = arr.size()
+      @nr_cols = arr[0].size()
+
+      @data = Array.new(nr_rows*nr_cols) { 0f32 }
+
+      (0..@nr_rows - 1).each do |r|
+        (0..@nr_cols - 1).each do |c|
+
+          index    = compute_index(r,c)
+          real_val = 1.0f32 * arr[r][c]
+          @data[index] = real_val
 
         end
       end
     end
 
     private def negative_row(row : Int32) : Int32
-
       # allow negative row index
       if row < 0
         row = @nr_rows + row
@@ -137,16 +153,10 @@ module GLM
       end
     end
 
-    private def validate_range(r : ::Range(Int32, Int32) )
-      if r.begin > r.end
-        report_error("invalid range given [#{r.begin}..#{r.end}] for matrix")
-      end
-    end
-
     #
     # retrieves the value at the given row and column
     #
-    def [](row : Int32,col : Int32) : Real
+    def [](row : Int32,col : Int32) : Float32
 
       row = negative_row(row)
       col = negative_column(col)
@@ -158,261 +168,12 @@ module GLM
       return r
     end
 
-    #
-    # getter, returns a row matrix (1 x nr columns)
-    #
-    def [](row : Int32, cols : ::Range(Int32, Int32) ) : GLM::Matrix
-
-      validate_row(row)
-      validate_range(cols)
-      validate_column(cols.begin)
-      validate_column(cols.end)
-
-      # calculate the number of columns
-      nrcols = (cols.end - cols.begin + 1).abs
-      r      = GLM::Matrix.new(1,nrcols)
-
-      colindex = 0
-      (cols.begin..cols.end).each do |j|
-        r[0,colindex] = self[row,j]
-        colindex = colindex + 1
-      end
-
-      return r
-    end
-
-    #
-    # getter, returns a column matrix (nr rows x 1)
-    #
-    def [](rows : ::Range(Int32, Int32), col : Int32) : GLM::Matrix
-
-      validate_range(rows)
-      validate_row(rows.begin)
-      validate_row(rows.end)
-      validate_column(col)
-
-      # calculate the number of rows
-      nrrows = (rows.end - rows.begin + 1).abs
-
-      #
-      # need to retrieve the column values individually
-      #
-      arr = [] of Real
-      (rows.begin..rows.end).each do |i|
-        index = row_col_to_index(i,col)
-        arr << @data[index]
-      end
-
-      r = GLM::Matrix.new(nrrows,1,arr)
-      return r
-    end
-
-    #
-    # getter, returns a submatrix
-    #
-    def [](rows : ::Range(Int32, Int32), cols : ::Range(Int32, Int32) ) : GLM::Matrix
-      validate_range(rows)
-      validate_range(cols)
-
-      validate_row(rows.begin)
-      validate_row(rows.end)
-      validate_column(cols.begin)
-      validate_column(cols.end)
-
-      #
-      # calculates the number of columns and rows
-      #
-      nrcols = (cols.end - cols.begin + 1).abs
-      nrrows = (rows.end - rows.begin + 1).abs
-
-      arr = Array.new(0) { Array.new(0) { 0f32 } }
-      (rows.begin..rows.end).each do |i|
-
-        rowdata = [] of Real
-        (cols.begin..cols.end).each do |j|
-          rowdata << self[i,j]
-        end
-
-        if rowdata.size() > 0
-          arr << rowdata
-        end
-
-      end
-
-      r = GLM::Matrix.new(arr)
-      return r
-    end
-
-    #
-    # setter, sets the matrix values for given row range and column
-    #
-    def []=(rows : ::Range(Int32, Int32), col : Int32, m : GLM::Matrix) : GLM::Matrix
-
-      validate_range(rows)
-      validate_row(rows.begin)
-      validate_row(rows.end)
-      validate_column(col)
-
-      #
-      # need to set the matrix values
-      #
-      (0..m.rows-1).each do |i|
-        (0..m.columns-1).each do |j|
-
-          self[rows.begin + i,col] = m[i,j]
-
-        end
-      end
-
-      return self
-    end
-
-    #
-    # setter, sets the matrix values for given row and column range
-    #
-    def []=(row : Int32, cols : ::Range(Int32, Int32), m : GLM::Matrix) : GLM::Matrix
-
-      validate_range(cols)
-      validate_column(cols.begin)
-      validate_column(cols.end)
-      validate_row(row)
-
-      #
-      # need to set the matrix values
-      #
-      (0..m.rows-1).each do |i|
-        (0..m.columns-1).each do |j|
-
-          self[row,cols.begin + j] = m[i,j]
-
-        end
-      end
-
-      return self
-    end
-
-    #
-    # setter, sets the matrix values for given row range and column range
-    #
-    def []=(rows : ::Range(Int32,Int32), cols : ::Range(Int32, Int32), m : GLM::Matrix) : GLM::Matrix
-      validate_range(rows)
-      validate_range(cols)
-      validate_row(rows.begin)
-      validate_row(rows.end)
-      validate_column(cols.begin)
-      validate_column(cols.end)
-
-      #
-      # need to set the matrix values
-      #
-      (0..m.rows-1).each do |i|
-        (0..m.columns-1).each do |j|
-
-          self[rows.begin + i,cols.begin + j] = m[i,j]
-
-        end
-      end
-
-      return self
-    end
-
-    #
-    # from an array of values
-    #
-    # setter, sets the matrix values for given row range and column given an array of Real
-    #
-    def []=(rows : ::Range(Int32, Int32), col : Int32, arr : Array(Real) ) : GLM::Matrix
-
-      validate_range(rows)
-      validate_row(rows.begin)
-      validate_row(rows.end)
-      validate_column(col)
-
-      #
-      # need to set the matrix values
-      #
-      arrindex = 0
-      (rows.begin..rows.end).each do |i|
-        self[i,col] = arr[arrindex]
-        arrindex = arrindex + 1
-      end
-
-      return self
-    end
-
-    #
-    # setter, sets the matrix values for given row range and column given an array of Real
-    #
-    def []=(rows : ::Range(Int32, Int32), col : Int32, arr : Array(Real) ) : GLM::Matrix
-
-      validate_range(rows)
-      validate_row(rows.begin)
-      validate_row(rows.end)
-      validate_column(col)
-
-      #
-      # need to set the matrix values
-      #
-      arrindex = 0
-      (rows.begin..rows.end).each do |i|
-        self[i,col] = arr[arrindex]
-        arrindex = arrindex + 1
-      end
-
-      return self
-    end
-
-    #
-    # setter, sets the matrix values for given row and column range
-    #
-    def []=(row : Int32, cols : ::Range(Int32, Int32), arr : Array(Real)) : GLM::Matrix
-
-      validate_range(cols)
-      validate_column(cols.begin)
-      validate_column(cols.end)
-      validate_row(row)
-
-      #
-      # need to set the matrix values
-      #
-      arrindex = 0
-      (cols.begin..cols.end).each do |j|
-
-        self[row,j] = arr[arrindex]
-        arrindex = arrindex + 1
-      end
-
-      return self
-    end
-
-    #
-    # setter, sets the matrix values for given row and column range
-    #
-    def []=(row : Int32, cols : ::Range(Int32, Int32), arr : Array(Real)) : GLM::Matrix
-
-      validate_range(cols)
-      validate_column(cols.begin)
-      validate_column(cols.end)
-      validate_row(row)
-
-      #
-      # need to set the matrix values
-      #
-      arrindex = 0
-      (cols.begin..cols.end).each do |j|
-
-        self[row,j] = arr[arrindex]
-        arrindex = arrindex + 1
-      end
-
-      return self
-    end
 
     #
     # sets a matrix element at the given row and column
     # with the given real value
     #
-    def []=(row : Int32, col : Int32, value : Real)
+    def []=(row : Int32, col : Int32, value : Int32)
 
       row = negative_row(row)
       col = negative_column(col)
@@ -427,7 +188,7 @@ module GLM
     # sets a matrix element at the given row and column
     # with the given Real value
     #
-    def []=(row : Int32, col : Int32, value : Real)
+    def []=(row : Int32, col : Int32, value : Float32)
 
       row = negative_row(row)
       col = negative_column(col)
@@ -437,7 +198,6 @@ module GLM
 
       @data[row_col_to_index(row, col)] = value
     end
-
 
     #
     # returns the number of rows
@@ -470,29 +230,6 @@ module GLM
 
           if r == c
             arr[r,r] = self[r,r]
-          end
-        end
-      end
-
-      return arr
-    end
-
-    #
-    # returns the diagonal element of a matrix as an array
-    # Note: only for square matrices
-    #
-    def diagonal_to_a() : Array(Float32)
-
-      empty?()
-      if square?() == false
-        matrix_notsquare()
-      end
-
-      arr = [] of Float32
-      (0..@nr_rows - 1).each do |r|
-        (0..@nr_cols - 1).each do |c|
-          if r == c
-            arr << self[r,r].real
           end
         end
       end
@@ -572,30 +309,6 @@ module GLM
     #
     def square?() : Bool
       @nr_rows == @nr_cols
-    end
-
-    #
-    # returns true when the matrix is symmetric (A = AT)
-    #
-    def symmetric?() : Bool
-
-      empty?()
-      if square? == false
-        return false
-      end
-
-      (0..@nr_rows-1).each do |i|
-        (0..@nr_cols-1).each do |j|
-          a = self[i,j]
-          b = self[j,i]
-
-          if a != b
-            return false
-          end
-        end
-      end
-
-      return true
     end
 
     #
@@ -860,6 +573,27 @@ module GLM
       return r
     end
 
+    #
+    # compares matrix other to self
+    # returns true when equal
+    # otherwise false
+    #
+    def ==(other : GLM::Matrix) : Bool
+
+      (0..@nr_rows - 1).each do |i|
+        (0..@nr_cols -1).each do |j|
+
+          flag = self[i,j].be_close(other[i,j],0.0001)
+          if flag == false
+            return false
+          end
+
+        end
+      end
+
+      return true
+    end
+
   end
 end
 
@@ -884,6 +618,7 @@ struct Int32
 
     return r
   end
+
 end
 
 #

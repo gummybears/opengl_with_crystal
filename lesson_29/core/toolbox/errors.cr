@@ -1,19 +1,18 @@
 #
 # errors.cr
 #
-PROGRAM = "a.out"
 
 def report_error(text : String)
-  puts sprintf("%s error : %s",PROGRAM,text)
+  puts sprintf("error : %s",text)
   exit(-1)
 end
 
 def report_warning(text : String)
-  puts sprintf("%s warning : %s",PROGRAM,text)
+  puts sprintf("warning : %s",text)
 end
 
 def report_info(text : String)
-  puts sprintf("%s info : %s",PROGRAM,text)
+  puts sprintf("info : %s",text)
 end
 
 def filenotfound(filename)
@@ -23,12 +22,12 @@ def filenotfound(filename)
 end
 
 def matrix_notsquare()
-  puts sprintf("%s error : %s",PROGRAM,"array is not a square matrix")
+  puts sprintf("error : %s","array is not a square matrix")
   exit(-1)
 end
 
 def matrix_singular()
-  puts sprintf("%s error : %s",PROGRAM,"array is singular")
+  puts sprintf("error : %s","array is singular")
   exit(-1)
 end
 

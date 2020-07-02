@@ -482,6 +482,9 @@ class Game
     end
   end
 
+  #
+  # start rendering
+  #
   def render
     #
     # gui and master renderer
@@ -524,7 +527,6 @@ class Game
 
           #
           # need to find the terrain the player is standing on
-          # for now take the first terrain as test
           #
           terrain_index = player_in_which_terrain(@terrains,player)
           terrain = terrains[terrain_index]
