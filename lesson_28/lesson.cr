@@ -1,12 +1,6 @@
-require "yaml"
-require "random"
-
-require "lib_gl"
 require "crystglfw"
 include CrystGLFW
-
 require "./core/**"
-
 
 def lesson(filename : String)
 

@@ -124,7 +124,7 @@ class MasterRenderer
     # render the sky box
     # Note: need to be rendered last
     #
-    @skybox_renderer.render(camera,@settings.bg) # old code .red,@settings.bg.green,@settings.bg.blue)
+    @skybox_renderer.render(camera,@settings.bg)
 
     #
     # Important
