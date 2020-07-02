@@ -1,12 +1,12 @@
 require "../shaders/static_shader.cr"
 require "../shaders/terrain_shader.cr"
-require "../light.cr"
 
 require "./entity_renderer.cr"
 require "./terrain_renderer.cr"
 
 require "../entities/camera.cr"
 require "../entities/terrain.cr"
+require "../entities/light.cr"
 
 class MasterRenderer
   property settings         : Settings

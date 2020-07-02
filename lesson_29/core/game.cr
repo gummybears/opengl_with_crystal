@@ -1,4 +1,4 @@
-require "./math/**"
+require "./toolbox/math/**"
 
 class Game
 
@@ -18,6 +18,8 @@ class Game
   property scroll_offset : GLM::Vector2 = GLM::Vector2.new(0,0)
   property scrolling     : Bool         = false
 
+  property mouse_x       : Float32      = 0
+  property mouse_y       : Float32      = 0
   property mouse_dx      : Float32      = 0
   property mouse_dy      : Float32      = 0
 
@@ -59,10 +61,6 @@ class Game
     #
     @window.make_context_current
 
-    #
-    # set the cursor input mode, see https://www.glfw.org/docs/3.2/group__input.html#gaa92336e173da9c8834558b54ee80563b
-    #
-    @window.cursor.disable
   end
 
   #
@@ -478,6 +476,9 @@ class Game
       new_cursor_pos = event.position
       @mouse_dx = (new_cursor_pos[:x] - old_cursor_pos[:x]).to_f32
       @mouse_dy = (new_cursor_pos[:y] - old_cursor_pos[:y]).to_f32
+
+      @mouse_x  = new_cursor_pos[:x].to_f32
+      @mouse_y  = new_cursor_pos[:y].to_f32
     end
   end
 
@@ -492,6 +493,11 @@ class Game
     #
     gui_renderer    = GuiRenderer.new(settings)
     master_renderer = MasterRenderer.new(settings)
+
+    #
+    # mouse picker
+    #
+    mouse_picker = MousePicker.new(self,@camera,master_renderer.projection)
 
     until @window.should_close?
 
@@ -531,6 +537,11 @@ class Game
 
         master_renderer.process_entity(entity)
       end
+
+      #
+      # call mouse picker
+      #
+      mouse_picker.update(@camera)
 
       #
       # we only have 1 light (at the moment)

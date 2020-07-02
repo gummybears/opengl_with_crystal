@@ -39,6 +39,19 @@ Contents
 - lesson 27 skybox
 - lesson 28 day/night
 - lesson 29 mouse picking
-- lesson 30 cel shading, skipped
+- lesson 30 cell shading, skipped
 - lesson 31 normal mapping, TODO
 - lesson 32 font rendering, TODO
+
+To run the code for a lesson, go to
+corresponding directory. Make sure
+the script build.sh is executable and then
+execute the following commands from
+your terminal
+
+````
+$ shards install
+$ ./build.sh
+````
+The build.sh script will compile and link a lesson
+and produces the executable a.out

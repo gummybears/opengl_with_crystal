@@ -1,8 +1,8 @@
 #
 # obj.cr
 #
-require "../math/**"
-require "../misc/errors.cr"
+require "../toolbox/math/**"
+require "../toolbox/errors.cr"
 require "./face.cr"
 
 NOINDEX = -1
