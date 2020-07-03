@@ -26,7 +26,6 @@ class Game
   property mouse_left    : Int32        = -1
   property mouse_right   : Int32        = -1
 
-  #property elapsed       : Float64      = 0
 
   def initialize(filename : String)
     filenotfound(filename)

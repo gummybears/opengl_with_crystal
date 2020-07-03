@@ -158,55 +158,6 @@ class Program
     end
   end
 
-  def load_sky_color(color : Color)
-
-    red   = color.red/256
-    green = color.green/256
-    blue  = color.blue/256
-
-    use do
-      set_uniform_vector3("sky_color",GLM::Vector3.new(red,green,blue))
-    end
-  end
-
-  def load_fogcolor(color : Color)
-
-    red   = color.red/256
-    green = color.green/256
-    blue  = color.blue/256
-
-    use do
-      set_uniform_vector3("fog_color",GLM::Vector3.new(red,green,blue))
-    end
-  end
-
-  #
-  # day/night blend factor
-  #
-  def load_blendfactor(factor : Float32)
-    set_uniform_float("blend_factor",factor)
-  end
-
-  def load_lights(lights : Array(Light))
-    use do
-      lights.each_with_index do |light,i|
-        set_uniform_vector3("light_position[#{i}]",light.position)
-        set_uniform_vector3("light_color[#{i}]",light.color)
-
-        #
-        # check light attenuation != (0,0,0)
-        # otherwise we divide by zero
-        # in the fragment shader
-        #
-        if light.attenuation == GLM::Vector3.new(0f32,0f32,0f32)
-          light.attenuation = GLM::Vector3.new(1f32,0f32,0f32)
-        end
-
-        set_uniform_vector3("light_attenuation[#{i}]",light.attenuation)
-      end
-    end
-  end
-
   def load_view_matrix(matrix : GLM::Matrix)
     use do
       set_uniform_matrix_4f("view", matrix)
@@ -223,38 +174,5 @@ class Program
     use do
       set_uniform_matrix_4f("model", matrix)
     end
-  end
-
-  #
-  # connect the terrain textures
-  #
-  def connect_texture_units()
-    use do
-      set_uniform_int("background_texture",0)
-      set_uniform_int("r_texture",1)
-      set_uniform_int("g_texture",2)
-      set_uniform_int("b_texture",3)
-      set_uniform_int("blend_map",4)
-    end
-  end
-
-  #
-  # connect the skybox day/night cube map textures
-  #
-  def connect_skybox_units()
-    use do
-      set_uniform_int("cube_map1",0)
-      set_uniform_int("cube_map2",1)
-    end
-  end
-
-  # texture atlas
-  def load_number_of_rows(nr_rows : Int32)
-    set_uniform_float("number_of_rows",1f32*nr_rows)
-  end
-
-  def load_offset(x : Float32, y : Float32)
-    vector2 = GLM::Vector2.new(x,y)
-    set_uniform_vector2("offset",vector2)
   end
 end
