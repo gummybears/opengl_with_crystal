@@ -90,10 +90,6 @@ class ThirdPersonCamera < Camera
   #
   def calculate_pitch(display : Display)
 
-    #if display.pitching == false
-    #  return
-    #end
-
     if display.mouse_right == 1
       pitch_change = display.mouse_dy * 0.1f32
       @pitch = @pitch + pitch_change
@@ -116,9 +112,6 @@ class ThirdPersonCamera < Camera
     if display.mouse_left == 1
 
       angle_change = display.mouse_dx * 0.3f32
-      #if @angle_around_player <= -360f32 || @angle_around_player >= 360f32
-      #  @angle_around_player = 0f32
-      #end
       @angle_around_player = @angle_around_player + angle_change
     end
   end
@@ -128,21 +121,4 @@ class ThirdPersonCamera < Camera
     view_matrix = GLM.look_at(@position,@player.position,up)
     return view_matrix
   end
-
-  ## calculates the front vector from the Camera's (updated) Euler Angles
-  #def update_camera()
-  #
-  #  x = Math.cos(GLM.radians(@yaw)) * Math.cos(GLM.radians(@pitch))
-  #  y = Math.sin(GLM.radians(@pitch))
-  #  z = Math.sin(GLM.radians(@yaw)) * Math.cos(GLM.radians(@pitch))
-  #  front = GLM::Vector3.new(x,y,z)
-  #  front = front.normalize()
-  #
-  #  # normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-  #  #Right = glm::normalize(glm::cross(Front, WorldUp));
-  #  #up  = GLMnormalize(cross(Right, Front));
-  #  up  = GLM::Vector3.new(0f32, 1f32, 0f32)
-  #  view_matrix = GLM.look_at(@position,@player.position,up)
-  #
-  #end
 end

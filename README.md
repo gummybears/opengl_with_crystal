@@ -1,6 +1,6 @@
 OpenGL 3D game tutorial
 
-Based on the youtube video tutorial
+Based on the youtube video tutorials
 
 https://www.youtube.com/watch?v=VS8wlS9hF8E&list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP
 
@@ -39,9 +39,6 @@ Contents
 - lesson 27 skybox
 - lesson 28 day/night
 - lesson 29 mouse picking
-- lesson 30 cell shading, skipped
-- lesson 31 normal mapping, TODO
-- lesson 32 font rendering, TODO
 
 To run the code for a lesson, go to
 corresponding directory. Make sure
@@ -55,3 +52,18 @@ $ ./build.sh
 ````
 The build.sh script will compile and link a lesson
 and produces the executable a.out
+
+OpenGL ray marching tutorial
+
+Based on the youtube video tutorials
+The Art of Code
+
+https://www.youtube.com/playlist?list=PLGmrMu-IwbgtMxMiV3x4IrHPlPmg7FD-P
+
+Contents
+
+- lesson 01, basic ray marching algorithm
+- lesson 02, basic shapes, dynamic recompiling of shaders
+- lesson 03, basic operators
+- lesson 04, boolean operators (union, subtract, intersect) with smooth minimum
+

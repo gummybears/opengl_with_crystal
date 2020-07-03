@@ -35,7 +35,6 @@ void main(void) {
   gl_Position         = projection * position_relative_to_camera;
   pass_textureCoords  = textureCoords;
 
-
   surface_normal   = (model * vec4(actual_normal,0.0)).xyz;
   to_light_source  = light_position - world_position.xyz;
 
