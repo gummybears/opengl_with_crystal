@@ -1,10 +1,13 @@
 require "lib_gl"
 require "crystglfw"
+require "stumpy_png"
 require "./program.cr"
 require "./model.cr"
 require "./math/**"
+require "./config.cr"
 
 include CrystGLFW
+#include StumpyPNG
 
 class GpuCompute
 
@@ -15,6 +18,7 @@ class GpuCompute
   property width          : Int32
   property height         : Int32
 
+  # mouse properties
   property scrolling      : Bool = false
   property scroll_offset  : GLM::Vector2 = GLM::Vector2.new(0,0)
   property mouse_dx       : Float32 = 0f32
@@ -22,20 +26,42 @@ class GpuCompute
   property mouse_x        : Float32 = 0f32
   property mouse_y        : Float32 = 0f32
 
+  # shaders
   property vertexshader   : String = ""
   property fragmentshader : String = ""
 
-  def initialize(title : String, width : Int32, height : Int32, vertexshader : String, fragmentshader : String)
+  # camera
+  property camera         : GLM::Vector3
 
-    filenotfound(vertexshader)
-    filenotfound(fragmentshader)
+  # lights
+  property lights         : Array(GLM::Vector3)
 
-    @vertexshader   = vertexshader
-    @fragmentshader = fragmentshader
+  property primary_light  : GLM::Vector3
 
-    @title  = title
-    @width  = width
-    @height = height
+  def initialize(config : Config)
+
+    filenotfound(config.vertexshader)
+    filenotfound(config.fragmentshader)
+
+    @vertexshader   = config.vertexshader
+    @fragmentshader = config.fragmentshader
+
+    @title  = config.title
+    @width  = config.width
+    @height = config.height
+
+    # camera
+    @camera = config.camera
+
+    # lights
+    @lights = config.lights
+    if @lights.size == 0
+      puts "no light sources found, exit"
+      exit(-1)
+    end
+
+    @primary_light = @lights[0]
+
     #
     # Request a specific version of OpenGL in core profile mode with forward compatibility.
     #
@@ -67,6 +93,8 @@ class GpuCompute
 
     CrystGLFW.run do
 
+      @window.enable_sticky_keys
+
       #
       # compile shaders
       # must be done in run loop
@@ -77,14 +105,27 @@ class GpuCompute
 
         CrystGLFW.poll_events
 
+        #
         # get current time
+        #
         last_time = LibGLFW.get_time
+
+        #
+        # Important to set viewport especially
+        # when we resize the window
+        #
+        LibGL.viewport(0,0,@width,@height)
+
+        # window resize
+        window_resize()
 
         @shader.use do
 
           @shader.set_uniform_int("screen_width",  @width)
           @shader.set_uniform_int("screen_height", @height)
-          @shader.set_uniform_float("time",last_time.to_f32)
+          @shader.set_uniform_float("time",        last_time.to_f32)
+          @shader.set_uniform_vector3("camera",    @camera)
+          @shader.set_uniform_vector3("primary_light", @primary_light)
 
           #
           # draw a model
@@ -92,10 +133,10 @@ class GpuCompute
           @model.draw()
         end
 
+        @window.swap_buffers
+
         process_keys()
         process_mouse()
-
-        @window.swap_buffers
 
       end # should_close?
 
@@ -103,6 +144,15 @@ class GpuCompute
       @shader.cleanup()
 
     end # run loop
+  end
+
+  def window_resize()
+
+    @window.on_resize do |event|
+      @width  = event.size[:width]
+      @height = event.size[:height]
+    end
+
   end
 
   def process_keys()
@@ -125,6 +175,78 @@ class GpuCompute
       # inform user the shaders will be recompiled
       puts "recompiling shaders : #{@vertexshader} and #{@fragmentshader}"
     end
+
+    # take screenshot
+    if @window.key_pressed?(Key::S)
+
+      #
+      # inform user a screenshot will be taken
+      #
+      puts "taking screenshot and saving it to screenshot.ppm"
+      if File.exists?("screenshot.ppm")
+        File.delete("screenshot.ppm")
+      end
+
+      saveasppm("screenshot.ppm")
+    end
+  end
+
+  def saveasppm(filename : String)
+
+    #
+    # allocate memory to save the screen pixels
+    #
+    x = 0
+    y = 0
+    format    = LibGL::RGBA
+    data_type = LibGL::UNSIGNED_BYTE
+
+    #
+    # factor 3 is for the RGB component
+    #
+    buffer_size = @width * @height * 4
+    image_data = Pointer(UInt8).malloc(buffer_size)
+    LibGL.read_buffer(LibGL::FRONT)
+    LibGL.read_pixels(x,y,@width,@height,format,data_type,image_data)
+
+    arr = Array.new(@width) { Array.new(@height) { Color.new }}
+    pos = 0
+
+    (0..@height-1).each do |j|
+      (0..@width-1).each do |i|
+        slice = Bytes.new(4)
+        slice[0] = image_data[pos]
+        pos = pos + 1
+        slice[1] = image_data[pos]
+        pos = pos + 1
+        slice[2] = image_data[pos]
+        pos = pos + 1
+        slice[3] = image_data[pos]
+        pos = pos + 1
+
+        arr[i][j] = Color.new(slice[0],slice[1],slice[2],slice[3])
+      end
+    end
+
+    file = File.new(filename,"wb")
+    file.puts "P6"
+    file.puts "#{@width} #{@height}"
+    file.puts "255"
+
+    #
+    # the (0,0) coordinate is at the bottom left
+    # need to flip the image in the y direction
+    #
+    (@height-1).downto(0).each do |j|
+      (0..@width-1).each do |i|
+        slice = Bytes.new(3)
+        slice[0] = arr[i][j].red
+        slice[1] = arr[i][j].blue
+        slice[2] = arr[i][j].green
+        file.write(slice)
+      end
+    end
+    file.close
 
   end
 
@@ -190,5 +312,4 @@ class GpuCompute
       @mouse_y  = new_cursor_pos[:y].to_f32
     end
   end
-
 end

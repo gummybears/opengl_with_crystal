@@ -1,0 +1,35 @@
+shaders:
+  vertex:    rayshader.vs
+  fragment:  rayshader.fs
+
+display:
+  screen:
+    title  : OpenGL ray marching, lesson 4
+    width  : 1920
+    height : 1080
+    fov    : 70.0
+    near   : 0.1
+    far    : 1000.0
+  background:
+    color:
+      r : 128
+      g : 128
+      b : 128
+      a : 1
+
+camera:
+  x : 0.0
+  y : 2.0
+  z : 0.0
+
+lights:
+  -
+    pos:
+      x: 0.0
+      y: 5.0
+      z: 6.0
+    color:
+      r : 1.0
+      g : 0.0
+      b : 0.0
+      a : 1.0

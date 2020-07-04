@@ -221,6 +221,9 @@ void main(void){
   vec3 ro    = camera;
   vec3 rd    = normalize(vec3(uv.x,uv.y - 0.2,1));
 
+  // moving camera
+  ro.xz = ro.xz + vec2(sin(time), cos(time)) * 0.5;
+
   // ray march for this uv point
   float d    = ray_march(ro, rd);
 

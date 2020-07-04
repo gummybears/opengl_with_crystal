@@ -1,4 +1,4 @@
-OpenGL 3D game tutorial
+### OpenGL 3D game tutorial
 
 Based on the youtube video tutorials
 
@@ -8,7 +8,7 @@ and inspired by the game engine written by Joel
 
 https://github.com/neutrinog/prism
 
-Contents
+### Contents
 
 - lesson 01 display
 - lesson 02 VAO's and VBO's
@@ -53,14 +53,14 @@ $ ./build.sh
 The build.sh script will compile and link a lesson
 and produces the executable a.out
 
-OpenGL ray marching tutorial
+### OpenGL ray marching tutorial
 
 Based on the youtube video tutorials
 The Art of Code
 
 https://www.youtube.com/playlist?list=PLGmrMu-IwbgtMxMiV3x4IrHPlPmg7FD-P
 
-Contents
+### Contents
 
 - lesson 01, basic ray marching algorithm
 - lesson 02, basic shapes, dynamic recompiling of shaders

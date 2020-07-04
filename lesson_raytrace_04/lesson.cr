@@ -3,7 +3,22 @@ require "crystglfw"
 require "./core/**"
 include CrystGLFW
 
-CrystGLFW.run do
-  gpucompute = GpuCompute.new("Ray marching, boolean operations of simple shapes",1920,1080,"rayshader.vs","rayshader.fs")
-  gpucompute.run()
+def lesson(filename : String)
+
+  config = Config.new(filename)
+
+  CrystGLFW.run do
+    gpucompute = GpuCompute.new(config)
+    gpucompute.run()
+  end
 end
+
+x = ARGV
+if x.size != 1
+  puts "usage: lesson config_file.yml"
+  exit
+end
+
+filename = x[0]
+filenotfound(filename)
+lesson(filename)
