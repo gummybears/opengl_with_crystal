@@ -1,12 +1,12 @@
 shaders:
-  vertex:    rayshader.vs
-  fragment:  moving_camera.fs
+  vertex:    examples/rayshader.vs
+  fragment:  examples/moving_camera.fs
 
 display:
   screen:
-    title  : OpenGL ray marching, lesson 4, moving camera
-    width  : 800
-    height : 600
+    title  : OpenGL ray marching, lesson 5, moving camera
+    width  : 1920
+    height : 1080
     fov    : 70.0
     near   : 0.1
     far    : 1000.0

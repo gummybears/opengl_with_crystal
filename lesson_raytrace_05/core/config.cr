@@ -4,9 +4,9 @@ class Config
 
   property yaml
 
-  def initialize(file : String)
-    filenotfound(file)
-    @yaml = YAML.parse(File.read(file))
+  def initialize(filename : String)
+    filenotfound(filename)
+    @yaml = YAML.parse(File.read(filename))
   end
 
   def vertexshader

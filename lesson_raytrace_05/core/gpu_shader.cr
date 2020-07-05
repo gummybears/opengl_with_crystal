@@ -6,8 +6,9 @@ require "./model.cr"
 require "./math/**"
 require "./config.cr"
 include CrystGLFW
+include StumpyPNG
 
-class GpuCompute
+class GpuShader
 
   property model          : Model
   property window         : CrystGLFW::Window
@@ -91,8 +92,6 @@ class GpuCompute
 
     CrystGLFW.run do
 
-      @window.enable_sticky_keys
-
       #
       # compile shaders
       # must be done in run loop
@@ -162,30 +161,71 @@ class GpuCompute
       @window.should_close
     end
 
+    # pause
+    if @window.key_pressed?(Key::P)
+      @shader.stop()
+
+      puts "press the spacebar to continue ..."
+      @window.focus
+
+      while true
+        CrystGLFW.poll_events
+        if @window.key_pressed?(Key::Space)
+          @shader.start()
+          return
+        end
+      end
+    end
+
     # reload shaders
     if @window.key_pressed?(Key::R)
+      @shader.stop()
+
+      # inform user the shaders will be recompiled
+      puts "recompiling shaders : #{@vertexshader} and #{@fragmentshader}"
 
       #
       # recompile shaders
       #
       @shader.compile(@vertexshader,@fragmentshader)
 
-      # inform user the shaders will be recompiled
-      puts "recompiling shaders : #{@vertexshader} and #{@fragmentshader}"
+      puts "press the spacebar to continue ..."
+      @window.focus
+
+      while true
+        CrystGLFW.poll_events
+        if @window.key_pressed?(Key::Space)
+          @shader.start()
+          return
+        end
+      end
     end
 
     # take screenshot
     if @window.key_pressed?(Key::S)
 
+      @shader.stop()
       #
       # inform user a screenshot will be taken
       #
-      puts "taking screenshot and saving it to screenshot.ppm"
-      if File.exists?("screenshot.ppm")
-        File.delete("screenshot.ppm")
+      filename = "screenshot.png"
+      puts "taking screenshot and saving it to #{filename}"
+      if File.exists?(filename)
+        File.delete(filename)
       end
 
-      saveasppm("screenshot.ppm")
+      #saveasppm("screenshot.ppm")
+      saveaspng(filename)
+      puts "press the spacebar to continue ..."
+      @window.focus
+      while true
+        CrystGLFW.poll_events
+        if @window.key_pressed?(Key::Space)
+          @shader.start()
+          return
+        end
+      end
+
     end
   end
 
@@ -245,7 +285,56 @@ class GpuCompute
       end
     end
     file.close
+  end
 
+  def saveaspng(filename : String)
+
+    #
+    # allocate memory to save the screen pixels
+    #
+    x = 0
+    y = 0
+    format    = LibGL::RGBA
+    data_type = LibGL::UNSIGNED_BYTE
+
+    #
+    # factor 3 is for the RGB component
+    #
+    buffer_size = @width * @height * 4
+    image_data = Pointer(UInt8).malloc(buffer_size)
+    LibGL.read_buffer(LibGL::FRONT)
+    LibGL.read_pixels(x,y,@width,@height,format,data_type,image_data)
+
+    arr = Array.new(@width) { Array.new(@height) { Color.new }}
+    pos = 0
+
+    (0..@height-1).each do |j|
+      (0..@width-1).each do |i|
+        slice = Bytes.new(4)
+        slice[0] = image_data[pos]
+        pos = pos + 1
+        slice[1] = image_data[pos]
+        pos = pos + 1
+        slice[2] = image_data[pos]
+        pos = pos + 1
+        slice[3] = image_data[pos]
+        pos = pos + 1
+
+        arr[i][@height-j-1] = Color.new(slice[0],slice[1],slice[2],slice[3])
+      end
+    end
+
+    canvas = Canvas.new(@width,@height)
+    (0..@height-1).each do |j|
+      (0..@width-1).each do |i|
+
+        color        = arr[i][j]
+        rgbcolor     = RGBA.from_rgb_n(color.red,color.green,color.blue,8)
+        canvas[i, j] = rgbcolor
+      end
+    end
+
+    StumpyPNG.write(canvas, filename)
   end
 
   #
