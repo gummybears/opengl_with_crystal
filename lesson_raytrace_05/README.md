@@ -15,7 +15,7 @@ shader dynamically by pressing the R key.
 
 Added a simple preprocessor, to include shader files.
 
-Resizing of the window also works by called LibGL.viewport
+Resizing of the window also works by calling LibGL.viewport
 with the new width and height of the window.
 
 Taking a screenshot of the window is possible by pressing the

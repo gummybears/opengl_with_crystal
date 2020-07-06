@@ -5,8 +5,8 @@ shaders:
 display:
   screen:
     title  : OpenGL ray marching, lesson 5, colored objects
-    width  : 800
-    height : 600
+    width  : 1920
+    height : 1080
     fov    : 70.0
     near   : 0.1
     far    : 1000.0

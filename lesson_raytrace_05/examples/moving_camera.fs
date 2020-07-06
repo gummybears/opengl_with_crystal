@@ -1,13 +1,14 @@
 #version 430 core
 
-// include examples/define.fs
-// include examples/math.fs
-// include examples/sdf.fs
+// include examples/includes/define.fs
+// include examples/includes/math.fs
+// include examples/includes/sdf.fs
+// include examples/includes/operations.fs
 // include examples/scene.fs
-// include examples/raymarch.fs
-// include examples/normal.fs
-// include examples/shadow.fs
-// include examples/lights.fs
+// include examples/includes/raymarch.fs
+// include examples/includes/normal.fs
+// include examples/includes/shadow.fs
+// include examples/includes/lights.fs
 
 void main(void){
 

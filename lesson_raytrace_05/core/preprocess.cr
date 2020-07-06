@@ -33,7 +33,7 @@ class Preprocess
   end
 
   def read(filename : String)
-
+    puts "preprocessing #{File.real_path(filename)}"
     xlines = File.read_lines(filename)
     xlines.each do |line|
 

@@ -1,4 +1,3 @@
-
 vec3 get_normal(vec3 p){
 
   float d = get_distance(p);
