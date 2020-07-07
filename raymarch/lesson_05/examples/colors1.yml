@@ -1,10 +1,10 @@
 shaders:
   vertex:    examples/rayshader.vs
-  fragment:  examples/colors.fs
+  fragment:  examples/colors1.fs
 
 display:
   screen:
-    title  : OpenGL ray marching, lesson 5, colored objects
+    title  : OpenGL ray marching, lesson 5, colored objects (1)
     width  : 1920
     height : 1080
     fov    : 70.0

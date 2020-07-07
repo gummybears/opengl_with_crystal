@@ -29,4 +29,5 @@ lessons:
 	cd lesson_26; shards; ./build.sh
 	cd lesson_27; shards; ./build.sh
 	cd lesson_28; shards; ./build.sh
+	cd lesson_29; shards; ./build.sh
 

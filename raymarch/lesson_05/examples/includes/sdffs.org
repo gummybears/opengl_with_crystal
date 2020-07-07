@@ -86,3 +86,9 @@ float sdf_octahedron(vec3 p,float s) {
   float k=clamp(.5*(q.z-q.y+s),0.,s);
   return length(vec3(q.x,q.y-s+k,q.z-k));
 }
+
+// capped cylinder
+float sdf_cappedcylinder( vec3 p, float h, float r ) {
+  vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(r,h);
+  return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+}

@@ -1,7 +1,7 @@
 
 float get_distance(in vec3 p){
 
-  float pd  = sdf_plane(p);
+  float pd  = sdPlane(p);
 
   // union of two sphere
   float sda = length(p-vec3(0,1,7)) - 1.0;
