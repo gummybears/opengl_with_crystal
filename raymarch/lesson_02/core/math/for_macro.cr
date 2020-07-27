@@ -6,9 +6,9 @@ macro for(*exp, &block)
       {{exp[2]}}
     end
   {% else %}
-    {% in = exp.last.args.first; in2 = in.args.last %}
+    {% within = exp.last.args.first; in2 = within.args.last %}
     {% variables = exp.stringify.split('(')[0][1..-1].id %}
-    {% block = in.block.stringify.empty? ? in2.block : in.block %}
+    {% block = within.block.stringify.empty? ? in2.block : within.block %}
     {% if in2.is_a?(Call) && !in2.block.stringify.empty? %}
       {% enumerable = in2.stringify.split(" do\n")[0].id %}
     {% else %}
