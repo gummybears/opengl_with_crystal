@@ -48,7 +48,7 @@ execute the following commands from
 your terminal
 
 ````
-$ shards install
+$ shards install --ignore-crystal-version
 $ ./build.sh
 $ ./a.out
 ````

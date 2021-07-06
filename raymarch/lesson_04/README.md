@@ -18,3 +18,6 @@ with the new width and height of the window.
 
 Taking a screenshot of the window is possible by pressing the
 S key.
+
+Note:
+$ shards --ignore-crystal-version

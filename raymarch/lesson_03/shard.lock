@@ -1,15 +1,15 @@
 version: 2.0
 shards:
   crystglfw:
-    git: https://github.com/gummybears/CrystGLFW.git
+    git: https://github.com/gummybears/crystglfw.git
     version: 0.2.0+git.commit.6bc26d9fa28493353e42de1f956f6f64980bd651
 
   lib_gl:
-    git: https://github.com/calebuharrison/LibGL.git
+    git: https://github.com/gummybears/libgl.git
     version: 0.1.0+git.commit.fed2ca7f6cd15efea94458b234c3ca5b0a8ffc5e
 
   lib_glfw:
-    git: https://github.com/calebuharrison/LibGLFW.git
+    git: https://github.com/calebuharrison/libglfw.git
     version: 0.1.0+git.commit.4cf7c3774f278d7e044bb30a35b104f5b12fdc53
 
   stumpy_core:

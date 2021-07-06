@@ -1,21 +1,22 @@
 name: main
 version: 0.1.0
 
-crystal: 0.36.1
+crystal: 1.0.0
 
 dependencies:
  lib_gl:
-    github: calebuharrison/LibGL
-    branch: master
+    github: gummybears/LibGL
+    branch: develop
 
  stumpy_gif:
     github: stumpycr/stumpy_gif
 
  stumpy_png:
     github: stumpycr/stumpy_png
+    version: "~> 5.0"
 
  crystglfw:
     github: gummybears/CrystGLFW
-    branch: master
+    branch: develop
 
 license: MIT
