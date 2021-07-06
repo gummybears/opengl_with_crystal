@@ -1,8 +1,6 @@
 name: main
 version: 0.1.0
 
-crystal: 0.34.0
-
 dependencies:
  lib_gl:
     github: calebuharrison/LibGL

@@ -13,6 +13,7 @@ dependencies:
 
  stumpy_png:
     github: stumpycr/stumpy_png
+    version: "~> 5.0"
 
  crystglfw:
     github: gummybears/CrystGLFW
