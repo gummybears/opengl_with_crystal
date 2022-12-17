@@ -143,30 +143,13 @@ class Scene
     return r
   end
 
-
-  # old code def model_vertex_shader(model : String) : String
-  # old code
-  # old code   key1 = "entities"
-  # old code   key2 = "vertexshader"
-  # old code   @yaml[key1][model][key2].to_s
-  # old code end
-  # old code
-  # old code def model_fragment_shader(model : String) : String
-  # old code
-  # old code   key1 = "entities"
-  # old code   key2 = "fragmentshader"
-  # old code   @yaml[key1][model][key2].to_s
-  # old code end
-
   def model_shine(model : String) : Float32
-
     key1 = "entities"
     key2 = "shine"
     @yaml[key1][model][key2].as_f.to_f32
   end
 
   def model_reflectivity(model : String) : Float32
-
     key1 = "entities"
     key2 = "reflectivity"
     @yaml[key1][model][key2].as_f.to_f32

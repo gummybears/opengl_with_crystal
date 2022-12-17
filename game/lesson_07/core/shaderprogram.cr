@@ -59,11 +59,6 @@ class ShaderProgram
     LibGL.delete_program(@program_id)
   end
 
-  # old code def bind_attributes()
-  # old code   bind_attribute(0,"position")
-  # old code   bind_attribute(1,"pass_textureCoords")
-  # old code end
-
   def bind_attribute(attribute : Int32, variable_name : String)
     LibGL.bind_attrib_location(@program_id, attribute, variable_name)
   end
